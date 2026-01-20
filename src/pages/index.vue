@@ -1,5 +1,20 @@
 <script setup lang="ts">
 import { BookOpen, Download, Sparkles, Upload } from 'lucide-vue-next'
+
+import { useBooksStore } from '@/stores/books'
+import { useClippingsStore } from '@/stores/clippings'
+
+const booksStore = useBooksStore()
+const clippingsStore = useClippingsStore()
+
+onMounted(async () => {
+  await Promise.all([
+    booksStore.loadBooks(),
+    clippingsStore.loadStats()
+  ])
+})
+
+const hasData = computed(() => booksStore.totalBooks > 0)
 </script>
 
 <template>
@@ -60,9 +75,23 @@ import { BookOpen, Download, Sparkles, Upload } from 'lucide-vue-next'
       </router-link>
     </div>
 
-    <!-- Stats (will be dynamic later) -->
+    <!-- Stats (dynamic) -->
     <div class="mt-16 text-center">
-      <p class="text-gray-500 dark:text-gray-400 text-sm">
+      <div v-if="hasData" class="flex gap-8 justify-center">
+        <div class="text-center">
+          <div class="text-3xl font-bold text-primary-600">
+            {{ booksStore.totalBooks }}
+          </div>
+          <div class="text-sm text-gray-600 dark:text-gray-400">Books</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold text-primary-600">
+            {{ clippingsStore.stats.totalClippings }}
+          </div>
+          <div class="text-sm text-gray-600 dark:text-gray-400">Highlights</div>
+        </div>
+      </div>
+      <p v-else class="text-gray-500 dark:text-gray-400 text-sm">
         No clippings imported yet. Start by importing your Kindle highlights!
       </p>
     </div>

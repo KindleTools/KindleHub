@@ -30,6 +30,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/books/[id]': RouteRecordInfo<
+      '/books/[id]',
+      '/books/:id',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | never
+    >,
     '/import': RouteRecordInfo<
       '/import',
       '/import',
@@ -60,6 +67,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/index.vue': {
       routes:
         | '/'
+      views:
+        | never
+    }
+    'src/pages/books/[id].vue': {
+      routes:
+        | '/books/[id]'
       views:
         | never
     }

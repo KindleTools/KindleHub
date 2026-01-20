@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { CheckCircle, FileJson, FileText, Table, Upload, XCircle } from 'lucide-vue-next'
 
-type ImportFormat = 'txt' | 'csv' | 'json'
+import { parseContent, type ImportFormat } from '@/services/parser.service'
+import { saveClippings } from '@/services/db.service'
+import { useBooksStore } from '@/stores/books'
+
+const booksStore = useBooksStore()
 
 const selectedFormat = ref<ImportFormat>('txt')
 const isDragging = ref(false)
@@ -43,26 +47,32 @@ const processFile = async (file: File) => {
     result.value = null
 
     // Read file
-    progress.value = 20
+    progress.value = 10
     const content = await file.text()
-
-    // TODO: Parse with kindle-tools-ts
-    progress.value = 50
     console.log('File content length:', content.length)
 
-    // Simulate processing
-    await new Promise((resolve) => setTimeout(resolve, 500))
-    progress.value = 80
+    // Parse with kindle-tools-ts
+    progress.value = 30
+    const parsed = await parseContent(content, selectedFormat.value)
+    console.log('Parsed:', parsed.stats)
 
-    // TODO: Save to IndexedDB
+    // Save to IndexedDB
+    progress.value = 70
+    const saved = await saveClippings(parsed.clippings)
+    console.log('Saved:', saved)
+
     progress.value = 100
 
     result.value = {
       success: true,
-      booksCount: 0,
-      clippingsCount: 0
+      booksCount: saved.booksCount,
+      clippingsCount: saved.clippingsCount
     }
+
+    // Refresh books store
+    await booksStore.loadBooks()
   } catch (err) {
+    console.error('Import error:', err)
     error.value = err instanceof Error ? err.message : 'Unknown error'
     result.value = { success: false, booksCount: 0, clippingsCount: 0 }
   } finally {
@@ -98,7 +108,7 @@ const reset = () => {
             'flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all',
             selectedFormat === format.id
               ? 'border-primary-600 bg-primary-50 dark:bg-primary-900/20'
-              : 'border-gray-200 dark:border-gray-700 hover:border-primary-400'
+              : 'border-gray-200 dark:border-gray-700 hover:border-primary-400',
           ]"
           @click="selectedFormat = format.id"
         >
@@ -113,7 +123,7 @@ const reset = () => {
           'border-2 border-dashed rounded-lg p-12 text-center transition-all cursor-pointer',
           isDragging
             ? 'border-primary-600 bg-primary-50 dark:bg-primary-900/20'
-            : 'border-gray-300 dark:border-gray-700 hover:border-primary-400'
+            : 'border-gray-300 dark:border-gray-700 hover:border-primary-400',
         ]"
         @dragover.prevent="isDragging = true"
         @dragleave="isDragging = false"
@@ -131,7 +141,7 @@ const reset = () => {
         <input
           ref="fileInputRef"
           type="file"
-          :accept="formats.find(f => f.id === selectedFormat)?.accept"
+          :accept="formats.find((f) => f.id === selectedFormat)?.accept"
           class="hidden"
           @change="handleFileSelect"
         />
