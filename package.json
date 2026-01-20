@@ -2,11 +2,10 @@
   "name": "kindle-hub",
   "version": "0.1.0",
   "type": "module",
-  "private": true,
   "description": "Interactive web app for kindle-tools-ts - Import, edit, and export Kindle highlights",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
@@ -34,6 +33,7 @@
     "@types/dompurify": "^3.0.0",
     "@types/node": "^22.0.0",
     "@vitejs/plugin-vue": "^5.2.0",
+    "@vue/tsconfig": "^0.8.1",
     "autoprefixer": "^10.4.0",
     "postcss": "^8.4.0",
     "rimraf": "^6.0.0",
@@ -48,5 +48,15 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "packageManager": "pnpm@10.7.0"
+  "packageManager": "pnpm@10.7.0",
+  "author": "Andrés M. Jiménez",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KindleTools/KindleHub.git"
+  },
+  "homepage": "https://github.com/KindleTools/KindleHub#readme",
+  "bugs": {
+    "url": "https://github.com/KindleTools/KindleHub/issues"
+  }
 }

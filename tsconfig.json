@@ -1,54 +1,11 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
-  "compilerOptions": {
-    // Language and Environment
-    "target": "ESNext",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "jsx": "preserve",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    // Type Checking - Strict Mode
-    "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "strictPropertyInitialization": true,
-    "noImplicitThis": true,
-    "useUnknownInCatchVariables": true,
-    "alwaysStrict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    // Additional Checks
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
-    // Emit
-    "noEmit": true,
-    "isolatedModules": true,
-    "resolveJsonModule": true,
-    "allowImportingTsExtensions": true,
-    // Interop Constraints
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    // Paths and Resolution
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
     },
-    // Skip Lib Check for faster builds
-    "skipLibCheck": true,
-    "types": ["vite/client", "unplugin-vue-router/client"]
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "src/auto-imports.d.ts",
-    "src/components.d.ts",
-    "src/typed-router.d.ts"
-  ],
-  "exclude": ["node_modules", "dist"]
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
 }
