@@ -11,8 +11,15 @@
     "lint:fix": "eslint . --fix",
     "format": "eslint . --fix",
     "typecheck": "vue-tsc --noEmit",
-    "check": "pnpm lint && pnpm typecheck",
-    "clean": "rimraf dist"
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "check": "pnpm lint && pnpm typecheck && pnpm test:run",
+    "clean": "rimraf dist",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,vue,js}": "eslint --fix"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.23",
@@ -34,11 +41,16 @@
     "@types/dompurify": "^3.2.0",
     "@types/node": "^25.0.9",
     "@vitejs/plugin-vue": "^6.0.3",
+    "@vitest/coverage-v8": "^4.0.17",
+    "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.8.1",
     "autoprefixer": "^10.4.23",
     "eslint": "^9.39.2",
     "eslint-plugin-vue": "^10.7.0",
     "globals": "^17.0.0",
+    "happy-dom": "^20.3.4",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "postcss": "^8.5.6",
     "rimraf": "^6.1.2",
     "tailwindcss": "^3.4.19",
@@ -48,6 +60,7 @@
     "unplugin-vue-components": "^31.0.0",
     "unplugin-vue-router": "^0.19.2",
     "vite": "^7.3.1",
+    "vitest": "^4.0.17",
     "vue-tsc": "^3.2.2"
   },
   "engines": {
