@@ -8,7 +8,7 @@ const isDragging = ref(false)
 const isImporting = ref(false)
 const progress = ref(0)
 const error = ref<string | null>(null)
-const result = ref<{ success: boolean; booksCount: number; clippingsCount: number } | null>(null)
+const result = ref<{ success: boolean, booksCount: number, clippingsCount: number } | null>(null)
 
 const fileInputRef = ref<HTMLInputElement>()
 
@@ -51,7 +51,7 @@ const processFile = async (file: File) => {
     console.log('File content length:', content.length)
 
     // Simulate processing
-    await new Promise(resolve => setTimeout(resolve, 500))
+    await new Promise((resolve) => setTimeout(resolve, 500))
     progress.value = 80
 
     // TODO: Save to IndexedDB
@@ -94,13 +94,13 @@ const reset = () => {
         <button
           v-for="format in formats"
           :key="format.id"
-          @click="selectedFormat = format.id"
           :class="[
             'flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all',
             selectedFormat === format.id
               ? 'border-primary-600 bg-primary-50 dark:bg-primary-900/20'
               : 'border-gray-200 dark:border-gray-700 hover:border-primary-400'
           ]"
+          @click="selectedFormat = format.id"
         >
           <component :is="format.icon" class="h-8 w-8" />
           <span class="font-medium">{{ format.label }}</span>
@@ -109,25 +109,25 @@ const reset = () => {
 
       <!-- Dropzone -->
       <div
-        @dragover.prevent="isDragging = true"
-        @dragleave="isDragging = false"
-        @drop="handleDrop"
         :class="[
           'border-2 border-dashed rounded-lg p-12 text-center transition-all cursor-pointer',
           isDragging
             ? 'border-primary-600 bg-primary-50 dark:bg-primary-900/20'
             : 'border-gray-300 dark:border-gray-700 hover:border-primary-400'
         ]"
+        @dragover.prevent="isDragging = true"
+        @dragleave="isDragging = false"
+        @drop="handleDrop"
         @click="fileInputRef?.click()"
       >
         <Upload class="h-16 w-16 mx-auto mb-4 text-gray-400" />
-        
+
         <h3 class="text-xl font-semibold mb-2">
           Drop your {{ selectedFormat.toUpperCase() }} file here
         </h3>
-        
+
         <p class="text-gray-600 dark:text-gray-400 mb-4">or click to choose a file</p>
-        
+
         <input
           ref="fileInputRef"
           type="file"
@@ -159,13 +159,13 @@ const reset = () => {
       <p class="text-gray-600 dark:text-gray-400 mb-4">
         This may take a moment for large files
       </p>
-      
+
       <!-- Progress bar -->
       <div class="w-full max-w-md mx-auto bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
-        <div 
+        <div
           class="bg-primary-600 h-full transition-all duration-300"
           :style="{ width: `${progress}%` }"
-        />
+        ></div>
       </div>
       <p class="text-sm text-gray-500 mt-2">{{ progress }}%</p>
     </div>
@@ -174,7 +174,7 @@ const reset = () => {
     <div v-else-if="result?.success" class="text-center py-16">
       <CheckCircle class="h-16 w-16 text-green-500 mx-auto mb-4" />
       <h2 class="text-2xl font-semibold mb-2">Import Successful!</h2>
-      
+
       <div class="flex gap-8 justify-center my-8">
         <div class="text-center">
           <div class="text-4xl font-bold text-primary-600">
@@ -189,12 +189,12 @@ const reset = () => {
           <div class="text-sm text-gray-600 dark:text-gray-400">Highlights</div>
         </div>
       </div>
-      
+
       <div class="flex gap-4 justify-center">
         <router-link to="/library" class="btn-primary">
           View Library
         </router-link>
-        <button @click="reset" class="btn-secondary">
+        <button class="btn-secondary" @click="reset">
           Import Another File
         </button>
       </div>
@@ -205,8 +205,8 @@ const reset = () => {
       <XCircle class="h-16 w-16 text-red-500 mx-auto mb-4" />
       <h2 class="text-2xl font-semibold mb-2">Import Failed</h2>
       <p class="text-red-600 dark:text-red-400 mb-6">{{ error }}</p>
-      
-      <button @click="reset" class="btn-primary">
+
+      <button class="btn-primary" @click="reset">
         Try Again
       </button>
     </div>

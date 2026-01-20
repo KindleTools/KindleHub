@@ -28,20 +28,20 @@ const toggleDark = useToggle(isDark)
 
             <!-- Navigation -->
             <nav class="hidden md:flex items-center gap-6">
-              <router-link 
-                to="/" 
+              <router-link
+                to="/"
                 class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
               >
                 Home
               </router-link>
-              <router-link 
-                to="/library" 
+              <router-link
+                to="/library"
                 class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
               >
                 Library
               </router-link>
-              <router-link 
-                to="/import" 
+              <router-link
+                to="/import"
                 class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
               >
                 Import
@@ -50,9 +50,9 @@ const toggleDark = useToggle(isDark)
 
             <!-- Theme Toggle -->
             <button
-              @click="toggleDark()"
               class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
               :title="isDark ? 'Light mode' : 'Dark mode'"
+              @click="toggleDark()"
             >
               <Moon v-if="!isDark" class="h-5 w-5 text-gray-600" />
               <Sun v-else class="h-5 w-5 text-yellow-500" />
@@ -70,7 +70,7 @@ const toggleDark = useToggle(isDark)
       <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-6">
         <div class="container mx-auto px-4 text-center text-sm text-gray-600 dark:text-gray-400">
           <p>
-            Built with 
+            Built with
             <a href="https://github.com/KindleTools/kindle-tools-ts" target="_blank" class="text-primary-600 hover:underline">
               kindle-tools-ts
             </a>

@@ -10,7 +10,7 @@ import { BookOpen, Download, Sparkles, Upload } from 'lucide-vue-next'
         Welcome to <span class="text-primary-600">KindleHub</span>
       </h1>
       <p class="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-        Transform your Kindle highlights into an organized, searchable knowledge base. 
+        Transform your Kindle highlights into an organized, searchable knowledge base.
         Import, edit, and export in any format — 100% private, runs in your browser.
       </p>
     </div>
