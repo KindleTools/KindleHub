@@ -1,9 +1,9 @@
-import { defineConfig } from 'vite'
+import { fileURLToPath, URL } from 'node:url'
 import vue from '@vitejs/plugin-vue'
-import VueRouter from 'unplugin-vue-router/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
-import { fileURLToPath, URL } from 'node:url'
+import VueRouter from 'unplugin-vue-router/vite'
+import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [
@@ -18,12 +18,7 @@ export default defineConfig({
 
     // Auto-import Vue APIs
     AutoImport({
-      imports: [
-        'vue',
-        'vue-router',
-        'pinia',
-        '@vueuse/core'
-      ],
+      imports: ['vue', 'vue-router', 'pinia', '@vueuse/core'],
       dts: 'src/auto-imports.d.ts',
       vueTemplate: true
     }),
@@ -41,7 +36,7 @@ export default defineConfig({
     }
   },
 
-  base: '/kindle-hub/',  // For GitHub Pages
+  base: '/kindle-hub/', // For GitHub Pages
 
   build: {
     target: 'esnext',
@@ -85,14 +80,6 @@ export default defineConfig({
   },
 
   optimizeDeps: {
-    include: [
-      'vue',
-      'vue-router',
-      'pinia',
-      '@vueuse/core',
-      'kindle-tools-ts',
-      'date-fns',
-      'dexie'
-    ]
+    include: ['vue', 'vue-router', 'pinia', '@vueuse/core', 'kindle-tools-ts', 'date-fns', 'dexie']
   }
 })

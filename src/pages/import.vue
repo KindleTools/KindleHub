@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Upload, FileText, Table, FileJson, CheckCircle, XCircle } from 'lucide-vue-next'
+import { CheckCircle, FileJson, FileText, Table, Upload, XCircle } from 'lucide-vue-next'
 
 type ImportFormat = 'txt' | 'csv' | 'json'
 
@@ -21,7 +21,7 @@ const formats = [
 const handleDrop = async (e: DragEvent) => {
   e.preventDefault()
   isDragging.value = false
-  
+
   const files = e.dataTransfer?.files
   if (files && files.length > 0) {
     await processFile(files[0])
@@ -49,21 +49,21 @@ const processFile = async (file: File) => {
     // TODO: Parse with kindle-tools-ts
     progress.value = 50
     console.log('File content length:', content.length)
-    
+
     // Simulate processing
     await new Promise(resolve => setTimeout(resolve, 500))
     progress.value = 80
 
     // TODO: Save to IndexedDB
     progress.value = 100
-    
+
     result.value = {
       success: true,
       booksCount: 0,
       clippingsCount: 0
     }
-  } catch (e) {
-    error.value = e instanceof Error ? e.message : 'Unknown error'
+  } catch (err) {
+    error.value = err instanceof Error ? err.message : 'Unknown error'
     result.value = { success: false, booksCount: 0, clippingsCount: 0 }
   } finally {
     isImporting.value = false

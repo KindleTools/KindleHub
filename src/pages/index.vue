@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Upload, BookOpen, Download, Sparkles } from 'lucide-vue-next'
+import { BookOpen, Download, Sparkles, Upload } from 'lucide-vue-next'
 </script>
 
 <template>

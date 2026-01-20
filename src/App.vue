@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useDark, useToggle } from '@vueuse/core'
-import { Moon, Sun, BookOpen } from 'lucide-vue-next'
+import { BookOpen, Moon, Sun } from 'lucide-vue-next'
 
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
