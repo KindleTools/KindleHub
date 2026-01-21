@@ -37,6 +37,13 @@ declare module 'vue-router/auto-routes' {
       { id: ParamValue<false> },
       | never
     >,
+    '/export': RouteRecordInfo<
+      '/export',
+      '/export',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/import': RouteRecordInfo<
       '/import',
       '/import',
@@ -73,6 +80,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/books/[id].vue': {
       routes:
         | '/books/[id]'
+      views:
+        | never
+    }
+    'src/pages/export.vue': {
+      routes:
+        | '/export'
       views:
         | never
     }

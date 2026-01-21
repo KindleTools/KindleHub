@@ -11,7 +11,14 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    BooksBookCard: typeof import('./components/books/BookCard.vue')['default']
+    BooksBookList: typeof import('./components/books/BookList.vue')['default']
+    ClippingsClippingCard: typeof import('./components/clippings/ClippingCard.vue')['default']
+    ClippingsClippingList: typeof import('./components/clippings/ClippingList.vue')['default']
+    ExportExportPanel: typeof import('./components/export/ExportPanel.vue')['default']
+    ExportFormatPicker: typeof import('./components/export/FormatPicker.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
+    LayoutAppFooter: typeof import('./components/layout/AppFooter.vue')['default']
     LayoutAppHeader: typeof import('./components/layout/AppHeader.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
