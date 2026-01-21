@@ -37,6 +37,13 @@ declare module 'vue-router/auto-routes' {
       { id: ParamValue<false> },
       | never
     >,
+    '/editor': RouteRecordInfo<
+      '/editor',
+      '/editor',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/export': RouteRecordInfo<
       '/export',
       '/export',
@@ -54,6 +61,20 @@ declare module 'vue-router/auto-routes' {
     '/library': RouteRecordInfo<
       '/library',
       '/library',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/search': RouteRecordInfo<
+      '/search',
+      '/search',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/settings': RouteRecordInfo<
+      '/settings',
+      '/settings',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -83,6 +104,12 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
+    'src/pages/editor.vue': {
+      routes:
+        | '/editor'
+      views:
+        | never
+    }
     'src/pages/export.vue': {
       routes:
         | '/export'
@@ -98,6 +125,18 @@ declare module 'vue-router/auto-routes' {
     'src/pages/library.vue': {
       routes:
         | '/library'
+      views:
+        | never
+    }
+    'src/pages/search.vue': {
+      routes:
+        | '/search'
+      views:
+        | never
+    }
+    'src/pages/settings.vue': {
+      routes:
+        | '/settings'
       views:
         | never
     }

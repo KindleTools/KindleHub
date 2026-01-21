@@ -49,6 +49,24 @@ const toggleDark = useToggle(isDark)
           >
             Export
           </router-link>
+          <router-link
+            to="/editor"
+            class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+          >
+            Editor
+          </router-link>
+          <router-link
+            to="/search"
+            class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+          >
+            Search
+          </router-link>
+          <router-link
+            to="/settings"
+            class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+          >
+            Settings
+          </router-link>
         </nav>
 
         <!-- Theme Toggle -->

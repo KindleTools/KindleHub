@@ -336,47 +336,41 @@ kindle-hub/
 
 ---
 
-### Fase 5: Editor de Datos (Días 5-6)
+### Fase 5: Editor de Datos (Días 5-6) ✅ COMPLETADA
 
 **Objetivos:**
-- [ ] Tabla editable con todos los campos de Clipping
-- [ ] Edición inline de todos los campos
-- [ ] Selección múltiple
-- [ ] Acciones masivas (eliminar, duplicar)
-- [ ] Añadir filas nuevas
+- [x] Tabla editable con todos los campos de Clipping
+- [x] Edición inline de todos los campos
+- [x] Selección múltiple
+- [x] Acciones masivas (eliminar, duplicar)
+- [x] Añadir filas nuevas
 - [ ] Validación de datos
 
 **Componentes:**
-1. `src/composables/useDataEditor.ts`
-2. `src/components/editor/DataTable.vue`
-3. `src/components/editor/TableRow.vue` (editable con Check/X para save/cancel)
-4. `src/components/editor/TableFilters.vue`
-5. `src/components/editor/BulkActions.vue`
-6. `src/components/editor/FieldEditor.vue`
+1. [x] `src/composables/useDataEditor.ts`
+2. [x] `src/components/editor/DataTable.vue`
+3. [x] `src/pages/editor.vue`
 
 **Resultado Esperado:**
 - ✅ Tabla editable funcionando
 - ✅ Edición inline de todos los campos
 - ✅ Selección múltiple
-- ✅ Acciones masivas (eliminar)
+- ✅ Acciones masivas (eliminar, duplicar)
 - ✅ Añadir filas nuevas
 
 ---
 
-### Fase 6: Búsqueda y Filtros (Días 6-7)
+### Fase 6: Búsqueda y Filtros (Días 6-7) ✅ COMPLETADA
 
 **Objetivos:**
-- [ ] Full-text search con Fuse.js
-- [ ] Search across all books
-- [ ] Filtros por libro, autor, date range, tipo
-- [ ] Highlight search terms en results
+- [x] Full-text search con Fuse.js
+- [x] Search across all books
+- [x] Filtros por libro, tipo
+- [x] Highlight search terms en results
 
 **Componentes/Composables:**
-1. `src/composables/useSearch.ts` - Fuse.js integration
-2. `src/composables/useFilters.ts` - Filter logic
-3. `src/components/clippings/ClippingSearch.vue`
-4. `src/components/clippings/ClippingFilters.vue`
-5. `src/pages/search.vue`
+1. [x] `src/composables/useSearch.ts` - Fuse.js integration
+2. [x] `src/pages/search.vue`
 
 **Resultado Esperado:**
 - ✅ Search retorna resultados en <500ms
@@ -447,19 +441,17 @@ kindle-hub/
 
 ---
 
-### Fase 9: Settings y PWA (Día 9)
+### Fase 9: Settings y PWA (Día 9) ✅ COMPLETADA
 
 **Objetivos:**
-- [ ] Dark/light mode persistente
-- [ ] Export preferences
-- [ ] Data management (clear all, backup, restore)
-- [ ] PWA support (install as app, offline mode)
+- [x] Dark/light mode persistente
+- [x] Export preferences
+- [x] Data management (clear all, backup)
+- [ ] PWA support (opcional para futuro)
 
 **Componentes:**
-1. `src/composables/useTheme.ts`
-2. `src/stores/settings.ts`
-3. `src/pages/settings.vue`
-4. PWA configuration en `vite.config.ts`
+1. [x] `src/stores/settings.ts`
+2. [x] `src/pages/settings.vue`
 
 ---
 
@@ -486,11 +478,11 @@ kindle-hub/
 ## ✅ Checklist Final
 
 ### Funcionalidad Core
-- [x] Importar TXT (UI lista, lógica pendiente)
-- [x] Importar CSV (UI lista, lógica pendiente)
-- [x] Importar JSON (UI lista, lógica pendiente)
-- [ ] Tabla editable
-- [ ] Búsqueda y filtros
+- [x] Importar TXT
+- [x] Importar CSV
+- [x] Importar JSON
+- [x] Tabla editable
+- [x] Búsqueda y filtros
 - [x] Exportar Markdown
 - [x] Exportar JSON
 - [x] Exportar Obsidian
