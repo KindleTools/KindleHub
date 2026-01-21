@@ -2,6 +2,7 @@
  * Clippings Store - Pinia store for managing clippings state.
  */
 import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
 
 import type { StoredClipping } from '@/db/schema'
 import { getAllClippings, getClippingsByBookId, getStats } from '@/services/db.service'

@@ -7,6 +7,8 @@ import {
   type Clipping,
   type ImportResult,
   type ParseOptions,
+  type SupportedLanguage,
+  parseParseOptions,
   CsvImporter,
   JsonImporter,
   TxtImporter,
@@ -38,31 +40,36 @@ export async function parseContent(
   switch (format) {
     case 'txt': {
       const importer = new TxtImporter()
-      importResult = await importer.importFromString(content, options)
+      importResult = await importer.import(content)
       break
     }
     case 'csv': {
       const importer = new CsvImporter()
-      importResult = await importer.importFromString(content, options)
+      importResult = await importer.import(content)
       break
     }
     case 'json': {
       const importer = new JsonImporter()
-      importResult = await importer.importFromString(content, options)
+      importResult = await importer.import(content)
       break
     }
     default:
       throw new Error(`Unsupported format: ${format}`)
   }
 
-  if (!importResult.success) {
-    throw new Error(importResult.error?.message ?? 'Failed to parse file')
+  if (importResult.isErr()) {
+    throw new Error(importResult.error.message || 'Failed to parse file')
   }
 
+  const successData = importResult.value
+  const detectedLanguage = successData.meta?.detectedLanguage as SupportedLanguage | undefined
+
+  const safeOptions = parseParseOptions(options ?? {})
+
   // Process clippings (deduplication, linking, etc.)
-  const processed = processClippings(importResult.clippings, {
-    detectedLanguage: importResult.language ?? 'en',
-    ...options
+  const processed = processClippings(successData.clippings, {
+    ...safeOptions,
+    detectedLanguage: detectedLanguage ?? 'en'
   })
 
   // Count unique books
