@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { KindleHubDB } from './schema'
+import { KindleHubDB } from '@/db/schema'
 
 describe('KindleHubDB', () => {
   it('should create a database instance', () => {
