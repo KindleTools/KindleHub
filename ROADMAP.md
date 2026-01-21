@@ -245,22 +245,22 @@ kindle-hub/
 
 ---
 
-### Fase 2: Layout y UI Base (Días 2-3) 🟡 50% COMPLETADA
+### Fase 2: Layout y UI Base (Días 2-3) ✅ COMPLETADA
 
 **Objetivos:**
 - [x] Estructura visual básica de la aplicación
-- [ ] Sistema de componentes UI reutilizables
+- [x] Sistema de componentes UI reutilizables
 - [x] Tema claro/oscuro funcional
-- [/] Layout responsive
+- [x] Layout responsive
 
 **Componentes a crear:**
 1. **Layout Components**
    - [x] `App.vue` - Header + Footer + Dark mode toggle (integrado)
-   - [ ] `AppHeader.vue` - (actualmente inline en App.vue)
-   - [ ] `AppSidebar.vue` - Navigation
-   - [ ] `AppFooter.vue` - (actualmente inline en App.vue)
+   - [x] `AppHeader.vue` - (actualmente inline en App.vue) -> refactorizado a `LayoutAppHeader`
+   - [ ] `AppSidebar.vue` - Navigation (Postponed)
+   - [x] `AppFooter.vue` - (integrado)
 
-2. **Base UI Components** (NO CREADOS)
+2. **Base UI Components** (NO CREADOS - Usando Tailwind directo + HeadlessUI)
    - [ ] `BaseButton.vue` (primary/secondary/danger/ghost variants)
    - [ ] `BaseCard.vue`
    - [ ] `BaseInput.vue`
@@ -280,12 +280,11 @@ kindle-hub/
 **Resultado:**
 - ✅ Layout responsive funcionando
 - ✅ Dark mode funcionando (usa VueUse useDark)
-- ⏳ Componentes UI base pendientes
 - ✅ Aplicación visualmente atractiva
 
 ---
 
-### Fase 3: Sistema de Importación (Días 3-4) ✅ 90% COMPLETADA
+### Fase 3: Sistema de Importación (Días 3-4) ✅ COMPLETADA
 
 **Objetivos:**
 - [x] Importar TXT, CSV, JSON
@@ -295,7 +294,7 @@ kindle-hub/
 - [x] Guardar en IndexedDB
 
 **Componentes/Composables:**
-1. [x] `src/services/parser.service.ts` - Wrapper para kindle-tools-ts ✅
+1. [x] `src/services/parser.service.ts` - Wrapper para kindle-tools-ts parser ✅
 2. [x] `src/services/db.service.ts` - Database operations ✅
 3. [ ] `src/composables/useImport.ts` - Import logic (opcional, integrado en página)
 4. [x] `src/stores/clippings.ts` - Pinia store ✅
@@ -311,24 +310,24 @@ kindle-hub/
 
 ---
 
-### Fase 4: Visualización de Datos (Días 4-5)
+### Fase 4: Visualización de Datos (Días 4-5) ✅ COMPLETADA
 
 **Objetivos:**
-- [ ] Display books como cards
-- [ ] Display clippings por libro
-- [ ] Color-coded por tipo (highlight, note, bookmark)
-- [ ] Agrupar/ordenar opciones
+- [x] Display books como cards
+- [x] Display clippings por libro
+- [x] Color-coded por tipo (highlight, note, bookmark)
+- [x] Agrupar/ordenar opciones
 
 **Componentes/Composables:**
 1. `src/composables/useBooks.ts` - Book management
 2. `src/composables/useClippings.ts` - Clipping management
 3. `src/stores/books.ts` - Books Pinia store
-4. `src/components/books/BookCard.vue` (gradient cover generado)
-5. `src/components/books/BookList.vue`
-6. `src/components/clippings/ClippingCard.vue`
-7. `src/components/clippings/ClippingList.vue`
-8. Completar `src/pages/library.vue`
-9. `src/pages/books/[id].vue` - Book detail page
+4. [x] `src/components/books/BookCard.vue` (gradient cover generado)
+5. [x] `src/components/books/BookList.vue`
+6. [x] `src/components/clippings/ClippingCard.vue`
+7. [x] `src/components/clippings/ClippingList.vue`
+8. [x] Completar `src/pages/library.vue`
+9. [x] `src/pages/books/[id].vue` - Book detail page
 
 **Resultado Esperado:**
 - ✅ Books visibles en library
@@ -386,13 +385,13 @@ kindle-hub/
 
 ---
 
-### Fase 7: Sistema de Exportación y Preview (Días 7-8)
+### Fase 7: Sistema de Exportación y Preview (Días 7-8) ✅ COMPLETADA
 
 **Objetivos:**
-- [ ] Exportar en todos los formatos de kindle-tools-ts
-- [ ] Preview completo antes de exportar
-- [ ] Opciones de exportación expuestas al usuario
-- [ ] Visualización de estructura de carpetas (Obsidian/Joplin)
+- [x] Exportar en todos los formatos de kindle-tools-ts
+- [x] Preview completo antes de exportar
+- [x] Opciones de exportación expuestas al usuario
+- [x] Visualización de estructura de carpetas (Obsidian/Joplin)
 
 **Formatos soportados:**
 - Markdown
@@ -403,17 +402,12 @@ kindle-hub/
 - HTML
 
 **Componentes:**
-1. `src/services/export.service.ts`
-2. `src/composables/useExport.ts`
-3. `src/components/export/ExportPanel.vue`
-4. `src/components/export/FormatPicker.vue`
-5. `src/components/export/ExportOptions.vue`
-6. `src/components/preview/PreviewPane.vue`
-7. `src/components/preview/MarkdownPreview.vue`
-8. `src/components/preview/JsonPreview.vue`
-9. `src/components/preview/ObsidianPreview.vue`
-10. `src/components/preview/JoplinPreview.vue`
-11. `src/components/preview/FolderTree.vue`
+1. [x] `src/services/export.service.ts`
+2. `src/composables/useExport.ts` (integrado en store/service)
+3. [x] `src/components/export/ExportPanel.vue`
+4. [x] `src/components/export/FormatPicker.vue`
+5. [ ] `src/components/export/ExportOptions.vue` (integrado en ExportPanel)
+6. `src/components/preview/PreviewPane.vue` (integrado en ExportPanel)
 
 **Resultado Esperado:**
 - ✅ Exportación en todos los formatos
@@ -492,29 +486,30 @@ kindle-hub/
 ## ✅ Checklist Final
 
 ### Funcionalidad Core
-- [ ] Importar TXT (UI lista, lógica pendiente)
-- [ ] Importar CSV (UI lista, lógica pendiente)
-- [ ] Importar JSON (UI lista, lógica pendiente)
+- [x] Importar TXT (UI lista, lógica pendiente)
+- [x] Importar CSV (UI lista, lógica pendiente)
+- [x] Importar JSON (UI lista, lógica pendiente)
 - [ ] Tabla editable
 - [ ] Búsqueda y filtros
-- [ ] Exportar Markdown
-- [ ] Exportar JSON
-- [ ] Exportar Obsidian
-- [ ] Exportar Joplin
-- [ ] Exportar CSV
-- [ ] Exportar HTML
-- [ ] Preview de todas las exportaciones
+- [x] Exportar Markdown
+- [x] Exportar JSON
+- [x] Exportar Obsidian
+- [x] Exportar Joplin
+- [x] Exportar CSV
+- [x] Exportar HTML
+- [x] Preview de todas las exportaciones
 
 ### UX/UI
 - [x] Dark mode ✅
-- [/] Responsive design (básico)
+- [x] Responsive design (básico)
 - [x] Drag & drop ✅ (UI ready)
-- [/] Loading states (simulados)
+- [x] Loading states (base implementados)
 - [/] Error handling (UI only)
 - [x] Empty states ✅
 - [ ] Tooltips
 - [ ] Keyboard shortcuts
 - [ ] Animations
+- [x] Navigation (Header/Footer)
 
 ### Técnico
 - [x] TypeScript strict ✅
