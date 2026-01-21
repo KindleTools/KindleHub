@@ -527,7 +527,67 @@ kindle-hub/
 
 ---
 
-## 🔒 Security Considerations
+## � Futuras Mejoras - Sistema de Lotes (Batches)
+
+> **Propuesta**: Sistema avanzado de pre-procesamiento de datos antes de importar a la base de datos.
+
+### Problema Actual
+- Los archivos importados van directamente a IndexedDB sin revisión previa
+- No hay opciones avanzadas de parser/exportación accesibles al usuario
+- No hay forma de "purgar" o editar datos antes de guardarlos
+
+### Solución Propuesta: Gestión de Lotes
+
+#### Flujo de trabajo
+1. **Cargar archivo** → Parsear con kindle-tools-ts
+2. **Crear lote temporal** → Datos en memoria (no guardados aún)
+3. **Revisar y editar lote**:
+   - Ver warnings y errores de parsing
+   - Marcar clippings para eliminar/ignorar
+   - Editar campos individuales
+   - **Edición masiva**: cambiar autor/libro en múltiples clippings
+   - Aplicar tags a varios clippings
+   - Ver opciones avanzadas de importación/exportación
+4. **Decidir acción**:
+   - "Importar a biblioteca" → Guardar en IndexedDB
+   - "Solo exportar" → Descargar sin guardar
+   - "Descartar" → Cancelar el lote
+
+#### Componentes necesarios
+```
+src/
+├── stores/
+│   └── batches.ts              # Estado de lotes temporales
+├── pages/
+│   ├── batch/
+│   │   ├── index.vue           # Lista de lotes (histórico)
+│   │   └── [id].vue            # Editor de lote específico
+├── components/
+│   └── batch/
+│       ├── BatchEditor.vue     # Editor de lote completo
+│       ├── BatchActions.vue    # Acciones masivas
+│       ├── ImportOptions.vue   # Opciones avanzadas de parser
+│       └── ExportOptions.vue   # Opciones avanzadas de export
+```
+
+#### Funcionalidades de edición masiva
+- Cambiar autor → aplica a todos los clippings del mismo libro
+- Cambiar título de libro → actualiza todas las referencias
+- Aplicar/quitar tags a selección múltiple
+- Eliminar duplicados automáticamente
+- Dividir/unir libros
+
+#### Histórico de lotes
+- Guardar metadatos de lotes procesados
+- Fecha, archivo origen, cantidad importada/exportada
+- Poder re-importar desde histórico
+
+### Prioridad
+🟡 Media - Feature avanzada para usuarios expertos
+
+---
+
+## �🔒 Security Considerations
 
 1. **XSS Prevention**: Usar DOMPurify para todo user content
 2. **CSP Headers**: Configurar en deployment
