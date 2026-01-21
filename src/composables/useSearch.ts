@@ -33,14 +33,14 @@ export interface UseSearchOptions {
   books?: Ref<Book[]>
 }
 
-const defaultFilters: SearchFilters = {
+const getDefaultFilters = (): SearchFilters => ({
   bookIds: [],
   types: [],
   dateRange: {
     start: null,
     end: null
   }
-}
+})
 
 const fuseOptions: IFuseOptions<StoredClipping> = {
   keys: [
@@ -60,7 +60,7 @@ export function useSearch(options: UseSearchOptions) {
 
   // State
   const query = ref('')
-  const filters = ref<SearchFilters>({ ...defaultFilters })
+  const filters = ref<SearchFilters>(getDefaultFilters())
   const isSearching = ref(false)
   const results = ref<SearchResult[]>([])
 
@@ -202,14 +202,14 @@ export function useSearch(options: UseSearchOptions) {
 
   // Clear all filters
   function clearFilters() {
-    filters.value = { ...defaultFilters }
+    filters.value = getDefaultFilters()
     search()
   }
 
   // Clear everything
   function clearAll() {
     query.value = ''
-    filters.value = { ...defaultFilters }
+    filters.value = getDefaultFilters()
     results.value = []
   }
 
