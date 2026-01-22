@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useDark, useToggle } from '@vueuse/core'
-import { BookOpen, Moon, Sun } from 'lucide-vue-next'
+import { Moon, Sun } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import UiTooltip from '@/components/ui/Tooltip.vue'
 
@@ -17,15 +17,11 @@ const themeTooltip = computed(() => isDark.value ? t('theme.light') : t('theme.d
       <div class="flex items-center justify-between">
         <!-- Logo -->
         <router-link to="/" class="flex items-center gap-3">
-          <BookOpen class="h-8 w-8 text-primary-600" aria-hidden="true" />
-          <div>
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
-              {{ $t('app.title') }}
-            </h1>
-            <p class="text-xs text-gray-600 dark:text-gray-400">
-              {{ $t('app.subtitle') }}
-            </p>
-          </div>
+          <img
+            src="/icon.png"
+            alt="Kindle Hub"
+            class="h-10 w-auto"
+          />
         </router-link>
 
         <!-- Navigation -->

@@ -5,7 +5,6 @@ import AppHeader from '../../../src/components/layout/AppHeader.vue'
 
 // Mock icons to avoid rendering issues and simplify tests
 vi.mock('lucide-vue-next', () => ({
-  BookOpen: { template: '<span data-testid="icon-book" />' },
   Moon: { template: '<span data-testid="icon-moon" />' },
   Sun: { template: '<span data-testid="icon-sun" />' }
 }))
@@ -42,7 +41,7 @@ describe('AppHeader.vue', () => {
     mockUseDark.mockReturnValue(false) // Default to light mode
   })
 
-  it('renders the logo and title', () => {
+  it('renders the logo', () => {
     const wrapper = mount(AppHeader, {
       global: {
         plugins: [router],
@@ -52,9 +51,10 @@ describe('AppHeader.vue', () => {
       }
     })
 
-    expect(wrapper.text()).toContain('app.title')
-    expect(wrapper.text()).toContain('app.subtitle')
-    expect(wrapper.find('[data-testid="icon-book"]').exists()).toBe(true)
+    const logo = wrapper.find('img')
+    expect(logo.exists()).toBe(true)
+    expect(logo.attributes('src')).toBe('/icon.png')
+    expect(logo.attributes('alt')).toBe('Kindle Hub')
   })
 
   it('renders navigation links', () => {

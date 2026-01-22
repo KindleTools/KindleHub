@@ -21,6 +21,11 @@ const hasData = computed(() => booksStore.totalBooks > 0)
   <div class="max-w-4xl mx-auto py-8">
     <!-- Hero Section -->
     <div class="text-center mb-12">
+      <img
+        src="/logo.png"
+        alt="Kindle Hub"
+        class="h-24 w-auto mx-auto mb-6"
+      />
       <h1 class="text-5xl font-bold text-gray-900 dark:text-white mb-4">
         <i18n-t keypath="app.welcome" tag="span">
           <template #app>
