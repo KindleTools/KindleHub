@@ -10,6 +10,7 @@ import { Search, Filter, X, Book, Calendar, Tag, ArrowLeft } from 'lucide-vue-ne
 import type { StoredClipping, Book as BookType } from '@/db/schema'
 import { getAllClippings, getAllBooks } from '@/services/db.service'
 import { useSearch } from '@/composables/useSearch'
+import EmptyState from '@/components/ui/EmptyState.vue'
 
 const router = useRouter()
 const searchInputRef = ref<HTMLInputElement | null>(null)
@@ -233,32 +234,20 @@ onUnmounted(() => {
       </div>
 
       <!-- No results -->
-      <div
+      <EmptyState
         v-if="!isLoading && (hasQuery || hasFilters) && results.length === 0"
-        class="text-center py-12"
-      >
-        <Search class="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4" />
-        <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
-          {{ $t('search.no_results') }}
-        </h2>
-        <p class="text-gray-500 dark:text-gray-400">
-          {{ $t('search.no_results') }}
-        </p>
-      </div>
+        type="search"
+        :title="$t('search.no_results')"
+        :description="$t('search.no_results')"
+      />
 
       <!-- Initial state -->
-      <div
+      <EmptyState
         v-else-if="!isLoading && !hasQuery && !hasFilters"
-        class="text-center py-12"
-      >
-        <Search class="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4" />
-        <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
-          {{ $t('search.empty_state_title') }}
-        </h2>
-        <p class="text-gray-500 dark:text-gray-400">
-          {{ $t('search.empty_state_desc', { count: clippings.length }) }}
-        </p>
-      </div>
+        type="search"
+        :title="$t('search.empty_state_title')"
+        :description="$t('search.empty_state_desc', { count: clippings.length })"
+      />
 
       <!-- Results list -->
       <div v-else class="space-y-4">

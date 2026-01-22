@@ -6,7 +6,8 @@ import AppHeader from '../../../src/components/layout/AppHeader.vue'
 // Mock icons to avoid rendering issues and simplify tests
 vi.mock('lucide-vue-next', () => ({
   Moon: { template: '<span data-testid="icon-moon" />' },
-  Sun: { template: '<span data-testid="icon-sun" />' }
+  Sun: { template: '<span data-testid="icon-sun" />' },
+  Menu: { template: '<span data-testid="icon-menu" />' }
 }))
 
 // Mock VueUse
@@ -69,12 +70,7 @@ describe('AppHeader.vue', () => {
 
     const links = wrapper.findAll('a[href]')
     // 1 for Logo, 3 for nav items (Home, Library, Import)
-    // Note: RouterLink renders as 'a' tag.
-    // The logo is a router-link.
-    // The nav has 3 router-links.
-    // Total 4.
     expect(links.length).toBeGreaterThanOrEqual(4)
-    // Expect keys since we mocked t(key) => key
     expect(wrapper.text()).toContain('nav.home')
     expect(wrapper.text()).toContain('nav.library')
     expect(wrapper.text()).toContain('nav.import')
@@ -123,5 +119,33 @@ describe('AppHeader.vue', () => {
     })
     expect(wrapper.find('[data-testid="icon-moon"]').exists()).toBe(false)
     expect(wrapper.find('[data-testid="icon-sun"]').exists()).toBe(true)
+  })
+
+  it('toggles mobile menu', async () => {
+    const wrapper = mount(AppHeader, {
+      global: {
+        plugins: [router],
+        stubs: {
+          MobileMenu: {
+            name: 'MobileMenu',
+            template: '<div data-testid="mobile-menu" />',
+            props: ['isOpen']
+          }
+        },
+        mocks: {
+          $t: (key: string) => key
+        }
+      }
+    })
+
+    const menuButton = wrapper.find('button[aria-label="nav.menu"]')
+    expect(menuButton.exists()).toBe(true)
+
+    const mobileMenu = wrapper.findComponent({ name: 'MobileMenu' })
+    expect(mobileMenu.exists()).toBe(true)
+    expect(mobileMenu.props('isOpen')).toBe(false)
+
+    await menuButton.trigger('click')
+    expect(mobileMenu.props('isOpen')).toBe(true)
   })
 })

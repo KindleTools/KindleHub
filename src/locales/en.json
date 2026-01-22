@@ -6,7 +6,8 @@
     "export": "Export",
     "editor": "Editor",
     "search": "Search",
-    "settings": "Settings"
+    "settings": "Settings",
+    "menu": "Menu"
   },
   "common": {
     "loading": "Loading...",

@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useDark, useToggle } from '@vueuse/core'
-import { Moon, Sun } from 'lucide-vue-next'
+import { Moon, Sun, Menu } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import UiTooltip from '@/components/ui/Tooltip.vue'
+import MobileMenu from '@/components/layout/MobileMenu.vue'
 
 const { t } = useI18n()
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
+const mobileMenuOpen = ref(false)
 const themeTooltip = computed(() => isDark.value ? t('theme.light') : t('theme.dark'))
 </script>
 
@@ -70,18 +72,31 @@ const themeTooltip = computed(() => isDark.value ? t('theme.light') : t('theme.d
           </router-link>
         </nav>
 
-        <!-- Theme Toggle -->
-        <UiTooltip :text="themeTooltip" position="bottom">
+        <!-- Right Side Actions -->
+        <div class="flex items-center gap-4">
+          <!-- Theme Toggle -->
+          <UiTooltip :text="themeTooltip" position="bottom">
+            <button
+              class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              :aria-label="$t('theme.toggle')"
+              @click="toggleDark()"
+            >
+              <Moon v-if="!isDark" class="h-5 w-5 text-gray-600" aria-hidden="true" />
+              <Sun v-else class="h-5 w-5 text-yellow-500" aria-hidden="true" />
+            </button>
+          </UiTooltip>
+
+          <!-- Mobile Menu Button -->
           <button
-            class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-            :aria-label="$t('theme.toggle')"
-            @click="toggleDark()"
+            class="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300"
+            :aria-label="$t('nav.menu')"
+            @click="mobileMenuOpen = true"
           >
-            <Moon v-if="!isDark" class="h-5 w-5 text-gray-600" aria-hidden="true" />
-            <Sun v-else class="h-5 w-5 text-yellow-500" aria-hidden="true" />
+            <Menu class="h-6 w-6" aria-hidden="true" />
           </button>
-        </UiTooltip>
+        </div>
       </div>
     </div>
+    <MobileMenu :is-open="mobileMenuOpen" @close="mobileMenuOpen = false" />
   </header>
 </template>

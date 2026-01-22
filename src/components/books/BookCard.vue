@@ -6,17 +6,34 @@ import type { Book } from '@/db/schema'
 
 import { formatDate } from '@/utils/date.utils'
 
+import UiSkeleton from '@/components/ui/Skeleton.vue'
+
 interface Props {
-  book: Book
+  book?: Book
+  loading?: boolean
 }
 
 const props = defineProps<Props>()
 
-const lastRead = computed(() => formatDate(props.book.lastReadDate))
+const lastRead = computed(() => {
+  if (props.loading || !props.book) return ''
+  return formatDate(props.book.lastReadDate)
+})
 </script>
 
 <template>
+  <div v-if="loading" class="p-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+    <UiSkeleton variant="rounded" height="0" class="aspect-[3/4] mb-4 w-full" />
+    <UiSkeleton variant="text" width="80%" class="mb-2" />
+    <UiSkeleton variant="text" width="50%" />
+    <div class="mt-4 flex justify-between">
+      <UiSkeleton variant="text" width="30%" />
+      <UiSkeleton variant="text" width="30%" />
+    </div>
+  </div>
+
   <router-link
+    v-else-if="book"
     :to="`/books/${book.id}`"
     class="group block p-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-200 dark:border-gray-700 hover:border-primary-400 dark:hover:border-primary-600 hover:-translate-y-1 active:scale-[0.98]"
   >
