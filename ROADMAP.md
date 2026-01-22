@@ -161,16 +161,30 @@ src/
 - Poder re-importar desde histórico
 
 ### Prioridad
-🟢 En Progreso - Fase 1 (Core) completada
+🟢 En Progreso - Fase 2 (Editing) completada
 
 ### Estado de Implementación
-- [x] Store y Tipos de datos (`batches.ts`)
+
+#### Fase 1: Core Infrastructure ✅
+- [x] Store y Tipos de datos (`batches.ts`, `batch.ts`)
 - [x] Página de revisión (`batch/[id].vue`)
 - [x] Utilidades de servicio (`batch.service.ts`)
-- [x] Redirección desde Importar
-- [ ] Edición inline de clippings
-- [ ] Acciones masivas (bulk actions)
-- [ ] Historial de lotes
+- [x] Redirección desde Importar a Batch Editor
+
+#### Fase 2: Editing Features ✅
+- [x] `BatchClippingCard.vue` con edición inline (content, note, page, location)
+- [x] `BatchActions.vue` barra flotante para acciones masivas
+- [x] Multi-select con checkboxes
+- [x] Bulk delete de clippings seleccionados
+- [x] Badges de estado (Modified, Warnings)
+
+#### Fase 3: Advanced Features (En Progreso)
+- [ ] `BatchWarnings.vue` panel de warnings
+- [ ] Enhanced parser con warnings detallados
+- [ ] `batch/index.vue` página de historial de lotes
+- [ ] "Export Only" workflow (exportar sin guardar)
+- [ ] Persistir historial en IndexedDB
+- [ ] Bulk change author/title (edición masiva de autor/título)
 
 
 

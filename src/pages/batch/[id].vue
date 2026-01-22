@@ -2,20 +2,17 @@
 import {
   ArrowLeft,
   Book as BookIcon,
-  Check,
   ChevronDown,
   ChevronRight,
   Download,
-  Highlighter,
-  StickyNote,
-  Bookmark,
-  Trash2,
   Upload,
   X
 } from 'lucide-vue-next'
 
 import { useBatchesStore } from '@/stores/batches'
 import { formatFileSize, formatBatchDate } from '@/services/batch.service'
+import BatchClippingCard from '@/components/batch/BatchClippingCard.vue'
+import BatchActions from '@/components/batch/BatchActions.vue'
 
 const router = useRouter()
 const batchesStore = useBatchesStore()
@@ -49,29 +46,6 @@ const handleDiscard = () => {
   router.push('/import')
 }
 
-const handleDeleteSelected = () => {
-  const ids = batchesStore.selectedClippings.map((c) => c.batchClippingId)
-  batchesStore.deleteClippings(ids)
-  batchesStore.deselectAll()
-}
-
-const getTypeIcon = (type: string) => {
-  switch (type) {
-    case 'highlight': return Highlighter
-    case 'note': return StickyNote
-    case 'bookmark': return Bookmark
-    default: return Highlighter
-  }
-}
-
-const getTypeColor = (type: string) => {
-  switch (type) {
-    case 'highlight': return 'text-yellow-500'
-    case 'note': return 'text-blue-500'
-    case 'bookmark': return 'text-gray-500'
-    default: return 'text-gray-500'
-  }
-}
 </script>
 
 <template>
@@ -163,31 +137,8 @@ const getTypeColor = (type: string) => {
         </div>
       </div>
 
-      <!-- Selection Bar (when items selected) -->
-      <div
-        v-if="batchesStore.selectionCount > 0"
-        class="bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-lg p-4 mb-6 flex items-center justify-between"
-      >
-        <div class="flex items-center gap-3">
-          <Check class="h-5 w-5 text-primary-600" />
-          <span class="font-medium">{{ batchesStore.selectionCount }} items selected</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <button
-            class="btn-secondary text-sm flex items-center gap-1"
-            @click="batchesStore.deselectAll"
-          >
-            Clear selection
-          </button>
-          <button
-            class="btn-danger text-sm flex items-center gap-1"
-            @click="handleDeleteSelected"
-          >
-            <Trash2 class="h-4 w-4" />
-            Delete selected
-          </button>
-        </div>
-      </div>
+      <!-- Floating Actions Bar -->
+      <BatchActions />
 
       <!-- Books List -->
       <div class="space-y-4">
@@ -223,39 +174,10 @@ const getTypeColor = (type: string) => {
               :key="clippingId"
               class="px-4 py-3 border-b border-gray-100 dark:border-gray-700/50 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-700/30"
             >
-              <div
+              <BatchClippingCard
                 v-if="batchesStore.currentBatch?.clippings.get(clippingId)"
-                class="flex items-start gap-3"
-              >
-                <!-- Selection checkbox -->
-                <input
-                  type="checkbox"
-                  :checked="batchesStore.currentBatch.clippings.get(clippingId)?.isSelected"
-                  class="mt-1 h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
-                  @change="batchesStore.toggleSelection(clippingId)"
-                />
-
-                <!-- Type icon -->
-                <component
-                  :is="getTypeIcon(batchesStore.currentBatch.clippings.get(clippingId)?.type ?? 'highlight')"
-                  :class="['h-5 w-5 mt-0.5', getTypeColor(batchesStore.currentBatch.clippings.get(clippingId)?.type ?? 'highlight')]"
-                />
-
-                <!-- Content -->
-                <div class="flex-1 min-w-0">
-                  <p class="text-gray-800 dark:text-gray-200">
-                    {{ batchesStore.currentBatch.clippings.get(clippingId)?.content || '(empty content)' }}
-                  </p>
-                  <div class="flex items-center gap-3 mt-1 text-xs text-gray-500">
-                    <span v-if="batchesStore.currentBatch.clippings.get(clippingId)?.location">
-                      {{ batchesStore.currentBatch.clippings.get(clippingId)?.location }}
-                    </span>
-                    <span v-if="batchesStore.currentBatch.clippings.get(clippingId)?.date">
-                      {{ batchesStore.currentBatch.clippings.get(clippingId)?.date?.toLocaleDateString?.() ?? '' }}
-                    </span>
-                  </div>
-                </div>
-              </div>
+                :clipping="batchesStore.currentBatch.clippings.get(clippingId)!"
+              />
             </div>
           </div>
         </div>

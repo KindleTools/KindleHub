@@ -11,6 +11,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    BatchBatchActions: typeof import('./components/batch/BatchActions.vue')['default']
+    BatchBatchClippingCard: typeof import('./components/batch/BatchClippingCard.vue')['default']
     BooksBookCard: typeof import('./components/books/BookCard.vue')['default']
     BooksBookList: typeof import('./components/books/BookList.vue')['default']
     ClippingsClippingCard: typeof import('./components/clippings/ClippingCard.vue')['default']
