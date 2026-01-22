@@ -23,7 +23,9 @@ const initEdit = () => {
     note: props.clipping.note || '',
     page: props.clipping.page || 0,
     // ensure location is string, even if source type is loose
+
     location: (typeof props.clipping.location === 'object'
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ? (props.clipping.location as any)?.raw
       : props.clipping.location) || ''
   }
@@ -36,12 +38,9 @@ const saveEdit = () => {
     note: editForm.value.note || undefined, // undefined to avoid empty string if originally undefined
     page: editForm.value.page || null,
     // Cast to any to satisfy strict type check against library type
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     location: (editForm.value.location || undefined) as any
   })
-  isEditing.value = false
-}
-
-const handleKeydown = (event: KeyboardEvent) => {
   isEditing.value = false
 }
 

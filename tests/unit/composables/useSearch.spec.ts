@@ -43,14 +43,16 @@ describe('useSearch', () => {
       updatedAt: new Date(),
       originalId: '3'
     }
-  ] as any[]
+  ] as any[] // eslint-disable-line @typescript-eslint/no-explicit-any
 
   const mockBooks = [
     { id: 101, title: 'Vue Book' },
     { id: 102, title: 'TS Book' }
-  ] as any[]
+  ] as any[] // eslint-disable-line @typescript-eslint/no-explicit-any
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let clippingsRef: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let booksRef: any
 
   beforeEach(() => {

@@ -377,6 +377,7 @@ export const useBatchesStore = defineStore('batches', () => {
     // Update local state
     batchHistory.value.unshift(entry)
     // Cast explicitly to schema type because types are compatible but separate definitions
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await saveBatchHistory(entry as any)
   }
 

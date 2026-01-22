@@ -31,6 +31,7 @@ describe('Clippings Store', () => {
     ]
 
     // Setup mock return
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.mocked(dbService.getAllClippings).mockResolvedValue(mockClippings as any)
     vi.mocked(dbService.getStats).mockResolvedValue({
       totalClippings: 2,
@@ -65,7 +66,7 @@ describe('Clippings Store', () => {
       { id: 1, type: 'highlight' },
       { id: 2, type: 'note' },
       { id: 3, type: 'highlight' }
-    ] as any
+    ] as any // eslint-disable-line @typescript-eslint/no-explicit-any
 
     expect(store.highlights).toHaveLength(2)
     expect(store.highlights[0].type).toBe('highlight')
@@ -76,7 +77,7 @@ describe('Clippings Store', () => {
     store.clippings = [
       { id: 1, type: 'highlight' },
       { id: 2, type: 'note' }
-    ] as any
+    ] as any // eslint-disable-line @typescript-eslint/no-explicit-any
     expect(store.notes).toHaveLength(1)
     expect(store.notes[0].type).toBe('note')
   })
@@ -86,13 +87,14 @@ describe('Clippings Store', () => {
     store.clippings = [
       { id: 1, type: 'highlight' },
       { id: 2, type: 'bookmark' }
-    ] as any
+    ] as any // eslint-disable-line @typescript-eslint/no-explicit-any
     expect(store.bookmarks).toHaveLength(1)
     expect(store.bookmarks[0].type).toBe('bookmark')
   })
 
   it('clears clippings', () => {
     const store = useClippingsStore()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     store.clippings = [{ id: 1 }] as any
     store.clearClippings()
     expect(store.clippings).toEqual([])

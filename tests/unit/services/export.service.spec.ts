@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 // Mock kindle-tools-ts exporters
 vi.mock('kindle-tools-ts', () => {
-  const createMockExporter = (output: string | object, files?: any[]) => {
+  const createMockExporter = (output: string | object, files?: any[]) => { // eslint-disable-line @typescript-eslint/no-explicit-any
     return class MockExporter {
       async export() {
         return {

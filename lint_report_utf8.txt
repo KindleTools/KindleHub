@@ -1,0 +1,20 @@
+﻿
+> kindle-hub@0.1.0 lint
+> eslint .
+
+
+C:\workspace\PERSONAL\KINDLETOOLS\KindleHub\scripts\analyze_coverage.js
+  8:3  error  'process' is not defined  no-undef
+
+C:\workspace\PERSONAL\KINDLETOOLS\KindleHub\scripts\find_low_coverage.js
+   9:3   error  'process' is not defined  no-undef
+  18:38  error  'process' is not defined  no-undef
+
+C:\workspace\PERSONAL\KINDLETOOLS\KindleHub\src\components\batch\BatchClippingCard.vue
+  28:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\workspace\PERSONAL\KINDLETOOLS\KindleHub\src\pages\search.vue
+  282:13  warning  'v-html' directive can lead to XSS attack  vue/no-v-html
+
+Γ£û 5 problems (3 errors, 2 warnings)
+

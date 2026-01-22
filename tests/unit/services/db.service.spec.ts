@@ -61,6 +61,7 @@ describe('DB Service', () => {
         { id: 1, title: 'Book 1', author: 'Author 1' },
         { id: 2, title: 'Book 2', author: 'Author 2' }
       ]
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       vi.mocked(db.books.toArray).mockResolvedValue(mockBooks as any)
 
       const result = await getAllBooks()
@@ -82,6 +83,7 @@ describe('DB Service', () => {
   describe('getBookById', () => {
     it('returns book when found', async () => {
       const mockBook = { id: 1, title: 'Book 1', author: 'Author 1' }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       vi.mocked(db.books.get).mockResolvedValue(mockBook as any)
 
       const result = await getBookById(1)
@@ -105,6 +107,7 @@ describe('DB Service', () => {
         { id: 1, content: 'Clipping 1', type: 'highlight' },
         { id: 2, content: 'Clipping 2', type: 'note' }
       ]
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       vi.mocked(db.clippings.toArray).mockResolvedValue(mockClippings as any)
 
       const result = await getAllClippings()
@@ -120,6 +123,7 @@ describe('DB Service', () => {
       const mockClippings = [
         { id: 1, bookId: 1, content: 'Clipping 1' }
       ]
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       vi.mocked(db.clippings.toArray).mockResolvedValue(mockClippings as any)
 
       const result = await getClippingsByBookId(1)
@@ -140,6 +144,7 @@ describe('DB Service', () => {
   describe('getClippingById', () => {
     it('returns clipping when found', async () => {
       const mockClipping = { id: 1, content: 'Test clipping', type: 'highlight' }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       vi.mocked(db.clippings.get).mockResolvedValue(mockClipping as any)
 
       const result = await getClippingById(1)

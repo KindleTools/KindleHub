@@ -276,10 +276,12 @@ onUnmounted(() => {
           </div>
 
           <!-- Content with highlights -->
+          <!-- eslint-disable vue/no-v-html -->
           <div
             class="text-gray-900 dark:text-gray-100 prose dark:prose-invert prose-sm max-w-none"
             v-html="getMatchContent(result)"
           ></div>
+          <!-- eslint-enable vue/no-v-html -->
 
           <!-- Meta -->
           <div class="flex items-center gap-4 mt-3 text-xs text-gray-500 dark:text-gray-400">

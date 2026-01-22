@@ -48,9 +48,11 @@ describe('useDataEditor', () => {
       updatedAt: new Date(),
       originalId: 'orig-2'
     }
-  ] as any[]
+  ] as any[] // eslint-disable-line @typescript-eslint/no-explicit-any
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let clippingsRef: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let onUpdateMock: any
 
   beforeEach(() => {

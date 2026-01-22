@@ -127,6 +127,7 @@ describe('ExportPanel', () => {
       mimeType: 'text/markdown',
       isMultiFile: false
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.mocked(exportClippings).mockResolvedValue(result as any)
     const wrapper = createWrapper()
 

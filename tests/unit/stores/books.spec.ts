@@ -28,7 +28,7 @@ describe('Books Store', () => {
     store.books = [
       { id: 1, title: 'Book 1', clippingCount: 5 },
       { id: 2, title: 'Book 2', clippingCount: 3 }
-    ] as any
+    ] as any // eslint-disable-line @typescript-eslint/no-explicit-any
 
     expect(store.totalBooks).toBe(2)
   })
@@ -38,7 +38,7 @@ describe('Books Store', () => {
     store.books = [
       { id: 1, title: 'Book 1', clippingCount: 5 },
       { id: 2, title: 'Book 2', clippingCount: 3 }
-    ] as any
+    ] as any // eslint-disable-line @typescript-eslint/no-explicit-any
 
     expect(store.totalClippings).toBe(8)
   })
@@ -50,6 +50,7 @@ describe('Books Store', () => {
       { id: 2, title: 'Book 2', author: 'Author 2', clippingCount: 3 }
     ]
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.mocked(dbService.getAllBooks).mockResolvedValue(mockBooks as any)
 
     await store.loadBooks()
@@ -76,6 +77,7 @@ describe('Books Store', () => {
     const store = useBooksStore()
     const mockBook = { id: 1, title: 'Book 1', author: 'Author 1' }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.mocked(dbService.getBookById).mockResolvedValue(mockBook as any)
 
     await store.selectBook(1)
@@ -108,6 +110,7 @@ describe('Books Store', () => {
 
   it('clearSelection resets selectedBook', () => {
     const store = useBooksStore()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     store.selectedBook = { id: 1, title: 'Book 1' } as any
 
     store.clearSelection()

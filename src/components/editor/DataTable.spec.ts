@@ -18,6 +18,7 @@ vi.mock('@/composables/useDataEditor', () => ({
   useDataEditor: useDataEditorModule
 }))
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function useDataEditorModule(options: any) {
   // Call the spy to allow tracking/verification if needed, or just return state
   return useDataEditorMock(options)
