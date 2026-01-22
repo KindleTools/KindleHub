@@ -25,8 +25,8 @@
 
 **Prioridad Alta:**
 - [x] Toast notifications para feedback de acciones (importar, exportar, eliminar)
-- [ ] Skeleton screens para estados de carga
-- [ ] Mejorar responsive en tabla del editor (scroll horizontal en movil)
+- [x] Skeleton component reutilizable (Skeleton.vue)
+- [x] Mejorar responsive en tabla del editor (cards en mobile)
 - [x] Modal de confirmacion reutilizable (ConfirmModal.vue)
 
 **Prioridad Media:**
@@ -44,12 +44,12 @@
 
 ### Fase 2: Testing
 
-**Cobertura actual:** ~30% (7 archivos de test, 48 tests)
+**Cobertura actual:** ~40% (9 archivos de test, 63 tests)
 
 **Tests unitarios pendientes:**
-- [ ] `parser.service.spec.ts` - Tests del servicio de importacion
+- [x] `parser.service.spec.ts` - Tests del servicio de importacion
 - [ ] `export.service.spec.ts` - Tests del servicio de exportacion
-- [ ] `db.service.spec.ts` - Tests de operaciones de base de datos
+- [x] `db.service.spec.ts` - Tests de operaciones de base de datos
 - [x] `books.spec.ts` - Tests del store de libros
 - [x] `settings.spec.ts` - Tests del store de settings
 
@@ -70,7 +70,7 @@
 **GitHub Pages:**
 - [x] Workflow de CI/CD configurado (`.github/workflows/deploy.yml`)
 - [x] Verificar que el build funciona correctamente
-- [ ] Configurar base URL para GitHub Pages
+- [x] Configurar base URL para GitHub Pages (`/KindleHub/`)
 - [ ] Probar deployment en produccion
 
 **Documentacion:**
@@ -173,10 +173,10 @@ src/
 |---------|----------|--------|
 | TypeScript strict | Habilitado | OK |
 | ESLint sin errores | 0 errores | OK |
-| Tests unitarios | >60% coverage | ~30% (48 tests) |
+| Tests unitarios | >60% coverage | ~40% (63 tests) |
 | Bundle size | <300KB gzip | ~230KB OK |
 | Lighthouse | >90 | Pendiente |
-| Responsive | Mobile-first | Basico |
+| Responsive | Mobile-first | Mejorado |
 
 ---
 
