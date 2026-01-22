@@ -126,7 +126,7 @@ onUnmounted(() => {
             <ArrowLeft class="w-5 h-5" />
           </button>
           <h1 class="text-xl font-bold text-gray-900 dark:text-white">
-            Buscar Clippings
+            {{ $t('search.title') }}
           </h1>
         </div>
 
@@ -137,7 +137,7 @@ onUnmounted(() => {
             ref="searchInputRef"
             v-model="query"
             type="search"
-            placeholder="Buscar en todos los clippings... (/ o Ctrl+F)"
+            :placeholder="$t('search.placeholder')"
             class="w-full pl-10 pr-12 py-3 text-lg rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:ring-primary-500 focus:border-primary-500"
           />
           <button
@@ -162,7 +162,7 @@ onUnmounted(() => {
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               <Tag class="inline w-4 h-4 mr-1" />
-              Tipo
+              {{ $t('search.filter_type') }}
             </label>
             <div class="flex flex-wrap gap-2">
               <button
@@ -185,7 +185,7 @@ onUnmounted(() => {
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               <Book class="inline w-4 h-4 mr-1" />
-              Libro
+              {{ $t('search.filter_book') }}
             </label>
             <div class="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
               <button
@@ -211,7 +211,7 @@ onUnmounted(() => {
             @click="clearFilters"
           >
             <X class="w-4 h-4" />
-            Limpiar filtros
+            {{ $t('search.clear_filters') }}
           </button>
         </div>
       </div>
@@ -227,8 +227,8 @@ onUnmounted(() => {
       <!-- Results count -->
       <div v-else-if="hasQuery || hasFilters" class="mb-4">
         <p class="text-sm text-gray-600 dark:text-gray-400">
-          <span v-if="isSearching">Buscando...</span>
-          <span v-else>{{ resultCount }} resultado(s) encontrado(s)</span>
+          <span v-if="isSearching">{{ $t('search.searching') }}</span>
+          <span v-else>{{ $t('search.results_found', { count: resultCount }) }}</span>
         </p>
       </div>
 
@@ -239,10 +239,10 @@ onUnmounted(() => {
       >
         <Search class="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4" />
         <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
-          Sin resultados
+          {{ $t('search.no_results') }}
         </h2>
         <p class="text-gray-500 dark:text-gray-400">
-          No se encontraron clippings que coincidan con tu búsqueda
+          {{ $t('search.no_results') }}
         </p>
       </div>
 
@@ -253,10 +253,10 @@ onUnmounted(() => {
       >
         <Search class="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4" />
         <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
-          Busca en tu biblioteca
+          {{ $t('search.empty_state_title') }}
         </h2>
         <p class="text-gray-500 dark:text-gray-400">
-          Escribe algo para buscar entre {{ clippings.length }} clippings
+          {{ $t('search.empty_state_desc', { count: clippings.length }) }}
         </p>
       </div>
 

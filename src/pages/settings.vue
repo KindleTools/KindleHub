@@ -139,10 +139,14 @@ function handleResetSettings() {
             <select
               :value="settingsStore.language"
               class="text-sm rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700"
-              @change="settingsStore.setLanguage(($event.target as HTMLSelectElement).value as 'es' | 'en')"
+              @change="settingsStore.setLanguage(($event.target as HTMLSelectElement).value as any)"
             >
-              <option value="es">Español</option>
               <option value="en">English</option>
+              <option value="es">Español</option>
+              <option value="it">Italiano</option>
+              <option value="de">Deutsch</option>
+              <option value="fr">Français</option>
+              <option value="pt">Português</option>
             </select>
           </div>
         </div>

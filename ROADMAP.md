@@ -480,9 +480,9 @@ const { list, containerProps, wrapperProps } = useVirtualList(clippings, {
 ```
 
 **Tareas**:
-- [ ] Evaluar necesidad basada en uso real
-- [ ] Implementar en `ClippingList.vue` si hay problemas de rendimiento
-- [ ] Considerar paginación como alternativa más simple
+- [x] Evaluar necesidad basada en uso real
+- [x] Implementar en `ClippingList.vue` si hay problemas de rendimiento
+- [x] Considerar paginación como alternativa más simple
 
 ---
 
@@ -508,7 +508,7 @@ const { list, containerProps, wrapperProps } = useVirtualList(clippings, {
 ```
 
 **Tareas**:
-- [ ] Agregar `aria-label` a botones con solo iconos
+- [x] Agregar `aria-label` a botones con solo iconos
 - [ ] Agregar `aria-hidden="true"` a iconos decorativos
 - [ ] Implementar focus trap en modales (ya usa HeadlessUI)
 - [ ] Agregar skip links para navegación
@@ -536,10 +536,18 @@ export const i18n = createI18n({
 ```
 
 **Tareas**:
-- [ ] Instalar `vue-i18n`
-- [ ] Crear estructura de archivos de traducción
-- [ ] Extraer strings de componentes principales
-- [ ] Conectar con `settings.language`
+- [x] Instalar `vue-i18n`
+- [x] Crear estructura de archivos de traducción
+- [ ] Extraer strings de componentes principales (Pendiente)
+- [x] Conectar con `settings.language`
+- [ ] Extraer strings: Layout & Navigation <!-- id: 17 -->
+- [ ] Extraer strings: Home & Library Pages <!-- id: 18 -->
+- [ ] Extraer strings: Import & Export Pages <!-- id: 19 -->
+- [ ] Extraer strings: Editor & Search Pages <!-- id: 20 -->
+- [ ] Extraer strings: Components (Cards, Modals) <!-- id: 21 -->
+- [ ] Update all locale files (EN, ES, IT, DE, FR, PT) <!-- id: 22 -->
+- [x] Implementar detección automática del navegador
+- [x] Agregar idiomas adicionales: IT, DE, FR, PT
 
 ---
 
@@ -586,8 +594,9 @@ src/
 | Lazy loading rutas | Medio | Bajo | 🟡 Media |
 | Accesibilidad | Alto | Medio | 🟡 Media |
 | Utilidades puras | Bajo | Bajo | 🟢 Baja |
-| Virtual scrolling | Medio | Medio | 🟢 Baja |
-| Internacionalización | Bajo | Alto | 🟢 Baja |
+| Virtual scrolling | Medio | Medio | ✅ Completado |
+| Internacionalización | Bajo | Alto | 🟡 En Progreso |
+| Migración completa i18n | Alto | Alto | 🔴 Alta |
 
 ---
 

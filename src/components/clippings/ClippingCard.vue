@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Highlighter, StickyNote, Bookmark, Calendar, FileText, Link2 } from 'lucide-vue-next'
+import { useI18n } from 'vue-i18n'
 
 import type { StoredClipping } from '@/db/schema'
+
+const { t } = useI18n()
 
 interface Props {
   clipping: StoredClipping
@@ -22,7 +25,7 @@ const typeConfig = computed(() => {
         bgColor: 'bg-yellow-50 dark:bg-yellow-900/20',
         borderColor: 'border-yellow-200 dark:border-yellow-800',
         iconColor: 'text-yellow-600 dark:text-yellow-400',
-        label: 'Highlight'
+        label: t('clipping.highlight')
       }
     case 'note':
       return {
@@ -30,7 +33,7 @@ const typeConfig = computed(() => {
         bgColor: 'bg-blue-50 dark:bg-blue-900/20',
         borderColor: 'border-blue-200 dark:border-blue-800',
         iconColor: 'text-blue-600 dark:text-blue-400',
-        label: 'Note'
+        label: t('clipping.note')
       }
     case 'bookmark':
       return {
@@ -38,7 +41,7 @@ const typeConfig = computed(() => {
         bgColor: 'bg-purple-50 dark:bg-purple-900/20',
         borderColor: 'border-purple-200 dark:border-purple-800',
         iconColor: 'text-purple-600 dark:text-purple-400',
-        label: 'Bookmark'
+        label: t('clipping.bookmark')
       }
     default:
       return {
@@ -46,7 +49,7 @@ const typeConfig = computed(() => {
         bgColor: 'bg-gray-50 dark:bg-gray-800',
         borderColor: 'border-gray-200 dark:border-gray-700',
         iconColor: 'text-gray-600 dark:text-gray-400',
-        label: 'Clipping'
+        label: t('clipping.default')
       }
   }
 })
@@ -61,10 +64,10 @@ const formatDate = (date: Date) => {
 
 const formatLocation = computed(() => {
   if (props.clipping.page) {
-    return `Page ${props.clipping.page}`
+    return t('clipping.page', { page: props.clipping.page })
   }
   if (props.clipping.location) {
-    return `Location ${props.clipping.location}`
+    return t('clipping.location', { loc: props.clipping.location })
   }
   return null
 })
@@ -107,7 +110,7 @@ const formatLocation = computed(() => {
         {{ clipping.content }}
       </p>
       <p v-else class="text-gray-500 dark:text-gray-400 italic">
-        No content
+        {{ $t('clipping.no_content') }}
       </p>
     </div>
 
@@ -118,7 +121,7 @@ const formatLocation = computed(() => {
     >
       <div class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 mb-1">
         <Link2 class="h-3 w-3" />
-        <span>Your note</span>
+        <span>{{ $t('clipping.your_note') }}</span>
       </div>
       <p class="text-sm text-gray-700 dark:text-gray-300 italic">
         {{ clipping.note }}

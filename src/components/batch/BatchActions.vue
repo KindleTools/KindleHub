@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { Trash2, X, UserPen, BookOpen } from 'lucide-vue-next'
+import { useI18n } from 'vue-i18n'
 import { useBatchesStore } from '@/stores/batches'
 
+const { t } = useI18n()
 const batchesStore = useBatchesStore()
 
 // Modal state
@@ -36,10 +38,10 @@ const cancelEdit = () => {
   editValue.value = ''
 }
 
-const actions = [
+const actions = computed(() => [
   {
     id: 'author',
-    label: 'Change Author',
+    label: t('batch.change_author'),
     icon: UserPen,
     variant: '',
     action: () => openEditModal('author'),
@@ -47,7 +49,7 @@ const actions = [
   },
   {
     id: 'title',
-    label: 'Change Title',
+    label: t('batch.change_title'),
     icon: BookOpen,
     variant: '',
     action: () => openEditModal('title'),
@@ -55,7 +57,7 @@ const actions = [
   },
   {
     id: 'delete',
-    label: 'Delete',
+    label: t('batch.delete'),
     icon: Trash2,
     variant: 'danger',
     action: () => {
@@ -65,7 +67,7 @@ const actions = [
     },
     disabled: computed(() => batchesStore.selectionCount === 0)
   }
-]
+])
 </script>
 
 <template>
@@ -75,7 +77,7 @@ const actions = [
   >
     <div class="flex items-center gap-2 pr-4 border-r border-gray-200 dark:border-gray-700">
       <span class="font-bold text-primary-600">{{ batchesStore.selectionCount }}</span>
-      <span class="text-sm text-gray-600 dark:text-gray-400">selected</span>
+      <span class="text-sm text-gray-600 dark:text-gray-400">{{ $t('batch.selected') }}</span>
     </div>
 
     <div class="flex items-center gap-2">
@@ -98,7 +100,8 @@ const actions = [
     <div class="pl-4 border-l border-gray-200 dark:border-gray-700">
       <button
         class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors text-gray-400 hover:text-gray-600"
-        title="Clear selection"
+        :title="$t('batch.clear_selection')"
+        :aria-label="$t('batch.clear_selection')"
         @click="batchesStore.deselectAll"
       >
         <X class="h-4 w-4" />
@@ -115,16 +118,16 @@ const actions = [
     >
       <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6 animate-in zoom-in-95 duration-200">
         <h3 class="text-lg font-semibold mb-4">
-          {{ editType === 'author' ? 'Change Author' : 'Change Book Title' }}
+          {{ editType === 'author' ? $t('batch.modal_author_title') : $t('batch.modal_title_title') }}
         </h3>
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-          This will update {{ batchesStore.selectionCount }} selected clipping{{ batchesStore.selectionCount !== 1 ? 's' : '' }}.
+          {{ $t('batch.modal_desc', { count: batchesStore.selectionCount }) }}
         </p>
         <input
           v-model="editValue"
           type="text"
           class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-primary-500 focus:ring-primary-500"
-          :placeholder="editType === 'author' ? 'Enter author name...' : 'Enter book title...'"
+          :placeholder="editType === 'author' ? $t('batch.placeholder_author') : $t('batch.placeholder_title')"
           @keyup.enter="applyBulkEdit"
         />
         <div class="flex justify-end gap-3 mt-6">
@@ -132,14 +135,14 @@ const actions = [
             class="px-4 py-2 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 rounded-lg transition-colors"
             @click="cancelEdit"
           >
-            Cancel
+            {{ $t('batch.cancel') }}
           </button>
           <button
             class="btn-primary px-4 py-2"
             :disabled="!editValue.trim()"
             @click="applyBulkEdit"
           >
-            Apply to {{ batchesStore.selectionCount }} clipping{{ batchesStore.selectionCount !== 1 ? 's' : '' }}
+            {{ $t('batch.apply', { count: batchesStore.selectionCount }) }}
           </button>
         </div>
       </div>

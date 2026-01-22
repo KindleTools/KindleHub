@@ -27,14 +27,14 @@ const handleDrop = async (e: DragEvent) => {
 
   const files = e.dataTransfer?.files
   if (files && files.length > 0) {
-    await processFile(files[0])
+    await processFile(files[0]!)
   }
 }
 
 const handleFileSelect = async (e: Event) => {
   const target = e.target as HTMLInputElement
   if (target.files && target.files.length > 0) {
-    await processFile(target.files[0])
+    await processFile(target.files[0]!)
   }
 }
 
@@ -89,9 +89,9 @@ const reset = () => {
 <template>
   <div class="max-w-4xl mx-auto py-8">
     <div class="text-center mb-8">
-      <h1 class="text-4xl font-bold mb-2">Import Kindle Highlights</h1>
+      <h1 class="text-4xl font-bold mb-2">{{ $t('import.title') }}</h1>
       <p class="text-gray-600 dark:text-gray-400">
-        Upload your "My Clippings.txt" file to get started
+        {{ $t('import.subtitle') }}
       </p>
     </div>
 
@@ -131,10 +131,10 @@ const reset = () => {
         <Upload class="h-16 w-16 mx-auto mb-4 text-gray-400" />
 
         <h3 class="text-xl font-semibold mb-2">
-          Drop your {{ selectedFormat.toUpperCase() }} file here
+          {{ $t('import.drop_title', { format: selectedFormat.toUpperCase() }) }}
         </h3>
 
-        <p class="text-gray-600 dark:text-gray-400 mb-4">or click to choose a file</p>
+        <p class="text-gray-600 dark:text-gray-400 mb-4">{{ $t('import.drop_subtitle') }}</p>
 
         <input
           ref="fileInputRef"
@@ -149,13 +149,13 @@ const reset = () => {
       <div class="mt-8 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
         <h3 class="font-semibold mb-2 flex items-center gap-2">
           <FileText class="h-5 w-5" />
-          Where to find your file
+          {{ $t('import.help_title') }}
         </h3>
         <ol class="list-decimal list-inside space-y-1 text-sm text-gray-700 dark:text-gray-300">
-          <li>Connect your Kindle to your computer</li>
-          <li>Open the Kindle drive</li>
-          <li>Navigate to <code class="bg-white dark:bg-gray-800 px-1 rounded">documents</code> folder</li>
-          <li>Find <code class="bg-white dark:bg-gray-800 px-1 rounded">My Clippings.txt</code></li>
+          <li>{{ $t('import.help_step1') }}</li>
+          <li>{{ $t('import.help_step2') }}</li>
+          <li><i18n-t keypath="import.help_step3" tag="span"><template #folder><code class="bg-white dark:bg-gray-800 px-1 rounded">documents</code></template></i18n-t></li>
+          <li><i18n-t keypath="import.help_step4" tag="span"><template #file><code class="bg-white dark:bg-gray-800 px-1 rounded">My Clippings.txt</code></template></i18n-t></li>
         </ol>
       </div>
     </div>
@@ -163,9 +163,9 @@ const reset = () => {
     <!-- Import State: Processing -->
     <div v-else-if="isImporting" class="text-center py-16">
       <div class="animate-spin h-16 w-16 border-4 border-primary-600 border-t-transparent rounded-full mx-auto mb-4"></div>
-      <h2 class="text-2xl font-semibold mb-2">Processing your file...</h2>
+      <h2 class="text-2xl font-semibold mb-2">{{ $t('import.processing_title') }}</h2>
       <p class="text-gray-600 dark:text-gray-400 mb-4">
-        This may take a moment for large files
+        {{ $t('import.processing_desc') }}
       </p>
 
       <!-- Progress bar -->
@@ -181,11 +181,11 @@ const reset = () => {
     <!-- Import State: Error -->
     <div v-else-if="error" class="text-center py-16">
       <XCircle class="h-16 w-16 text-red-500 mx-auto mb-4" />
-      <h2 class="text-2xl font-semibold mb-2">Import Failed</h2>
+      <h2 class="text-2xl font-semibold mb-2">{{ $t('import.failed') }}</h2>
       <p class="text-red-600 dark:text-red-400 mb-6">{{ error }}</p>
 
       <button class="btn-primary" @click="reset">
-        Try Again
+        {{ $t('common.retry') }}
       </button>
     </div>
   </div>

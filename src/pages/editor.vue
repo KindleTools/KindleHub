@@ -97,11 +97,11 @@ onMounted(loadData)
             </button>
             <div>
               <h1 class="text-xl font-bold text-gray-900 dark:text-white">
-                Editor de Datos
+                {{ $t('editor.title') }}
               </h1>
               <p class="text-sm text-gray-500 dark:text-gray-400">
                 {{ clippings.length }} clippings
-                <span v-if="selectedBook"> en "{{ selectedBook.title }}"</span>
+                <span v-if="selectedBook">{{ $t('editor.subtitle_book', { book: selectedBook.title }) }}</span>
               </p>
             </div>
           </div>
@@ -114,7 +114,7 @@ onMounted(loadData)
               class="text-sm rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:ring-primary-500 focus:border-primary-500"
               @change="onBookFilterChange"
             >
-              <option value="">Todos los libros</option>
+              <option value="">{{ $t('editor.all_books') }}</option>
               <option v-for="book in books" :key="book.id" :value="book.id">
                 {{ book.title }}
               </option>
@@ -138,7 +138,7 @@ onMounted(loadData)
           class="mt-4 px-4 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 underline"
           @click="loadData"
         >
-          Reintentar
+          {{ $t('common.retry') }}
         </button>
       </div>
 
@@ -146,16 +146,16 @@ onMounted(loadData)
       <div v-else-if="clippings.length === 0" class="text-center py-12">
         <Book class="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4" />
         <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
-          No hay clippings
+          {{ $t('editor.no_clippings') }}
         </h2>
         <p class="text-gray-500 dark:text-gray-400 mb-4">
-          Importa un archivo de clippings para empezar a editar
+          {{ $t('editor.no_clippings_desc') }}
         </p>
         <router-link
           to="/import"
           class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors"
         >
-          Importar archivo
+          {{ $t('editor.cta_import') }}
         </router-link>
       </div>
 

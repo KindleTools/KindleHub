@@ -101,6 +101,7 @@ const formatDate = (date: Date | string | null | undefined) => {
             type="checkbox"
             :checked="clipping.isSelected"
             class="h-5 w-5 rounded border-gray-300 text-primary-600 focus:ring-primary-500 cursor-pointer"
+            aria-label="Select"
             @change="batchesStore.toggleSelection(clipping.batchClippingId)"
           />
         </div>
@@ -142,6 +143,7 @@ const formatDate = (date: Date | string | null | undefined) => {
             <button
               class="opacity-0 group-hover:opacity-100 p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded text-gray-400 hover:text-primary-600 transition-all"
               title="Edit"
+              aria-label="Edit clipping"
               @click="initEdit"
             >
               <Edit2 class="h-4 w-4" />

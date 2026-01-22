@@ -1,0 +1,23 @@
+{
+  "nav": {
+    "home": "Início",
+    "library": "Biblioteca",
+    "import": "Importar",
+    "export": "Exportar",
+    "editor": "Editor",
+    "search": "Pesquisar",
+    "settings": "Configurações"
+  },
+  "common": {
+    "loading": "Carregando...",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "close": "Fechar"
+  },
+  "app": {
+    "title": "KindleHub",
+    "subtitle": "Desenvolvido por kindle-tools-ts"
+  }
+}

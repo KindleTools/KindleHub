@@ -71,17 +71,17 @@ const hasClippings = computed(() => clippingsForExport.value.length > 0)
     <div class="text-center mb-8">
       <h1 class="text-4xl font-bold mb-2 flex items-center justify-center gap-3">
         <FileDown class="h-10 w-10 text-primary-600" />
-        Export
+        {{ $t('export.title') }}
       </h1>
       <p class="text-gray-600 dark:text-gray-400">
-        Export your highlights to various formats
+        {{ $t('export.subtitle') }}
       </p>
     </div>
 
     <!-- Loading -->
     <div v-if="isLoading" class="text-center py-16">
       <div class="animate-spin h-12 w-12 border-4 border-primary-600 border-t-transparent rounded-full mx-auto mb-4"></div>
-      <p class="text-gray-600 dark:text-gray-400">Loading your highlights...</p>
+      <p class="text-gray-600 dark:text-gray-400">{{ $t('export.loading') }}</p>
     </div>
 
     <!-- No Clippings -->
@@ -89,16 +89,16 @@ const hasClippings = computed(() => clippingsForExport.value.length > 0)
       <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-100 dark:bg-gray-800 mb-6">
         <BookOpen class="h-10 w-10 text-gray-400" />
       </div>
-      <h2 class="text-2xl font-semibold mb-2 text-gray-900 dark:text-white">No highlights to export</h2>
+      <h2 class="text-2xl font-semibold mb-2 text-gray-900 dark:text-white">{{ $t('export.no_content') }}</h2>
       <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
-        Import your Kindle clippings first, then come back here to export them in your preferred format.
+        {{ $t('export.no_content_desc') }}
       </p>
       <router-link
         to="/import"
         class="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
       >
         <Upload class="h-5 w-5" />
-        Import Clippings
+        {{ $t('export.cta_import') }}
       </router-link>
     </div>
 

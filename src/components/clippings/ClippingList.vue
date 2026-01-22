@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { Filter, Highlighter, StickyNote, Bookmark, List } from 'lucide-vue-next'
+import { useVirtualList } from '@vueuse/core'
 
 import type { StoredClipping } from '@/db/schema'
 
@@ -37,6 +38,14 @@ const counts = computed(() => ({
   note: props.clippings.filter((c) => c.type === 'note').length,
   bookmark: props.clippings.filter((c) => c.type === 'bookmark').length
 }))
+
+// Virtual Scrolling
+const { list, containerProps, wrapperProps } = useVirtualList(filteredClippings, {
+  // Estimate height: Card padding (16*2) + Content + Date/Footer (~40) + Gap
+  // Adjusted to a reasonable average. 200px seems safer for variable content.
+  itemHeight: 200,
+  overscan: 10
+})
 </script>
 
 <template>
@@ -47,9 +56,9 @@ const counts = computed(() => ({
     </div>
   </div>
 
-  <div v-else>
+  <div v-else class="h-full flex flex-col">
     <!-- Filter Bar -->
-    <div class="flex items-center gap-2 mb-6 flex-wrap">
+    <div class="flex items-center gap-2 mb-6 flex-wrap flex-shrink-0">
       <Filter class="h-4 w-4 text-gray-500" />
       <button
         v-for="filter in filters"
@@ -91,13 +100,23 @@ const counts = computed(() => ({
       </p>
     </div>
 
-    <!-- Clippings List -->
-    <div v-else class="space-y-4">
-      <ClippingsClippingCard
-        v-for="clipping in filteredClippings"
-        :key="clipping.id!"
-        :clipping="clipping"
-      />
+    <!-- Clippings Virtual List -->
+    <div
+      v-else
+      v-bind="containerProps"
+      class="flex-1 overflow-y-auto min-h-[400px] h-[calc(100vh-300px)] rounded-lg"
+    >
+      <div v-bind="wrapperProps">
+        <div
+          v-for="{ data, index } in list"
+          :key="data.id || index"
+          class="mb-4"
+        >
+          <ClippingsClippingCard
+            :clipping="data"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </template>

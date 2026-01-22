@@ -4,10 +4,13 @@
  */
 import { computed, watch, onMounted } from 'vue'
 import { Trash2, Copy, Plus, Check, X, Edit3 } from 'lucide-vue-next'
+import { useI18n } from 'vue-i18n'
 
 import type { StoredClipping } from '@/db/schema'
 import { useDataEditor, type EditableClipping } from '@/composables/useDataEditor'
 import UiTooltip from '@/components/ui/Tooltip.vue'
+
+const { t } = useI18n()
 
 const props = defineProps<{
   clippings: StoredClipping[]
@@ -43,6 +46,8 @@ onMounted(() => initializeClippings(props.clippings))
 watch(() => props.clippings, initializeClippings)
 
 function formatDate(date: Date): string {
+  // Use date-fns or native Intl with proper locale if available globally,
+  // focusing on translation now:
   return new Intl.DateTimeFormat('es-ES', {
     dateStyle: 'medium',
     timeStyle: 'short'
@@ -78,7 +83,7 @@ async function handleAdd() {
 }
 
 async function handleDelete() {
-  if (confirm(`¿Eliminar ${selectedCount.value} clipping(s)?`)) {
+  if (confirm(t('datatable.delete_confirm', { count: selectedCount.value }))) {
     await deleteSelected()
   }
 }
@@ -92,11 +97,12 @@ async function handleDelete() {
         <input
           type="checkbox"
           :checked="selectAll"
+          :title="$t('datatable.select_all')"
           class="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500"
           @change="toggleSelectAll"
         />
         <span class="text-sm text-gray-600 dark:text-gray-400">
-          {{ selectedCount }} seleccionado(s)
+          {{ $t('datatable.selected', { count: selectedCount }) }}
         </span>
       </div>
 
@@ -108,7 +114,7 @@ async function handleDelete() {
           @click="handleAdd"
         >
           <Plus class="w-4 h-4" />
-          Añadir
+          {{ $t('datatable.add') }}
         </button>
 
         <button
@@ -118,7 +124,7 @@ async function handleDelete() {
           @click="duplicateSelected"
         >
           <Copy class="w-4 h-4" />
-          Duplicar
+          {{ $t('datatable.duplicate') }}
         </button>
 
         <button
@@ -128,7 +134,7 @@ async function handleDelete() {
           @click="handleDelete"
         >
           <Trash2 class="w-4 h-4" />
-          Eliminar
+          {{ $t('datatable.delete') }}
         </button>
       </div>
     </div>
@@ -154,6 +160,7 @@ async function handleDelete() {
             <input
               type="checkbox"
               :checked="clipping.isSelected"
+              title="Select clipping"
               class="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-primary-600"
               @change="toggleSelect(clipping.id!)"
             />
@@ -162,9 +169,9 @@ async function handleDelete() {
                 v-model="clipping.type"
                 class="text-sm rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700"
               >
-                <option value="highlight">Highlight</option>
-                <option value="note">Note</option>
-                <option value="bookmark">Bookmark</option>
+                <option value="highlight">{{ $t('clipping.highlight') }}</option>
+                <option value="note">{{ $t('clipping.note') }}</option>
+                <option value="bookmark">{{ $t('clipping.bookmark') }}</option>
               </select>
             </template>
             <template v-else>
@@ -181,12 +188,14 @@ async function handleDelete() {
               <button
                 :disabled="isSaving"
                 class="p-2 text-green-600 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-md"
+                :aria-label="$t('common.save')"
                 @click="saveEdit(clipping.id!)"
               >
                 <Check class="w-5 h-5" />
               </button>
               <button
                 class="p-2 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-md"
+                :aria-label="$t('common.cancel')"
                 @click="cancelEdit"
               >
                 <X class="w-5 h-5" />
@@ -195,6 +204,7 @@ async function handleDelete() {
             <template v-else>
               <button
                 class="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
+                :aria-label="$t('common.edit')"
                 @click="startEdit(clipping.id!)"
               >
                 <Edit3 class="w-5 h-5" />
@@ -210,13 +220,13 @@ async function handleDelete() {
               v-model="clipping.content"
               rows="4"
               class="w-full text-sm rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700"
-              placeholder="Contenido del clipping..."
+              :placeholder="$t('datatable.placeholder_content')"
               @keydown="handleKeydown($event, clipping)"
             ></textarea>
           </template>
           <template v-else>
             <p class="text-sm text-gray-900 dark:text-gray-100">
-              {{ clipping.content || '(vacio)' }}
+              {{ clipping.content || $t('datatable.empty') }}
             </p>
           </template>
         </div>
@@ -228,11 +238,11 @@ async function handleDelete() {
               v-model="clipping.location"
               type="text"
               class="w-28 text-xs rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700"
-              placeholder="Ubicacion"
+              :placeholder="$t('datatable.location')"
             />
           </template>
           <template v-else>
-            <span>{{ clipping.location || (clipping.page ? `Pag. ${clipping.page}` : '-') }}</span>
+            <span>{{ clipping.location || (clipping.page ? `${$t('datatable.page_prefix')} ${clipping.page}` : '-') }}</span>
           </template>
           <span>{{ formatDate(clipping.date) }}</span>
         </div>
@@ -240,7 +250,7 @@ async function handleDelete() {
 
       <!-- Empty state mobile -->
       <div v-if="editableClippings.length === 0" key="empty-mobile" class="bg-white dark:bg-gray-800 rounded-lg shadow p-8 text-center">
-        <p class="text-gray-500 dark:text-gray-400">No hay clippings para mostrar</p>
+        <p class="text-gray-500 dark:text-gray-400">{{ $t('datatable.empty') }}</p>
       </div>
     </TransitionGroup>
 
@@ -251,16 +261,16 @@ async function handleDelete() {
           <tr>
             <th class="w-12 px-4 py-3"></th>
             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-              Tipo
+              {{ $t('datatable.type') }}
             </th>
             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-              Contenido
+              {{ $t('datatable.content') }}
             </th>
             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-              Ubicacion
+              {{ $t('datatable.location') }}
             </th>
             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-              Fecha
+              {{ $t('datatable.date') }}
             </th>
             <th class="w-24 px-4 py-3"></th>
           </tr>
@@ -280,6 +290,7 @@ async function handleDelete() {
               <input
                 type="checkbox"
                 :checked="clipping.isSelected"
+                title="Select clipping"
                 class="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500"
                 @change="toggleSelect(clipping.id!)"
               />
@@ -292,9 +303,9 @@ async function handleDelete() {
                   v-model="clipping.type"
                   class="w-full text-sm rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:ring-primary-500 focus:border-primary-500"
                 >
-                  <option value="highlight">Highlight</option>
-                  <option value="note">Note</option>
-                  <option value="bookmark">Bookmark</option>
+                  <option value="highlight">{{ $t('clipping.highlight') }}</option>
+                  <option value="note">{{ $t('clipping.note') }}</option>
+                  <option value="bookmark">{{ $t('clipping.bookmark') }}</option>
                 </select>
               </template>
               <template v-else>
@@ -314,7 +325,7 @@ async function handleDelete() {
                   v-model="clipping.content"
                   rows="3"
                   class="w-full text-sm rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:ring-primary-500 focus:border-primary-500"
-                  placeholder="Contenido del clipping..."
+                  :placeholder="$t('datatable.placeholder_content')"
                   @keydown="handleKeydown($event, clipping)"
                 ></textarea>
               </template>
@@ -332,12 +343,12 @@ async function handleDelete() {
                   v-model="clipping.location"
                   type="text"
                   class="w-full text-sm rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:ring-primary-500 focus:border-primary-500"
-                  placeholder="Loc. 123-456"
+                  :placeholder="$t('datatable.placeholder_location')"
                 />
               </template>
               <template v-else>
                 <span class="text-sm text-gray-500 dark:text-gray-400">
-                  {{ clipping.location || clipping.page ? `Pág. ${clipping.page}` : '-' }}
+                  {{ clipping.location || clipping.page ? `${$t('datatable.page_prefix')} ${clipping.page}` : '-' }}
                 </span>
               </template>
             </td>
@@ -351,18 +362,20 @@ async function handleDelete() {
             <td class="px-4 py-3">
               <div class="flex items-center gap-1 justify-end">
                 <template v-if="clipping.isEditing">
-                  <UiTooltip text="Guardar (Enter)" position="top">
+                  <UiTooltip :text="$t('datatable.save_tooltip')" position="top">
                     <button
                       :disabled="isSaving"
                       class="p-1.5 text-green-600 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-md transition-colors"
+                      :aria-label="$t('common.save')"
                       @click="saveEdit(clipping.id!)"
                     >
                       <Check class="w-4 h-4" />
                     </button>
                   </UiTooltip>
-                  <UiTooltip text="Cancelar (Esc)" position="top">
+                  <UiTooltip :text="$t('datatable.cancel_tooltip')" position="top">
                     <button
                       class="p-1.5 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-md transition-colors"
+                      :aria-label="$t('common.cancel')"
                       @click="cancelEdit"
                     >
                       <X class="w-4 h-4" />
@@ -370,9 +383,10 @@ async function handleDelete() {
                   </UiTooltip>
                 </template>
                 <template v-else>
-                  <UiTooltip text="Editar" position="top">
+                  <UiTooltip :text="$t('datatable.edit_tooltip')" position="top">
                     <button
                       class="p-1.5 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                      :aria-label="$t('common.edit')"
                       @click="startEdit(clipping.id!)"
                     >
                       <Edit3 class="w-4 h-4" />
@@ -387,7 +401,7 @@ async function handleDelete() {
           <tr v-if="editableClippings.length === 0">
             <td colspan="6" class="px-4 py-12 text-center">
               <p class="text-gray-500 dark:text-gray-400">
-                No hay clippings para mostrar
+                {{ $t('datatable.empty') }}
               </p>
             </td>
           </tr>

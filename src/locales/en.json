@@ -1,0 +1,141 @@
+{
+  "nav": {
+    "home": "Home",
+    "library": "Library",
+    "import": "Import",
+    "export": "Export",
+    "editor": "Editor",
+    "search": "Search",
+    "settings": "Settings"
+  },
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "retry": "Retry",
+    "processing": "Processing..."
+  },
+  "app": {
+    "title": "KindleHub",
+    "subtitle": "Powered by kindle-tools-ts",
+    "welcome": "Welcome to {app}",
+    "description": "Transform your Kindle highlights into an organized, searchable knowledge base."
+  },
+  "home": {
+    "import_title": "Import",
+    "import_desc": "Drag & drop your My Clippings.txt file",
+    "organize_title": "Organize",
+    "organize_desc": "Smart deduplication and note linking",
+    "export_title": "Export",
+    "export_desc": "Markdown, Obsidian, JSON, CSV, HTML",
+    "cta_import": "Import Clippings",
+    "cta_library": "View Library",
+    "stats_books": "Books",
+    "stats_highlights": "Highlights",
+    "no_data": "No clippings imported yet. Start by importing your Kindle highlights!"
+  },
+  "library": {
+    "title": "My Library",
+    "stats_summary": "{books} books · {clippings} highlights",
+    "back_to_library": "Back to Library",
+    "book_not_found": "Book not found",
+    "unknown_author": "Unknown Author",
+    "last_read": "Last read: {date}"
+  },
+  "import": {
+    "title": "Import Kindle Highlights",
+    "subtitle": "Upload your \"My Clippings.txt\" file to get started",
+    "drop_title": "Drop your {format} file here",
+    "drop_subtitle": "or click to choose a file",
+    "help_title": "Where to find your file",
+    "help_step1": "Connect your Kindle to your computer",
+    "help_step2": "Open the Kindle drive",
+    "help_step3": "Navigate to {folder} folder",
+    "help_step4": "Find {file}",
+    "processing_title": "Processing your file...",
+    "processing_desc": "This may take a moment for large files",
+    "success": "Import successful!",
+    "failed": "Import Failed"
+  },
+  "export": {
+    "title": "Export",
+    "subtitle": "Export your highlights to various formats",
+    "loading": "Loading your highlights...",
+    "no_content": "No highlights to export",
+    "no_content_desc": "Import your Kindle clippings first, then come back here to export them in your preferred format.",
+    "cta_import": "Import Clippings"
+  },
+  "editor": {
+    "title": "Data Editor",
+    "subtitle_book": "in \"{book}\"",
+    "all_books": "All Books",
+    "no_clippings": "No clippings",
+    "no_clippings_desc": "Import a file to start editing",
+    "cta_import": "Import File"
+  },
+  "datatable": {
+    "select_all": "Select all",
+    "selected": "{count} selected",
+    "add": "Add",
+    "duplicate": "Duplicate",
+    "delete": "Delete",
+    "type": "Type",
+    "content": "Content",
+    "location": "Location",
+    "date": "Date",
+    "empty": "No clippings to show",
+    "placeholder_content": "Clipping content...",
+    "placeholder_location": "Loc. 123-456",
+    "page_prefix": "Pg.",
+    "save_tooltip": "Save (Enter)",
+    "cancel_tooltip": "Cancel (Esc)",
+    "edit_tooltip": "Edit",
+    "delete_confirm": "Delete {count} clipping(s)?"
+  },
+  "batch": {
+    "selected": "selected",
+    "clear_selection": "Clear selection",
+    "change_author": "Change Author",
+    "change_title": "Change Title",
+    "delete": "Delete",
+    "modal_author_title": "Change Author",
+    "modal_title_title": "Change Book Title",
+    "modal_desc": "This will update {count} selected clipping(s).",
+    "placeholder_author": "Enter author name...",
+    "placeholder_title": "Enter book title...",
+    "apply": "Apply to {count} clipping(s)",
+    "cancel": "Cancel"
+  },
+  "clipping": {
+    "highlight": "Highlight",
+    "note": "Note",
+    "bookmark": "Bookmark",
+    "default": "Clipping",
+    "page": "Page {page}",
+    "location": "Location {loc}",
+    "no_content": "No content",
+    "your_note": "Your note"
+  },
+  "search": {
+    "title": "Search Highlights",
+    "placeholder": "Search all highlights... (/ or Ctrl+F)",
+    "filters": "Filters",
+    "filter_type": "Type",
+    "filter_book": "Book",
+    "clear_filters": "Clear filters",
+    "searching": "Searching...",
+    "results_found": "{count} result(s) found",
+    "no_results": "No results found for your search",
+    "empty_state_title": "Search your library",
+    "empty_state_desc": "Type something to search through {count} clippings"
+  },
+  "theme": {
+    "toggle": "Toggle theme",
+    "light": "Light mode",
+    "dark": "Dark mode"
+  }
+}

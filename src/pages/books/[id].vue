@@ -37,21 +37,21 @@ const formatDate = (date: Date) => {
       @click="router.push('/library')"
     >
       <ArrowLeft class="h-5 w-5" />
-      Back to Library
+      {{ $t('library.back_to_library') }}
     </button>
 
     <!-- Loading -->
     <div v-if="booksStore.isLoading" class="text-center py-16">
       <div class="animate-spin h-12 w-12 border-4 border-primary-600 border-t-transparent rounded-full mx-auto mb-4"></div>
-      <p class="text-gray-600 dark:text-gray-400">Loading book...</p>
+      <p class="text-gray-600 dark:text-gray-400">{{ $t('common.loading') }}</p>
     </div>
 
     <!-- Book Not Found -->
     <div v-else-if="!book" class="text-center py-16">
       <BookOpen class="h-16 w-16 mx-auto mb-4 text-gray-400" />
-      <h2 class="text-2xl font-semibold mb-2">Book not found</h2>
+      <h2 class="text-2xl font-semibold mb-2">{{ $t('library.book_not_found') }}</h2>
       <router-link to="/library" class="btn-primary">
-        Back to Library
+        {{ $t('library.back_to_library') }}
       </router-link>
     </div>
 
@@ -74,16 +74,16 @@ const formatDate = (date: Date) => {
           </h1>
           <div class="flex items-center gap-2 text-lg text-gray-600 dark:text-gray-400 mb-4">
             <User class="h-5 w-5" />
-            <span>{{ book.author || 'Unknown Author' }}</span>
+            <span>{{ book.author || $t('library.unknown_author') }}</span>
           </div>
           <div class="flex flex-wrap gap-4 text-sm text-gray-500 dark:text-gray-400">
             <span class="flex items-center gap-1">
               <Hash class="h-4 w-4" />
-              {{ clippingsStore.clippings.length }} clippings
+              {{ clippingsStore.clippings.length }} highlights
             </span>
             <span v-if="book.lastReadDate" class="flex items-center gap-1">
               <Calendar class="h-4 w-4" />
-              Last read: {{ formatDate(book.lastReadDate) }}
+              {{ $t('library.last_read', { date: formatDate(book.lastReadDate) }) }}
             </span>
           </div>
         </div>

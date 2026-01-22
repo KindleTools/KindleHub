@@ -22,11 +22,14 @@ const hasData = computed(() => booksStore.totalBooks > 0)
     <!-- Hero Section -->
     <div class="text-center mb-12">
       <h1 class="text-5xl font-bold text-gray-900 dark:text-white mb-4">
-        Welcome to <span class="text-primary-600">KindleHub</span>
+        <i18n-t keypath="app.welcome" tag="span">
+          <template #app>
+            <span class="text-primary-600">KindleHub</span>
+          </template>
+        </i18n-t>
       </h1>
       <p class="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-        Transform your Kindle highlights into an organized, searchable knowledge base.
-        Import, edit, and export in any format — 100% private, runs in your browser.
+        {{ $t('app.description') }}
       </p>
     </div>
 
@@ -36,9 +39,9 @@ const hasData = computed(() => booksStore.totalBooks > 0)
         <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center mx-auto mb-4">
           <Upload class="h-6 w-6 text-primary-600" />
         </div>
-        <h3 class="font-semibold text-lg mb-2">Import</h3>
+        <h3 class="font-semibold text-lg mb-2">{{ $t('home.import_title') }}</h3>
         <p class="text-gray-600 dark:text-gray-400 text-sm">
-          Drag & drop your My Clippings.txt file or import from CSV/JSON
+          {{ $t('home.import_desc') }}
         </p>
       </div>
 
@@ -46,9 +49,9 @@ const hasData = computed(() => booksStore.totalBooks > 0)
         <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mx-auto mb-4">
           <Sparkles class="h-6 w-6 text-green-600" />
         </div>
-        <h3 class="font-semibold text-lg mb-2">Organize</h3>
+        <h3 class="font-semibold text-lg mb-2">{{ $t('home.organize_title') }}</h3>
         <p class="text-gray-600 dark:text-gray-400 text-sm">
-          Smart deduplication, note linking, and searchable highlights
+          {{ $t('home.organize_desc') }}
         </p>
       </div>
 
@@ -56,9 +59,9 @@ const hasData = computed(() => booksStore.totalBooks > 0)
         <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mx-auto mb-4">
           <Download class="h-6 w-6 text-purple-600" />
         </div>
-        <h3 class="font-semibold text-lg mb-2">Export</h3>
+        <h3 class="font-semibold text-lg mb-2">{{ $t('home.export_title') }}</h3>
         <p class="text-gray-600 dark:text-gray-400 text-sm">
-          Markdown, Obsidian, Joplin, JSON, CSV, HTML — you choose
+          {{ $t('home.export_desc') }}
         </p>
       </div>
     </div>
@@ -67,11 +70,11 @@ const hasData = computed(() => booksStore.totalBooks > 0)
     <div class="flex flex-col sm:flex-row gap-4 justify-center">
       <router-link to="/import" class="btn-primary text-lg px-8 py-3 inline-flex items-center justify-center gap-2">
         <Upload class="h-5 w-5" />
-        Import Clippings
+        {{ $t('home.cta_import') }}
       </router-link>
       <router-link to="/library" class="btn-secondary text-lg px-8 py-3 inline-flex items-center justify-center gap-2">
         <BookOpen class="h-5 w-5" />
-        View Library
+        {{ $t('home.cta_library') }}
       </router-link>
     </div>
 
@@ -82,17 +85,17 @@ const hasData = computed(() => booksStore.totalBooks > 0)
           <div class="text-3xl font-bold text-primary-600">
             {{ booksStore.totalBooks }}
           </div>
-          <div class="text-sm text-gray-600 dark:text-gray-400">Books</div>
+          <div class="text-sm text-gray-600 dark:text-gray-400">{{ $t('home.stats_books') }}</div>
         </div>
         <div class="text-center">
           <div class="text-3xl font-bold text-primary-600">
             {{ clippingsStore.stats.totalClippings }}
           </div>
-          <div class="text-sm text-gray-600 dark:text-gray-400">Highlights</div>
+          <div class="text-sm text-gray-600 dark:text-gray-400">{{ $t('home.stats_highlights') }}</div>
         </div>
       </div>
       <p v-else class="text-gray-500 dark:text-gray-400 text-sm">
-        No clippings imported yet. Start by importing your Kindle highlights!
+        {{ $t('home.no_data') }}
       </p>
     </div>
   </div>
