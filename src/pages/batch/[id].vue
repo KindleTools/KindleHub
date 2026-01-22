@@ -2,9 +2,12 @@
 import {
   ArrowLeft,
   Book as BookIcon,
+  Bookmark,
   ChevronDown,
   ChevronRight,
   Download,
+  Highlighter,
+  StickyNote,
   Upload,
   X
 } from 'lucide-vue-next'

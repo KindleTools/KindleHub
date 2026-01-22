@@ -166,9 +166,16 @@ export const useBatchesStore = defineStore('batches', () => {
 
   /**
    * Rebuild book groupings after title/author changes.
+   * Preserves the isExpanded state of existing books.
    */
   function rebuildBookGroupings(): void {
     if (!currentBatch.value) return
+
+    // Preserve existing expansion state
+    const expandedState = new Map<string, boolean>()
+    for (const [key, book] of currentBatch.value.books) {
+      expandedState.set(key, book.isExpanded)
+    }
 
     const newBooks = new Map<string, BatchBook>()
 
@@ -181,7 +188,7 @@ export const useBatchesStore = defineStore('batches', () => {
           title: clipping.title,
           author: clipping.author,
           clippingIds: [],
-          isExpanded: true
+          isExpanded: expandedState.get(bookKey) ?? true
         })
       }
       newBooks.get(bookKey)!.clippingIds.push(clipping.batchClippingId)

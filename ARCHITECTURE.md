@@ -44,6 +44,8 @@ File-based routing with `unplugin-vue-router`. Each file in `src/pages/` becomes
 | `library.vue` | `/library` | Grid of all imported books |
 | `books/[id].vue` | `/books/:id` | Book detail with all clippings |
 | `import.vue` | `/import` | File import with drag & drop |
+| `batch/[id].vue` | `/batch/:id` | Batch review and editing before import |
+| `batch/index.vue` | `/batch` | Batch history list |
 | `export.vue` | `/export` | Export panel with format picker |
 | `editor.vue` | `/editor` | Editable data table |
 | `search.vue` | `/search` | Global search with filters |
@@ -55,25 +57,47 @@ Organized by feature domain:
 
 ```
 components/
+├── batch/
+│   ├── BatchClippingCard.vue  # Inline editing card for batch clippings
+│   ├── BatchActions.vue       # Floating bar for bulk actions
+│   └── BatchWarnings.vue      # Panel for parser warnings/errors
 ├── books/
-│   ├── BookCard.vue      # Card with gradient cover, stats
-│   └── BookList.vue      # Grid layout with empty state
+│   ├── BookCard.vue           # Card with gradient cover, stats
+│   └── BookList.vue           # Grid layout with empty state
 ├── clippings/
-│   ├── ClippingCard.vue  # Type-colored card with content
-│   └── ClippingList.vue  # Scrollable list
+│   ├── ClippingCard.vue       # Type-colored card with content
+│   └── ClippingList.vue       # Scrollable list
 ├── editor/
-│   └── DataTable.vue     # Editable table with bulk actions
+│   └── DataTable.vue          # Editable table with bulk actions
 ├── export/
-│   ├── ExportPanel.vue   # Format picker + preview + download
-│   └── FormatPicker.vue  # Visual format selector
+│   ├── ExportPanel.vue        # Format picker + preview + download
+│   └── FormatPicker.vue       # Visual format selector
 └── layout/
-    ├── AppHeader.vue     # Navigation + dark mode toggle
-    └── AppFooter.vue     # Footer links
+    ├── AppHeader.vue          # Navigation + dark mode toggle
+    └── AppFooter.vue          # Footer links
 ```
 
 ### 3. Composables
 
 Reusable stateful logic following Vue Composition API patterns.
+
+#### `useToast.ts`
+Global toast notification system:
+- `addToast(message, type, duration)` - Show notification
+- Types: `success`, `error`, `warning`, `info`
+- Auto-dismiss with configurable duration
+
+#### `useErrorHandler.ts`
+Centralized error handling:
+- `handleError(error)` - Process and display errors
+- Integrates with `AppError` class for typed errors
+- Shows toast notifications for user feedback
+
+#### `useKeyboardShortcuts.ts`
+Global keyboard shortcuts:
+- `Ctrl+K` / `Cmd+K` - Quick search
+- `Ctrl+F` / `Cmd+F` - Navigate to search
+- `Escape` - Close/cancel actions
 
 #### `useDataEditor.ts`
 Manages editable table state:
@@ -149,7 +173,58 @@ actions: {
 // Persists to localStorage automatically
 ```
 
-### 5. Services
+#### `batches.ts`
+Manages temporary batch state for pre-import editing:
+```typescript
+state: {
+  currentBatch: Batch | null      // In-memory batch being edited
+  batchHistory: BatchHistoryEntry[] // Processed batches metadata
+  isProcessing: boolean
+}
+computed: {
+  clippingsArray: BatchClipping[] // All clippings as array
+  booksArray: BatchBook[]         // Books grouped by title::author
+  selectedClippings: BatchClipping[]
+  selectionCount: number
+  hasBatch: boolean
+}
+actions: {
+  createBatch(clippings, fileName, fileSize, stats)
+  updateClipping(id, updates)     // Single clipping edit
+  bulkUpdateClippings(ids, updates) // Bulk author/title change
+  deleteClippings(ids)
+  toggleSelection(id) / selectAll() / deselectAll()
+  toggleBookExpanded(bookKey)
+  commitToDatabase()              // Save to IndexedDB
+  discardBatch()                  // Discard without saving
+}
+```
+
+### 4. Utilities
+
+Pure functions in `src/utils/`:
+
+#### `date.utils.ts`
+- `formatDate(date)` - Returns relative time (Today, Yesterday, X days ago, etc.)
+
+#### `color.utils.ts`
+- `generateCoverColor(title)` - Generates consistent gradient colors from strings
+
+### 5. Error Types
+
+Centralized error handling in `src/types/error.types.ts`:
+
+```typescript
+type ErrorCode = 'DB_READ_ERROR' | 'DB_WRITE_ERROR' | 'PARSE_ERROR' |
+                 'EXPORT_ERROR' | 'NETWORK_ERROR' | 'UNKNOWN_ERROR'
+
+class AppError extends Error {
+  code: ErrorCode
+  context?: Record<string, unknown>
+}
+```
+
+### 6. Services
 
 Business logic wrappers that isolate external dependencies.
 
@@ -183,19 +258,39 @@ Supported formats:
 - `obsidian` - Multiple .md files with YAML frontmatter
 - `joplin` - .jex archive for Joplin import
 
-#### `db.service.ts`
-IndexedDB operations via Dexie:
+#### `batch.service.ts`
+Utility functions for batch management:
 ```typescript
-saveClippings(books, clippings) → Promise<void>
+generateBatchId() → string           // Unique batch ID (uuid)
+generateClippingId() → string        // Unique clipping ID (uuid)
+createBookKey(title, author) → string // "title::author" key
+formatBatchDate(date) → string       // Human-readable date
+formatFileSize(bytes) → string       // "1.2 MB" format
+```
+
+#### `db.service.ts`
+IndexedDB operations via Dexie. This service layer decouples the rest of the app from direct database access:
+```typescript
+// Books
 getAllBooks() → Promise<Book[]>
 getBookById(id) → Promise<Book | undefined>
+saveClippings(books, clippings) → Promise<void>
+
+// Clippings - CRUD operations
 getAllClippings() → Promise<StoredClipping[]>
 getClippingsByBookId(bookId) → Promise<StoredClipping[]>
+getClippingById(id) → Promise<StoredClipping | undefined>
+addClipping(clipping) → Promise<number>
+addClippings(clippings) → Promise<void>
 updateClipping(id, data) → Promise<void>
 deleteClippings(ids) → Promise<void>
-clearAllData() → Promise<void>
+
+// Stats & Maintenance
 getStats() → Promise<{ books, clippings, highlights, notes }>
+clearAllData() → Promise<void>
 ```
+
+**Note**: Composables like `useDataEditor` use this service instead of accessing `db` directly, making them easier to test and maintaining loose coupling.
 
 ---
 
@@ -243,7 +338,7 @@ interface StoredClipping {
 
 ## Data Flow
 
-### Import Flow
+### Import Flow (with Batch System)
 ```
 User drops file
     │
@@ -258,16 +353,40 @@ parser.service.parseContent()
     ├─► processClippings() (deduplication, linking)
     │
     ▼
-db.service.saveClippings()
+batchesStore.createBatch()
+    │
+    ├─► Creates BatchClipping[] with metadata
+    │
+    ├─► Groups by book (title::author)
+    │
+    ├─► Detects warnings (empty content, etc.)
     │
     ▼
-IndexedDB (books + clippings tables)
+Navigate to /batch/:id
     │
     ▼
-Pinia stores updated
+User reviews, edits, selects
+    │
+    ├─► Inline edit: updateClipping()
+    │
+    ├─► Bulk edit: bulkUpdateClippings()
+    │
+    ├─► Delete: deleteClippings()
     │
     ▼
-UI reflects changes
+User decides:
+    │
+    ├─► "Import to Library" → commitToDatabase()
+    │   │
+    │   ├─► db.service.saveClippings()
+    │   │
+    │   ├─► Add to batchHistory
+    │   │
+    │   └─► Navigate to /library
+    │
+    ├─► "Export Only" → Navigate to /export with batch data
+    │
+    └─► "Discard" → discardBatch() + navigate away
 ```
 
 ### Export Flow
@@ -336,19 +455,74 @@ No base component library (BaseButton, etc.). Tailwind utilities used directly f
 ### 6. Pinia for State
 Single source of truth for books, clippings, and settings. Settings store persists to localStorage.
 
+### 7. Batch System for Pre-Import Editing
+Instead of importing files directly to IndexedDB, the app uses an intermediate "batch" state:
+
+**Why batches?**
+- Users can review and edit clippings before committing
+- Detect and handle parser warnings (empty content, duplicates)
+- Bulk edit author/title across multiple clippings
+- Export without saving to database ("Export Only" workflow)
+- Maintain history of processed batches
+
+**Data structure:**
+```typescript
+interface Batch {
+  id: string
+  fileName: string
+  fileSize: number
+  status: 'pending' | 'imported' | 'exported' | 'discarded'
+  clippings: Map<string, BatchClipping>  // In-memory, editable
+  books: Map<string, BatchBook>          // Grouped by title::author
+  stats: BatchStats
+  warnings: BatchWarning[]
+}
+
+interface BatchClipping extends Clipping {
+  batchClippingId: string  // Temporary ID for editing
+  isSelected: boolean
+  isModified: boolean
+  warnings: string[]       // Warning IDs
+}
+```
+
+**Key features:**
+- `rebuildBookGroupings()` - Reorganizes books when title/author changes, preserves expansion state
+- `recalculateStats()` - Updates stats after deletions
+- Multi-select with floating action bar
+- Warning panel for parser issues
+
 ---
 
 ## Testing Strategy
 
 ### Unit Tests (Vitest)
-Located in `tests/unit/`.
+Located in `tests/unit/`. All tests centralized, no tests in `src/`.
 
-**Current coverage:**
-- `db/schema.spec.ts` - Database initialization
-- `composables/useDataEditor.spec.ts` - Editor logic
-- `composables/useSearch.spec.ts` - Search logic
-- `stores/clippings.spec.ts` - Clippings store
-- `components/AppHeader.spec.ts` - Header component
+**Current coverage:** ~60% (14 files, 120 tests)
+
+```
+tests/unit/
+├── components/
+│   ├── AppHeader.spec.ts
+│   ├── books/BookCard.spec.ts
+│   └── clippings/ClippingCard.spec.ts
+├── composables/
+│   ├── useDataEditor.spec.ts
+│   └── useSearch.spec.ts
+├── db/
+│   └── schema.spec.ts
+├── services/
+│   ├── batch.service.spec.ts
+│   ├── db.service.spec.ts
+│   ├── export.service.spec.ts
+│   └── parser.service.spec.ts
+└── stores/
+    ├── batches.spec.ts
+    ├── books.spec.ts
+    ├── clippings.spec.ts
+    └── settings.spec.ts
+```
 
 **Testing patterns:**
 ```typescript
@@ -436,8 +610,10 @@ Would require:
 - Offline-first IndexedDB access (already in place)
 
 ### i18n
-Current: Hardcoded English with language setting stub
-Future: vue-i18n with JSON translation files
+✅ **Implemented**: vue-i18n with JSON translation files in `src/locales/`
+- Supported languages: EN, ES, IT, DE, FR, PT
+- Auto-detection of browser language
+- Connected to `settings.language`
 
 ### Virtual Scrolling
 For very large libraries (1000+ books):
