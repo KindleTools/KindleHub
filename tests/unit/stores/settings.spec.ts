@@ -21,7 +21,7 @@ describe('Settings Store', () => {
       includeMetadata: true,
       groupByBook: true
     })
-    expect(store.language).toBe('es')
+    expect(store.language).toBe('en')
   })
 
   it('loads settings from localStorage', () => {
@@ -94,7 +94,7 @@ describe('Settings Store', () => {
       includeMetadata: true,
       groupByBook: true
     })
-    expect(store.language).toBe('es')
+    expect(store.language).toBe('en')
   })
 
   it('persists changes to localStorage', async () => {

@@ -6,20 +6,7 @@
 import type { Clipping } from 'kindle-tools-ts'
 
 import { db, type Book, type StoredClipping } from '@/db/schema'
-
-/**
- * Generate a deterministic color from book title (for cover gradient).
- */
-function generateCoverColor(title: string): string {
-  let hash = 0
-  for (let i = 0; i < title.length; i++) {
-    const char = title.charCodeAt(i)
-    hash = ((hash << 5) - hash) + char
-    hash = hash & hash
-  }
-  const hue = Math.abs(hash % 360)
-  return `hsl(${hue}, 70%, 50%)`
-}
+import { generateCoverColor } from '@/utils/color.utils'
 
 /**
  * Convert Clipping type to StoredClipping type for DB storage.

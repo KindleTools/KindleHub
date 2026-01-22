@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
-import AppHeader from '@/components/layout/AppHeader.vue'
+import AppHeader from '../../../src/components/layout/AppHeader.vue'
 
 // Mock icons to avoid rendering issues and simplify tests
 vi.mock('lucide-vue-next', () => ({
@@ -13,6 +13,14 @@ vi.mock('lucide-vue-next', () => ({
 // Mock VueUse
 const mockUseDark = vi.fn()
 const mockUseToggle = vi.fn()
+
+// Mock vue-i18n
+vi.mock('vue-i18n', () => ({
+  useI18n: () => ({
+    t: (key: string) => key,
+    locale: { value: 'en' }
+  })
+}))
 
 vi.mock('@vueuse/core', () => ({
   useDark: () => mockUseDark(),
@@ -36,17 +44,27 @@ describe('AppHeader.vue', () => {
 
   it('renders the logo and title', () => {
     const wrapper = mount(AppHeader, {
-      global: { plugins: [router] }
+      global: {
+        plugins: [router],
+        mocks: {
+          $t: (key: string) => key
+        }
+      }
     })
 
-    expect(wrapper.text()).toContain('KindleHub')
-    expect(wrapper.text()).toContain('Powered by kindle-tools-ts')
+    expect(wrapper.text()).toContain('app.title')
+    expect(wrapper.text()).toContain('app.subtitle')
     expect(wrapper.find('[data-testid="icon-book"]').exists()).toBe(true)
   })
 
   it('renders navigation links', () => {
     const wrapper = mount(AppHeader, {
-      global: { plugins: [router] }
+      global: {
+        plugins: [router],
+        mocks: {
+          $t: (key: string) => key
+        }
+      }
     })
 
     const links = wrapper.findAll('a[href]')
@@ -56,15 +74,21 @@ describe('AppHeader.vue', () => {
     // The nav has 3 router-links.
     // Total 4.
     expect(links.length).toBeGreaterThanOrEqual(4)
-    expect(wrapper.text()).toContain('Home')
-    expect(wrapper.text()).toContain('Library')
-    expect(wrapper.text()).toContain('Import')
+    // Expect keys since we mocked t(key) => key
+    expect(wrapper.text()).toContain('nav.home')
+    expect(wrapper.text()).toContain('nav.library')
+    expect(wrapper.text()).toContain('nav.import')
   })
 
   it('toggles dark mode when button is clicked', async () => {
     mockUseDark.mockReturnValue(false) // Light mode
     const wrapper = mount(AppHeader, {
-      global: { plugins: [router] }
+      global: {
+        plugins: [router],
+        mocks: {
+          $t: (key: string) => key
+        }
+      }
     })
 
     const button = wrapper.find('button')
@@ -76,13 +100,27 @@ describe('AppHeader.vue', () => {
   it('displays correct icon based on theme', async () => {
     // Light mode
     mockUseDark.mockReturnValue(false)
-    let wrapper = mount(AppHeader, { global: { plugins: [router] } })
+    let wrapper = mount(AppHeader, {
+      global: {
+        plugins: [router],
+        mocks: {
+          $t: (key: string) => key
+        }
+      }
+    })
     expect(wrapper.find('[data-testid="icon-moon"]').exists()).toBe(true)
     expect(wrapper.find('[data-testid="icon-sun"]').exists()).toBe(false)
 
     // Dark mode
     mockUseDark.mockReturnValue(true)
-    wrapper = mount(AppHeader, { global: { plugins: [router] } })
+    wrapper = mount(AppHeader, {
+      global: {
+        plugins: [router],
+        mocks: {
+          $t: (key: string) => key
+        }
+      }
+    })
     expect(wrapper.find('[data-testid="icon-moon"]').exists()).toBe(false)
     expect(wrapper.find('[data-testid="icon-sun"]').exists()).toBe(true)
   })

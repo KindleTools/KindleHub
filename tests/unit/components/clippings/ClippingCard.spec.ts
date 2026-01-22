@@ -1,7 +1,23 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import ClippingCard from './ClippingCard.vue'
+import ClippingCard from '@/components/clippings/ClippingCard.vue'
 import type { StoredClipping } from '@/db/schema'
+
+// Mock vue-i18n
+vi.mock('vue-i18n', () => ({
+  useI18n: () => ({
+    t: (key: string, params?: Record<string, string>) => {
+      if (key === 'clipping.page') return `Page ${params?.page}`
+      if (key === 'clipping.location') return `Location ${params?.loc}`
+      if (key === 'clipping.highlight') return 'Highlight'
+      if (key === 'clipping.note') return 'Note'
+      if (key === 'clipping.bookmark') return 'Bookmark'
+      if (key === 'clipping.your_note') return 'Your note'
+      if (key === 'clipping.no_content') return 'No content'
+      return key
+    }
+  })
+}))
 
 describe('ClippingCard', () => {
   const mockClipping: StoredClipping = {
@@ -21,7 +37,21 @@ describe('ClippingCard', () => {
 
   const createWrapper = (clipping: StoredClipping = mockClipping) => {
     return mount(ClippingCard, {
-      props: { clipping }
+      props: { clipping },
+      global: {
+        mocks: {
+          $t: (key: string, params?: Record<string, string>) => {
+            if (key === 'clipping.page') return `Page ${params?.page}`
+            if (key === 'clipping.location') return `Location ${params?.loc}`
+            if (key === 'clipping.highlight') return 'Highlight'
+            if (key === 'clipping.note') return 'Note'
+            if (key === 'clipping.bookmark') return 'Bookmark'
+            if (key === 'clipping.your_note') return 'Your note'
+            if (key === 'clipping.no_content') return 'No content'
+            return key
+          }
+        }
+      }
     })
   }
 
