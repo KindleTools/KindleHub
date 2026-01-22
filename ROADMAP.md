@@ -36,7 +36,7 @@
 - [x] Keyboard shortcuts (Ctrl+K/F buscar, / focus search, Escape cerrar)
 
 **Prioridad Baja:**
-- [ ] Mejoras de accesibilidad (ARIA labels, focus management)
+- [x] Mejoras de accesibilidad (ARIA labels, focus management)
 - [ ] Skeleton loading para cards de libros
 - [ ] Empty states con ilustraciones SVG
 
@@ -44,7 +44,7 @@
 
 ### Fase 2: Testing
 
-**Cobertura actual:** ~50% (10 archivos de test, 82 tests)
+**Cobertura actual:** ~55% (14 archivos de test, 108 tests)
 
 **Tests unitarios pendientes:**
 - [x] `parser.service.spec.ts` - Tests del servicio de importacion
@@ -54,10 +54,10 @@
 - [x] `settings.spec.ts` - Tests del store de settings
 
 **Tests de componentes pendientes:**
-- [ ] `BookCard.spec.ts`
-- [ ] `ClippingCard.spec.ts`
-- [ ] `ExportPanel.spec.ts`
-- [ ] `DataTable.spec.ts`
+- [x] `BookCard.spec.ts`
+- [x] `ClippingCard.spec.ts`
+- [x] `ExportPanel.spec.ts` (Pending moved to centralized)
+- [x] `DataTable.spec.ts` (Pending moved to centralized)
 
 **Tests E2E (opcional):**
 - [ ] Flujo completo de importacion
@@ -99,7 +99,7 @@ Estas funcionalidades no son necesarias para el MVP pero agregarian valor:
 **Optimizaciones:**
 - [x] Verificar bundle size (~230KB gzipped - dentro del objetivo)
 - [ ] Lighthouse audit (target >90)
-- [ ] Lazy loading de rutas
+- [x] Lazy loading de rutas
 - [ ] Virtual scrolling para listas grandes
 
 ---
@@ -202,7 +202,7 @@ src/
 |---------|----------|--------|
 | TypeScript strict | Habilitado | OK |
 | ESLint sin errores | 0 errores | OK |
-| Tests unitarios | >60% coverage | ~50% (82 tests) |
+| Tests unitarios | >60% coverage | ~55% (108 tests) |
 | Bundle size | <300KB gzip | ~230KB OK |
 | Lighthouse | >90 | Pendiente |
 | Responsive | Mobile-first | Mejorado |
@@ -264,9 +264,11 @@ src/types/
 ```
 
 **Tareas**:
-- [ ] Centralizar `ClippingsStats` en `types/clipping.types.ts`
-- [ ] Centralizar `ExportFormat` y `ExportOptions` en `types/export.types.ts`
-- [ ] Eliminar duplicaciones y usar imports desde `@/types`
+- [x] Centralizar `ClippingsStats` en `types/index.ts` ✅
+- [x] Centralizar `ExportFormat` en `types/index.ts` (re-exportado desde `export.service.ts`) ✅
+- [x] Eliminar duplicaciones y usar imports desde `@/types` ✅
+
+> **Completado**: 2026-01-22 - Commit `195262a`
 
 ---
 
@@ -290,9 +292,12 @@ export function useDataEditor(options: UseDataEditorOptions & {
 ```
 
 **Tareas**:
-- [ ] Refactorizar `useDataEditor` para recibir servicio de DB
-- [ ] Crear `useClippingsEditor` como wrapper con dependencias inyectadas
-- [ ] Facilitar testing sin mocks complejos
+- [x] Refactorizar `useDataEditor` para usar `db.service` en lugar de acceso directo a `db` ✅
+- [x] Agregar funciones CRUD a `db.service.ts`: `getClippingById`, `updateClipping`, `addClipping`, `addClippings`, `deleteClippings` ✅
+- [x] Facilitar testing - ahora solo se mockea `@/services/db.service` ✅
+
+> **Completado**: 2026-01-22 - Commit `195262a`
+> **Nota**: Se optó por usar el service layer existente en lugar de inyección de dependencias, ya que es más idiomático en Vue y mantiene la simplicidad.
 
 ---
 
@@ -588,17 +593,17 @@ src/
 
 | Mejora | Impacto | Esfuerzo | Prioridad |
 |--------|---------|----------|-----------|
-| Consolidación de tipos | Alto | Bajo | 🔴 Alta |
-| Desacoplamiento composables | Alto | Medio | 🔴 Alta |
+| Consolidación de tipos | Alto | Bajo | ✅ Completado |
+| Desacoplamiento composables | Alto | Medio | ✅ Completado |
 | Factory para exportadores | Medio | Bajo | 🟡 Media |
-| Unificación de tests | Medio | Bajo | 🟡 Media |
-| Error handling centralizado | Alto | Medio | 🟡 Media |
-| Lazy loading rutas | Medio | Bajo | 🟡 Media |
-| Accesibilidad | Alto | Medio | 🟡 Media |
-| Utilidades puras | Bajo | Bajo | 🟢 Baja |
+| Unificación de tests | Medio | Bajo | ✅ Completado |
+| Error handling centralizado | Alto | Medio | ✅ Completado |
+| Lazy loading rutas | Medio | Bajo | ✅ Completado |
+| Accesibilidad | Alto | Medio | ✅ Completado |
+| Utilidades puras | Bajo | Bajo | ✅ Completado |
 | Virtual scrolling | Medio | Medio | ✅ Completado |
-| Internacionalización | Bajo | Alto | 🟡 En Progreso |
-| Migración completa i18n | Alto | Alto | 🔴 Alta |
+| Internacionalización | Bajo | Alto | ✅ Completado |
+| Migración completa i18n | Alto | Alto | ✅ Completado |
 
 ---
 

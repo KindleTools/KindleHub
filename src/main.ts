@@ -21,4 +21,12 @@ const app = createApp(App)
 app.use(pinia)
 app.use(router)
 app.use(i18n)
+
+import { useErrorHandler } from '@/composables/useErrorHandler'
+
+const { handleError } = useErrorHandler()
+app.config.errorHandler = (err) => {
+  handleError(err)
+}
+
 app.mount('#app')

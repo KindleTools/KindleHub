@@ -11,7 +11,8 @@ export default defineConfig({
     VueRouter({
       routesFolder: 'src/pages',
       dts: 'src/typed-router.d.ts',
-      extensions: ['.vue']
+      extensions: ['.vue'],
+      importMode: 'async'
     }),
 
     vue(),
