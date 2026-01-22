@@ -29,7 +29,7 @@ const lastRead = computed(() => formatDate(props.book.lastReadDate))
 <template>
   <router-link
     :to="`/books/${book.id}`"
-    class="group block p-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 dark:border-gray-700 hover:border-primary-400 dark:hover:border-primary-600"
+    class="group block p-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-200 dark:border-gray-700 hover:border-primary-400 dark:hover:border-primary-600 hover:-translate-y-1 active:scale-[0.98]"
   >
     <!-- Cover with generated gradient -->
     <div

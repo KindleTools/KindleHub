@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useDark, useToggle } from '@vueuse/core'
 import { BookOpen, Moon, Sun } from 'lucide-vue-next'
+import UiTooltip from '@/components/ui/Tooltip.vue'
 
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
+const themeTooltip = computed(() => isDark.value ? 'Modo claro' : 'Modo oscuro')
 </script>
 
 <template>
@@ -70,14 +73,15 @@ const toggleDark = useToggle(isDark)
         </nav>
 
         <!-- Theme Toggle -->
-        <button
-          class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-          :title="isDark ? 'Light mode' : 'Dark mode'"
-          @click="toggleDark()"
-        >
-          <Moon v-if="!isDark" class="h-5 w-5 text-gray-600" />
-          <Sun v-else class="h-5 w-5 text-yellow-500" />
-        </button>
+        <UiTooltip :text="themeTooltip" position="bottom">
+          <button
+            class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            @click="toggleDark()"
+          >
+            <Moon v-if="!isDark" class="h-5 w-5 text-gray-600" />
+            <Sun v-else class="h-5 w-5 text-yellow-500" />
+          </button>
+        </UiTooltip>
       </div>
     </div>
   </header>

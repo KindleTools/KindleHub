@@ -1,8 +1,9 @@
 <script setup lang="ts">
 /**
  * Search Page - Full-text search across all clippings.
+ * Keyboard shortcuts: / or Ctrl+F to focus search, Esc to clear
  */
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Search, Filter, X, Book, Calendar, Tag, ArrowLeft } from 'lucide-vue-next'
 
@@ -11,6 +12,7 @@ import { getAllClippings, getAllBooks } from '@/services/db.service'
 import { useSearch } from '@/composables/useSearch'
 
 const router = useRouter()
+const searchInputRef = ref<HTMLInputElement | null>(null)
 
 const clippings = ref<StoredClipping[]>([])
 const books = ref<BookType[]>([])
@@ -68,7 +70,47 @@ function formatDate(date: Date): string {
   return new Intl.DateTimeFormat('es-ES', { dateStyle: 'medium' }).format(date)
 }
 
-onMounted(loadData)
+function focusSearch() {
+  searchInputRef.value?.focus()
+  searchInputRef.value?.select()
+}
+
+function handleKeydown(event: KeyboardEvent) {
+  const target = event.target as HTMLElement
+  const isInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA'
+
+  // '/' to focus search (when not in an input)
+  if (event.key === '/' && !isInput) {
+    event.preventDefault()
+    focusSearch()
+    return
+  }
+
+  // Ctrl/Cmd + F to focus search
+  if ((event.ctrlKey || event.metaKey) && event.key === 'f') {
+    event.preventDefault()
+    focusSearch()
+    return
+  }
+
+  // Escape to clear search (when in search input)
+  if (event.key === 'Escape' && target === searchInputRef.value) {
+    query.value = ''
+    searchInputRef.value?.blur()
+    return
+  }
+}
+
+onMounted(() => {
+  loadData()
+  // Auto-focus search input on page load
+  setTimeout(focusSearch, 100)
+  window.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
+})
 </script>
 
 <template>
@@ -92,9 +134,10 @@ onMounted(loadData)
         <div class="relative">
           <Search class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
+            ref="searchInputRef"
             v-model="query"
             type="search"
-            placeholder="Buscar en todos los clippings..."
+            placeholder="Buscar en todos los clippings... (/ o Ctrl+F)"
             class="w-full pl-10 pr-12 py-3 text-lg rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:ring-primary-500 focus:border-primary-500"
           />
           <button

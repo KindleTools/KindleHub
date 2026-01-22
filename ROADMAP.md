@@ -30,10 +30,10 @@
 - [x] Modal de confirmacion reutilizable (ConfirmModal.vue)
 
 **Prioridad Media:**
-- [ ] Animaciones y transiciones suaves (200-300ms)
-- [ ] Tooltips en botones de accion
+- [x] Animaciones y transiciones suaves (page transitions, card animations, toast animations)
+- [x] Tooltips en botones de accion (Tooltip.vue)
 - [ ] Sidebar colapsable en movil
-- [ ] Keyboard shortcuts (Ctrl+S guardar, Ctrl+F buscar, Escape cerrar)
+- [x] Keyboard shortcuts (Ctrl+K/F buscar, / focus search, Escape cerrar)
 
 **Prioridad Baja:**
 - [ ] Mejoras de accesibilidad (ARIA labels, focus management)
@@ -44,11 +44,11 @@
 
 ### Fase 2: Testing
 
-**Cobertura actual:** ~40% (9 archivos de test, 63 tests)
+**Cobertura actual:** ~50% (10 archivos de test, 82 tests)
 
 **Tests unitarios pendientes:**
 - [x] `parser.service.spec.ts` - Tests del servicio de importacion
-- [ ] `export.service.spec.ts` - Tests del servicio de exportacion
+- [x] `export.service.spec.ts` - Tests del servicio de exportacion (19 tests)
 - [x] `db.service.spec.ts` - Tests de operaciones de base de datos
 - [x] `books.spec.ts` - Tests del store de libros
 - [x] `settings.spec.ts` - Tests del store de settings
@@ -173,10 +173,12 @@ src/
 |---------|----------|--------|
 | TypeScript strict | Habilitado | OK |
 | ESLint sin errores | 0 errores | OK |
-| Tests unitarios | >60% coverage | ~40% (63 tests) |
+| Tests unitarios | >60% coverage | ~50% (82 tests) |
 | Bundle size | <300KB gzip | ~230KB OK |
 | Lighthouse | >90 | Pendiente |
 | Responsive | Mobile-first | Mejorado |
+| Animaciones | 200-300ms | OK |
+| Keyboard Shortcuts | Ctrl+K, /, Esc | OK |
 
 ---
 

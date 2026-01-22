@@ -34,11 +34,12 @@ const iconStyles: Record<ToastType, string> = {
     <div class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none">
       <TransitionGroup
         enter-active-class="transition-all duration-300 ease-out"
-        leave-active-class="transition-all duration-200 ease-in"
-        enter-from-class="opacity-0 translate-x-4"
-        enter-to-class="opacity-100 translate-x-0"
-        leave-from-class="opacity-100 translate-x-0"
-        leave-to-class="opacity-0 translate-x-4"
+        leave-active-class="transition-all duration-200 ease-in absolute"
+        move-class="transition-transform duration-300 ease-out"
+        enter-from-class="opacity-0 translate-x-8 scale-95"
+        enter-to-class="opacity-100 translate-x-0 scale-100"
+        leave-from-class="opacity-100 translate-x-0 scale-100"
+        leave-to-class="opacity-0 translate-x-8 scale-95"
       >
         <div
           v-for="toast in toasts"

@@ -23,5 +23,7 @@ declare module 'vue' {
     LayoutAppHeader: typeof import('./components/layout/AppHeader.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    UiConfirmModal: typeof import('./components/ui/ConfirmModal.vue')['default']
+    UiToastContainer: typeof import('./components/ui/ToastContainer.vue')['default']
   }
 }

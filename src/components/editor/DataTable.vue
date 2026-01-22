@@ -7,6 +7,7 @@ import { Trash2, Copy, Plus, Check, X, Edit3 } from 'lucide-vue-next'
 
 import type { StoredClipping } from '@/db/schema'
 import { useDataEditor, type EditableClipping } from '@/composables/useDataEditor'
+import UiTooltip from '@/components/ui/Tooltip.vue'
 
 const props = defineProps<{
   clippings: StoredClipping[]
@@ -133,7 +134,11 @@ async function handleDelete() {
     </div>
 
     <!-- Mobile Cards View -->
-    <div class="md:hidden space-y-3">
+    <TransitionGroup
+      tag="div"
+      name="card-list"
+      class="md:hidden space-y-3"
+    >
       <div
         v-for="clipping in editableClippings"
         :key="'mobile-' + clipping.id"
@@ -141,7 +146,7 @@ async function handleDelete() {
           clipping.isSelected ? 'ring-2 ring-primary-500' : '',
           clipping.isEditing ? 'ring-2 ring-blue-500' : ''
         ]"
-        class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 space-y-3"
+        class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 space-y-3 transition-all duration-200"
       >
         <!-- Header: Checkbox + Type + Actions -->
         <div class="flex items-center justify-between">
@@ -234,10 +239,10 @@ async function handleDelete() {
       </div>
 
       <!-- Empty state mobile -->
-      <div v-if="editableClippings.length === 0" class="bg-white dark:bg-gray-800 rounded-lg shadow p-8 text-center">
+      <div v-if="editableClippings.length === 0" key="empty-mobile" class="bg-white dark:bg-gray-800 rounded-lg shadow p-8 text-center">
         <p class="text-gray-500 dark:text-gray-400">No hay clippings para mostrar</p>
       </div>
-    </div>
+    </TransitionGroup>
 
     <!-- Desktop Table View -->
     <div class="hidden md:block overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
@@ -346,30 +351,33 @@ async function handleDelete() {
             <td class="px-4 py-3">
               <div class="flex items-center gap-1 justify-end">
                 <template v-if="clipping.isEditing">
-                  <button
-                    :disabled="isSaving"
-                    class="p-1.5 text-green-600 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-md transition-colors"
-                    title="Guardar"
-                    @click="saveEdit(clipping.id!)"
-                  >
-                    <Check class="w-4 h-4" />
-                  </button>
-                  <button
-                    class="p-1.5 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-md transition-colors"
-                    title="Cancelar"
-                    @click="cancelEdit"
-                  >
-                    <X class="w-4 h-4" />
-                  </button>
+                  <UiTooltip text="Guardar (Enter)" position="top">
+                    <button
+                      :disabled="isSaving"
+                      class="p-1.5 text-green-600 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-md transition-colors"
+                      @click="saveEdit(clipping.id!)"
+                    >
+                      <Check class="w-4 h-4" />
+                    </button>
+                  </UiTooltip>
+                  <UiTooltip text="Cancelar (Esc)" position="top">
+                    <button
+                      class="p-1.5 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-md transition-colors"
+                      @click="cancelEdit"
+                    >
+                      <X class="w-4 h-4" />
+                    </button>
+                  </UiTooltip>
                 </template>
                 <template v-else>
-                  <button
-                    class="p-1.5 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
-                    title="Editar"
-                    @click="startEdit(clipping.id!)"
-                  >
-                    <Edit3 class="w-4 h-4" />
-                  </button>
+                  <UiTooltip text="Editar" position="top">
+                    <button
+                      class="p-1.5 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                      @click="startEdit(clipping.id!)"
+                    >
+                      <Edit3 class="w-4 h-4" />
+                    </button>
+                  </UiTooltip>
                 </template>
               </div>
             </td>
@@ -388,3 +396,25 @@ async function handleDelete() {
     </div>
   </div>
 </template>
+
+<style scoped>
+/* Card list animations */
+.card-list-enter-active,
+.card-list-leave-active {
+  transition: all 0.25s ease;
+}
+
+.card-list-enter-from {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.card-list-leave-to {
+  opacity: 0;
+  transform: translateX(-16px);
+}
+
+.card-list-move {
+  transition: transform 0.25s ease;
+}
+</style>

@@ -49,14 +49,43 @@ defineProps<Props>()
   </div>
 
   <!-- Books Grid -->
-  <div
+  <TransitionGroup
     v-else
+    tag="div"
+    name="book-list"
     class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
   >
     <BooksBookCard
-      v-for="book in books"
+      v-for="(book, index) in books"
       :key="book.id!"
       :book="book"
+      :style="{ '--animation-delay': `${index * 50}ms` }"
     />
-  </div>
+  </TransitionGroup>
 </template>
+
+<style scoped>
+/* Staggered list animation */
+.book-list-enter-active {
+  transition: all 0.3s ease-out;
+  transition-delay: var(--animation-delay, 0ms);
+}
+
+.book-list-leave-active {
+  transition: all 0.2s ease-in;
+}
+
+.book-list-enter-from {
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+}
+
+.book-list-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.book-list-move {
+  transition: transform 0.3s ease;
+}
+</style>
