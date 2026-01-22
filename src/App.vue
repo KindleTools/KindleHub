@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useDark } from '@vueuse/core'
+import UiToastContainer from '@/components/ui/ToastContainer.vue'
 
 const isDark = useDark()
 </script>
@@ -18,5 +19,8 @@ const isDark = useDark()
       <!-- Footer -->
       <LayoutAppFooter />
     </div>
+
+    <!-- Toast Notifications -->
+    <UiToastContainer />
   </div>
 </template>

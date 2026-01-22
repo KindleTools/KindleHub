@@ -8,10 +8,13 @@ import { ArrowLeft, Download, Trash2, RotateCcw, Moon, Globe } from 'lucide-vue-
 import { useDark, useToggle } from '@vueuse/core'
 
 import { useSettingsStore } from '@/stores/settings'
+import { useToast } from '@/composables/useToast'
 import { clearAllData, getAllBooks, getAllClippings } from '@/services/db.service'
+import UiConfirmModal from '@/components/ui/ConfirmModal.vue'
 
 const router = useRouter()
 const settingsStore = useSettingsStore()
+const toast = useToast()
 
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
@@ -34,9 +37,11 @@ async function handleClearData() {
   try {
     await clearAllData()
     showConfirmClear.value = false
+    toast.success('Todos los datos han sido eliminados')
     router.push('/kindle-hub/')
   } catch (err) {
     console.error('Failed to clear data:', err)
+    toast.error('Error al eliminar los datos')
   } finally {
     isClearing.value = false
   }
@@ -64,11 +69,18 @@ async function handleExportBackup() {
     a.download = `kindlehub-backup-${new Date().toISOString().split('T')[0]}.json`
     a.click()
     URL.revokeObjectURL(url)
+    toast.success('Backup exportado correctamente')
   } catch (err) {
     console.error('Failed to export backup:', err)
+    toast.error('Error al exportar el backup')
   } finally {
     isExporting.value = false
   }
+}
+
+function handleResetSettings() {
+  settingsStore.resetToDefaults()
+  toast.info('Configuracion restaurada')
 }
 </script>
 
@@ -204,7 +216,7 @@ async function handleExportBackup() {
           <!-- Reset settings -->
           <button
             class="w-full flex items-center gap-3 px-4 py-3 text-left text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg transition-colors"
-            @click="settingsStore.resetToDefaults"
+            @click="handleResetSettings"
           >
             <RotateCcw class="w-5 h-5 text-gray-500" />
             <div>
@@ -228,34 +240,16 @@ async function handleExportBackup() {
       </section>
 
       <!-- Confirm Clear Modal -->
-      <div
-        v-if="showConfirmClear"
-        class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
-      >
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-md w-full shadow-xl">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-            ¿Eliminar todos los datos?
-          </h3>
-          <p class="text-gray-600 dark:text-gray-400 mb-6">
-            Esta acción eliminará todos los libros y clippings almacenados. No se puede deshacer.
-          </p>
-          <div class="flex gap-3 justify-end">
-            <button
-              class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-              @click="showConfirmClear = false"
-            >
-              Cancelar
-            </button>
-            <button
-              :disabled="isClearing"
-              class="px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded-lg transition-colors disabled:opacity-50"
-              @click="handleClearData"
-            >
-              {{ isClearing ? 'Eliminando...' : 'Eliminar' }}
-            </button>
-          </div>
-        </div>
-      </div>
+      <UiConfirmModal
+        :open="showConfirmClear"
+        title="¿Eliminar todos los datos?"
+        message="Esta accion eliminara todos los libros y clippings almacenados. No se puede deshacer."
+        confirm-text="Eliminar"
+        variant="danger"
+        :loading="isClearing"
+        @confirm="handleClearData"
+        @cancel="showConfirmClear = false"
+      />
     </main>
   </div>
 </template>

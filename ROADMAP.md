@@ -24,10 +24,10 @@
 ### Fase 1: Mejoras UX y Pulido
 
 **Prioridad Alta:**
-- [ ] Toast notifications para feedback de acciones (importar, exportar, eliminar)
+- [x] Toast notifications para feedback de acciones (importar, exportar, eliminar)
 - [ ] Skeleton screens para estados de carga
 - [ ] Mejorar responsive en tabla del editor (scroll horizontal en movil)
-- [ ] Modal de confirmacion reutilizable (actualmente usa confirm() nativo)
+- [x] Modal de confirmacion reutilizable (ConfirmModal.vue)
 
 **Prioridad Media:**
 - [ ] Animaciones y transiciones suaves (200-300ms)
@@ -44,14 +44,14 @@
 
 ### Fase 2: Testing
 
-**Cobertura actual:** ~20% (5 archivos de test)
+**Cobertura actual:** ~30% (7 archivos de test, 48 tests)
 
 **Tests unitarios pendientes:**
 - [ ] `parser.service.spec.ts` - Tests del servicio de importacion
 - [ ] `export.service.spec.ts` - Tests del servicio de exportacion
 - [ ] `db.service.spec.ts` - Tests de operaciones de base de datos
-- [ ] `books.spec.ts` - Tests del store de libros
-- [ ] `settings.spec.ts` - Tests del store de settings
+- [x] `books.spec.ts` - Tests del store de libros
+- [x] `settings.spec.ts` - Tests del store de settings
 
 **Tests de componentes pendientes:**
 - [ ] `BookCard.spec.ts`
@@ -69,14 +69,13 @@
 
 **GitHub Pages:**
 - [x] Workflow de CI/CD configurado (`.github/workflows/deploy.yml`)
-- [ ] Verificar que el build funciona correctamente
+- [x] Verificar que el build funciona correctamente
 - [ ] Configurar base URL para GitHub Pages
 - [ ] Probar deployment en produccion
 
 **Documentacion:**
-- [x] README basico
-- [ ] Actualizar README con estado real del proyecto
-- [ ] Crear ARCHITECTURE.md con documentacion tecnica
+- [x] README actualizado con estado real del proyecto
+- [x] ARCHITECTURE.md con documentacion tecnica
 - [ ] Agregar screenshots/GIFs de la aplicacion
 
 ---
@@ -98,7 +97,7 @@ Estas funcionalidades no son necesarias para el MVP pero agregarian valor:
 - [ ] Temas personalizables (colores custom)
 
 **Optimizaciones:**
-- [ ] Verificar bundle size (<300KB gzipped)
+- [x] Verificar bundle size (~230KB gzipped - dentro del objetivo)
 - [ ] Lighthouse audit (target >90)
 - [ ] Lazy loading de rutas
 - [ ] Virtual scrolling para listas grandes
@@ -174,9 +173,9 @@ src/
 |---------|----------|--------|
 | TypeScript strict | Habilitado | OK |
 | ESLint sin errores | 0 errores | OK |
-| Tests unitarios | >60% coverage | Pendiente |
-| Bundle size | <300KB gzip | No verificado |
-| Lighthouse | >90 | No verificado |
+| Tests unitarios | >60% coverage | ~30% (48 tests) |
+| Bundle size | <300KB gzip | ~230KB OK |
+| Lighthouse | >90 | Pendiente |
 | Responsive | Mobile-first | Basico |
 
 ---

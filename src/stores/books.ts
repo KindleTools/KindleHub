@@ -1,6 +1,7 @@
 /**
  * Books Store - Pinia store for managing books state.
  */
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
 import type { Book } from '@/db/schema'
