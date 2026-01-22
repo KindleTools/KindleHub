@@ -13,6 +13,7 @@ import { useBatchesStore } from '@/stores/batches'
 import { formatFileSize, formatBatchDate } from '@/services/batch.service'
 import BatchClippingCard from '@/components/batch/BatchClippingCard.vue'
 import BatchActions from '@/components/batch/BatchActions.vue'
+import BatchWarnings from '@/components/batch/BatchWarnings.vue'
 
 const router = useRouter()
 const batchesStore = useBatchesStore()
@@ -46,6 +47,12 @@ const handleDiscard = () => {
   router.push('/import')
 }
 
+const handleExportOnly = () => {
+  // Navigate to export page with batch data
+  // The batch data will be used directly without saving to DB
+  router.push({ path: '/export', query: { fromBatch: 'true' } })
+}
+
 </script>
 
 <template>
@@ -77,6 +84,13 @@ const handleDiscard = () => {
           <div class="flex items-center gap-3">
             <button
               class="btn-secondary flex items-center gap-2"
+              @click="handleExportOnly"
+            >
+              <Download class="h-4 w-4" />
+              Export Only
+            </button>
+            <button
+              class="btn-secondary flex items-center gap-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
               @click="handleDiscard"
             >
               <X class="h-4 w-4" />
@@ -136,6 +150,9 @@ const handleDiscard = () => {
           </div>
         </div>
       </div>
+
+      <!-- Warnings Panel -->
+      <BatchWarnings class="mb-6" />
 
       <!-- Floating Actions Bar -->
       <BatchActions />

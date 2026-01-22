@@ -178,13 +178,18 @@ src/
 - [x] Bulk delete de clippings seleccionados
 - [x] Badges de estado (Modified, Warnings)
 
-#### Fase 3: Advanced Features (En Progreso)
-- [ ] `BatchWarnings.vue` panel de warnings
-- [ ] Enhanced parser con warnings detallados
-- [ ] `batch/index.vue` página de historial de lotes
-- [ ] "Export Only" workflow (exportar sin guardar)
-- [ ] Persistir historial en IndexedDB
-- [ ] Bulk change author/title (edición masiva de autor/título)
+#### Fase 3: Advanced Features ✅
+- [x] `BatchWarnings.vue` panel de warnings (UI + Store support)
+- [x] `batch/index.vue` página de historial de lotes
+- [x] "Export Only" workflow (exportar sin guardar)
+- [x] Persistir historial en IndexedDB
+- [x] Bulk change author/title (edición masiva de autor/título)
+- [ ] *Enhanced parser specifics* (infraestructura lista, parser pendiente de actualización para emitir warnings detallados)
+
+### Próximos Pasos Recomendados
+- Testing exhaustivo de casos borde en edición masiva
+- Mejorar el parser para detectar anomalías reales
+- Implementar PWA features (Fase 4)
 
 
 

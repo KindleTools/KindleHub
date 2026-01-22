@@ -17,7 +17,7 @@ import type {
   BatchHistoryEntry
 } from '@/types/batch'
 import { generateBatchId, generateClippingId, createBookKey } from '@/services/batch.service'
-import { saveClippings } from '@/services/db.service'
+import { saveClippings, saveBatchHistory, getBatchHistory } from '@/services/db.service'
 import { useBooksStore } from '@/stores/books'
 
 export const useBatchesStore = defineStore('batches', () => {
@@ -26,6 +26,11 @@ export const useBatchesStore = defineStore('batches', () => {
 
   // History of processed batches (metadata only)
   const batchHistory = ref<BatchHistoryEntry[]>([])
+
+  // Load history on mount
+  getBatchHistory().then((history) => {
+    batchHistory.value = history
+  })
 
   // UI state
   const isProcessing = ref(false)
@@ -190,8 +195,23 @@ export const useBatchesStore = defineStore('batches', () => {
    * Apply bulk updates to multiple clippings.
    */
   function bulkUpdateClippings(clippingIds: string[], updates: Partial<Clipping>): void {
+    if (!currentBatch.value) return
+
+    let needsRebuild = false
+
     for (const id of clippingIds) {
-      updateClipping(id, updates)
+      const clipping = currentBatch.value.clippings.get(id)
+      if (clipping) {
+        Object.assign(clipping, updates, { isModified: true })
+
+        if ('title' in updates || 'author' in updates) {
+          needsRebuild = true
+        }
+      }
+    }
+
+    if (needsRebuild) {
+      rebuildBookGroupings()
     }
   }
 
@@ -319,7 +339,7 @@ export const useBatchesStore = defineStore('batches', () => {
       currentBatch.value.status = 'imported'
 
       // Add to history
-      addToHistory('imported')
+      await addToHistory('imported')
 
       // Refresh books store
       const booksStore = useBooksStore()
@@ -336,7 +356,10 @@ export const useBatchesStore = defineStore('batches', () => {
   /**
    * Add current batch to history.
    */
-  function addToHistory(status: 'imported' | 'exported' | 'discarded', exportFormat?: string): void {
+  async function addToHistory(
+    status: 'imported' | 'exported' | 'discarded',
+    exportFormat?: string
+  ): Promise<void> {
     if (!currentBatch.value) return
 
     const entry: BatchHistoryEntry = {
@@ -351,16 +374,19 @@ export const useBatchesStore = defineStore('batches', () => {
       exportedFormat: exportFormat
     }
 
+    // Update local state
     batchHistory.value.unshift(entry)
+    // Cast explicitly to schema type because types are compatible but separate definitions
+    await saveBatchHistory(entry as any)
   }
 
   /**
    * Discard the current batch without saving.
    */
-  function discardBatch(): void {
+  async function discardBatch(): Promise<void> {
     if (currentBatch.value) {
       currentBatch.value.status = 'discarded'
-      addToHistory('discarded')
+      await addToHistory('discarded')
     }
     currentBatch.value = null
   }

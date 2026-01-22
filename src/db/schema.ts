@@ -33,11 +33,27 @@ export interface StoredClipping {
 }
 
 /**
+ * Batch History stored in IndexedDB
+ */
+export interface BatchHistoryEntry {
+  id: string
+  createdAt: Date
+  fileName: string
+  fileSize: number
+  status: 'imported' | 'exported' | 'discarded'
+  clippingCount: number
+  bookCount: number
+  importedAt?: Date
+  exportedFormat?: string
+}
+
+/**
  * KindleHub Database using Dexie.js
  */
 export class KindleHubDB extends Dexie {
   books!: Table<Book>
   clippings!: Table<StoredClipping>
+  batchHistory!: Table<BatchHistoryEntry>
 
   constructor() {
     super('KindleHubDB')
@@ -45,6 +61,10 @@ export class KindleHubDB extends Dexie {
     this.version(1).stores({
       books: '++id, title, author, lastReadDate',
       clippings: '++id, bookId, originalId, type, date, [bookId+type]'
+    })
+
+    this.version(2).stores({
+      batchHistory: 'id, createdAt, status, fileName'
     })
   }
 }

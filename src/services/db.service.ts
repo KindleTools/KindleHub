@@ -30,13 +30,13 @@ function toStoredClipping(clipping: Clipping, bookId: number): Omit<StoredClippi
     originalId: clipping.id,
     type: clipping.type === 'clip' || clipping.type === 'article' ? 'highlight' : clipping.type,
     content: clipping.content,
-    location: clipping.location?.raw,
-    page: clipping.page ?? undefined,
     date: clipping.date ?? new Date(),
-    note: clipping.note,
-    tags: clipping.tags,
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
+    ...(clipping.location?.raw ? { location: clipping.location.raw } : {}),
+    ...(clipping.page !== undefined && clipping.page !== null ? { page: clipping.page } : {}),
+    ...(clipping.note ? { note: clipping.note } : {}),
+    ...(clipping.tags ? { tags: clipping.tags } : {})
   }
 }
 
@@ -186,4 +186,20 @@ export async function getStats(): Promise<{
     totalNotes: notes,
     totalBookmarks: bookmarks
   }
+}
+
+/**
+ * Save a batch history entry.
+ */
+import type { BatchHistoryEntry } from '@/db/schema'
+
+export async function saveBatchHistory(entry: BatchHistoryEntry): Promise<void> {
+  await db.batchHistory.put(entry)
+}
+
+/**
+ * Get batch history sorted by date (newest first).
+ */
+export async function getBatchHistory(): Promise<BatchHistoryEntry[]> {
+  return db.batchHistory.orderBy('createdAt').reverse().toArray()
 }
