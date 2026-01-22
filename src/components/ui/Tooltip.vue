@@ -9,7 +9,7 @@ interface Props {
   delay?: number
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   position: 'top',
   delay: 200
 })

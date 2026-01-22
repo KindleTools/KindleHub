@@ -222,4 +222,384 @@ src/
 
 ---
 
+## 🔬 Análisis de Arquitectura y Propuestas de Mejora (2026)
+
+> **Fecha del análisis**: 2026-01-22
+> **Basado en**: Best practices de Vue 3, Pinia, TypeScript y Feature-Sliced Design 2025-2026
+
+### ✅ Lo que está bien implementado
+
+El proyecto sigue la mayoría de las mejores prácticas actuales:
+
+| Aspecto | Estado | Notas |
+|---------|--------|-------|
+| Vue 3 Composition API | ✅ Excelente | `<script setup>` en todos los componentes |
+| TypeScript strict | ✅ Excelente | `exactOptionalPropertyTypes`, `noUnchecked*` |
+| Pinia setup stores | ✅ Excelente | Stores modulares con Composition API syntax |
+| Vite + plugins modernos | ✅ Excelente | Auto-imports, file-based routing, chunk splitting |
+| Arquitectura por capas | ✅ Bien | Pages → Components → Composables → Stores → Services |
+| Alias `@/` para imports | ✅ Bien | Evita imports relativos complejos |
+| ESLint + Stylistic | ✅ Bien | Reemplaza Prettier con mejor integración |
+| Pre-commit hooks | ✅ Bien | Husky + lint-staged |
+| CI/CD | ✅ Bien | GitHub Actions para deploy |
+
+---
+
+### 🔧 Propuestas de Mejora por Categoría
+
+#### 1. Consolidación de Tipos (Prioridad: Alta)
+
+**Problema**: Duplicación de tipos entre archivos
+- `ClippingsStats` definido en `stores/clippings.ts` y `types/index.ts`
+- `ExportFormat` definido en `types/index.ts` y `export.service.ts`
+
+**Solución**:
+```
+src/types/
+├── index.ts          # Re-exports públicos
+├── clipping.types.ts # Tipos de clippings
+├── book.types.ts     # Tipos de libros
+├── export.types.ts   # Tipos de exportación
+└── batch.types.ts    # Tipos de batches (ya existe)
+```
+
+**Tareas**:
+- [ ] Centralizar `ClippingsStats` en `types/clipping.types.ts`
+- [ ] Centralizar `ExportFormat` y `ExportOptions` en `types/export.types.ts`
+- [ ] Eliminar duplicaciones y usar imports desde `@/types`
+
+---
+
+#### 2. Desacoplamiento de Composables (Prioridad: Alta)
+
+**Problema**: `useDataEditor.ts` importa `db` directamente, acoplándose a Dexie.
+
+**Solución**: Inyectar el servicio de DB como dependencia.
+
+```typescript
+// Antes (acoplado)
+import { db } from '@/db/schema'
+
+// Después (desacoplado)
+export function useDataEditor(options: UseDataEditorOptions & {
+  dbService?: typeof import('@/services/db.service')
+}) {
+  const dbService = options.dbService ?? defaultDbService
+  // ...
+}
+```
+
+**Tareas**:
+- [ ] Refactorizar `useDataEditor` para recibir servicio de DB
+- [ ] Crear `useClippingsEditor` como wrapper con dependencias inyectadas
+- [ ] Facilitar testing sin mocks complejos
+
+---
+
+#### 3. Patrón Factory para Exportadores (Prioridad: Media)
+
+**Problema**: `export.service.ts` tiene un switch con 6 casos muy similares.
+
+**Solución**: Implementar patrón Registry/Factory.
+
+```typescript
+// export.service.ts
+const exporterRegistry: Record<ExportFormat, () => BaseExporter> = {
+  markdown: () => new MarkdownExporter(),
+  json: () => new JsonExporter(),
+  csv: () => new CsvExporter(),
+  html: () => new HtmlExporter(),
+  obsidian: () => new ObsidianExporter(),
+  joplin: () => new JoplinExporter()
+}
+
+const formatMetadata: Record<ExportFormat, FormatMetadata> = {
+  markdown: { filename: 'kindle-highlights.md', mimeType: 'text/markdown', isMultiFile: false },
+  // ...
+}
+
+export async function exportClippings(clippings: Clipping[], format: ExportFormat, options?: Partial<ExporterOptions>): Promise<ExportResultData> {
+  const exporter = exporterRegistry[format]()
+  const metadata = formatMetadata[format]
+  const result = await exporter.export(clippings, { ...defaultOptions, ...options })
+  if (result.isErr()) throw new Error(result.error.message)
+  return { format, ...metadata, content: result.value.output, files: result.value.files ?? [] }
+}
+```
+
+**Tareas**:
+- [ ] Crear `exporterRegistry` con factory functions
+- [ ] Crear `formatMetadata` con configuración por formato
+- [ ] Reducir `exportClippings` a ~15 líneas
+
+---
+
+#### 4. Unificación de Tests (Prioridad: Media)
+
+**Problema**: Tests distribuidos en dos ubicaciones:
+- `tests/unit/` (stores, services, composables)
+- `src/components/*.spec.ts` (componentes)
+
+**Mejor práctica 2025**: Co-location (tests junto al código) o centralización consistente.
+
+**Opción A - Co-location** (recomendada para componentes):
+```
+src/components/books/
+├── BookCard.vue
+├── BookCard.spec.ts   ← Test junto al componente
+└── BookList.vue
+```
+
+**Opción B - Centralización** (mantener estructura actual):
+```
+tests/
+├── unit/
+│   ├── components/    ← Mover tests de src/ aquí
+│   ├── composables/
+│   ├── services/
+│   └── stores/
+└── e2e/               ← Futuro
+```
+
+**Tareas**:
+- [ ] Decidir estrategia (co-location vs centralización)
+- [ ] Mover/unificar archivos `.spec.ts`
+- [ ] Actualizar `vitest.config.ts` si es necesario
+
+---
+
+#### 5. Utilidades Puras (Prioridad: Baja)
+
+**Problema**: Funciones como `formatDate` en `BookCard.vue` podrían reutilizarse.
+
+**Solución**: Crear directorio `utils/` o `lib/` para funciones puras.
+
+```
+src/
+├── utils/
+│   ├── date.utils.ts      # formatRelativeDate, formatDate
+│   ├── color.utils.ts     # generateCoverColor
+│   └── string.utils.ts    # truncate, slugify
+```
+
+**Tareas**:
+- [ ] Crear `src/utils/date.utils.ts` con `formatRelativeDate`
+- [ ] Extraer `generateCoverColor` si existe inline
+- [ ] Documentar utilidades disponibles
+
+---
+
+#### 6. Error Handling Centralizado (Prioridad: Media)
+
+**Problema**: Error handling inconsistente entre stores y services.
+
+**Solución**: Crear un sistema de errores tipados.
+
+```typescript
+// types/error.types.ts
+export class AppError extends Error {
+  constructor(
+    message: string,
+    public code: ErrorCode,
+    public context?: Record<string, unknown>
+  ) {
+    super(message)
+  }
+}
+
+export type ErrorCode =
+  | 'DB_READ_ERROR'
+  | 'DB_WRITE_ERROR'
+  | 'PARSE_ERROR'
+  | 'EXPORT_ERROR'
+  | 'NETWORK_ERROR'
+
+// composables/useErrorHandler.ts
+export function useErrorHandler() {
+  const toast = useToast()
+
+  function handleError(error: unknown) {
+    if (error instanceof AppError) {
+      toast.error(getErrorMessage(error.code))
+      console.error(`[${error.code}]`, error.message, error.context)
+    } else {
+      toast.error('An unexpected error occurred')
+      console.error(error)
+    }
+  }
+
+  return { handleError }
+}
+```
+
+**Tareas**:
+- [ ] Crear `types/error.types.ts` con clases de error
+- [ ] Crear `composables/useErrorHandler.ts`
+- [ ] Migrar stores para usar errores tipados
+- [ ] Integrar con sistema de toasts existente
+
+---
+
+#### 7. Lazy Loading de Rutas (Prioridad: Media)
+
+**Problema**: Todas las páginas se cargan en el bundle inicial.
+
+**Solución**: Configurar lazy loading en `unplugin-vue-router`.
+
+```typescript
+// vite.config.ts
+VueRouter({
+  routesFolder: 'src/pages',
+  // Lazy load all pages except index
+  importMode: (filepath) => {
+    return filepath.includes('index.vue') ? 'sync' : 'async'
+  }
+})
+```
+
+**Tareas**:
+- [ ] Configurar `importMode` en VueRouter plugin
+- [ ] Verificar que code splitting funciona correctamente
+- [ ] Medir impacto en bundle size inicial
+
+---
+
+#### 8. Virtual Scrolling (Prioridad: Baja - Para escala)
+
+**Problema**: Listas grandes (1000+ clippings) pueden afectar rendimiento.
+
+**Solución**: Implementar virtual scrolling con `@vueuse/core` o `vue-virtual-scroller`.
+
+```typescript
+// Ya tienes @vueuse/core instalado
+import { useVirtualList } from '@vueuse/core'
+
+const { list, containerProps, wrapperProps } = useVirtualList(clippings, {
+  itemHeight: 120
+})
+```
+
+**Tareas**:
+- [ ] Evaluar necesidad basada en uso real
+- [ ] Implementar en `ClippingList.vue` si hay problemas de rendimiento
+- [ ] Considerar paginación como alternativa más simple
+
+---
+
+#### 9. Accesibilidad (a11y) (Prioridad: Media)
+
+**Problema**: Faltan ARIA labels y focus management.
+
+**Mejoras específicas**:
+
+```vue
+<!-- Antes -->
+<button @click="handleDelete">
+  <Trash class="h-4 w-4" />
+</button>
+
+<!-- Después -->
+<button
+  @click="handleDelete"
+  :aria-label="`Delete ${clipping.content.slice(0, 20)}...`"
+>
+  <Trash class="h-4 w-4" aria-hidden="true" />
+</button>
+```
+
+**Tareas**:
+- [ ] Agregar `aria-label` a botones con solo iconos
+- [ ] Agregar `aria-hidden="true"` a iconos decorativos
+- [ ] Implementar focus trap en modales (ya usa HeadlessUI)
+- [ ] Agregar skip links para navegación
+- [ ] Ejecutar audit con axe-core o Lighthouse
+
+---
+
+#### 10. Internacionalización (i18n) (Prioridad: Baja)
+
+**Problema**: Strings hardcoded, setting de idioma sin implementar.
+
+**Solución**: Implementar vue-i18n cuando sea necesario.
+
+```typescript
+// plugins/i18n.ts
+import { createI18n } from 'vue-i18n'
+import en from '@/locales/en.json'
+import es from '@/locales/es.json'
+
+export const i18n = createI18n({
+  locale: 'en',
+  fallbackLocale: 'en',
+  messages: { en, es }
+})
+```
+
+**Tareas**:
+- [ ] Instalar `vue-i18n`
+- [ ] Crear estructura de archivos de traducción
+- [ ] Extraer strings de componentes principales
+- [ ] Conectar con `settings.language`
+
+---
+
+### 🏗️ Arquitectura Avanzada: Feature-Sliced Design (Futuro)
+
+Para proyectos que escalan significativamente, considerar migrar a [Feature-Sliced Design](https://feature-sliced.design/):
+
+```
+src/
+├── app/              # App-level: providers, routing, global styles
+├── pages/            # Full pages (ya lo tienes)
+├── widgets/          # Large self-contained UI chunks
+├── features/         # User interactions (import, export, search)
+│   ├── import/
+│   │   ├── ui/
+│   │   ├── model/
+│   │   └── api/
+│   └── export/
+├── entities/         # Business entities (book, clipping)
+│   ├── book/
+│   │   ├── ui/       # BookCard, BookList
+│   │   ├── model/    # book store slice
+│   │   └── api/      # book service
+│   └── clipping/
+└── shared/           # Shared utilities, UI kit, config
+    ├── ui/
+    ├── lib/
+    └── config/
+```
+
+**Nota**: Solo considerar esta migración si el proyecto crece significativamente. La estructura actual es adecuada para el tamaño actual.
+
+---
+
+### 📊 Matriz de Prioridades
+
+| Mejora | Impacto | Esfuerzo | Prioridad |
+|--------|---------|----------|-----------|
+| Consolidación de tipos | Alto | Bajo | 🔴 Alta |
+| Desacoplamiento composables | Alto | Medio | 🔴 Alta |
+| Factory para exportadores | Medio | Bajo | 🟡 Media |
+| Unificación de tests | Medio | Bajo | 🟡 Media |
+| Error handling centralizado | Alto | Medio | 🟡 Media |
+| Lazy loading rutas | Medio | Bajo | 🟡 Media |
+| Accesibilidad | Alto | Medio | 🟡 Media |
+| Utilidades puras | Bajo | Bajo | 🟢 Baja |
+| Virtual scrolling | Medio | Medio | 🟢 Baja |
+| Internacionalización | Bajo | Alto | 🟢 Baja |
+
+---
+
+### 📚 Referencias de Mejores Prácticas Consultadas
+
+- [Vue 3 Composition API Best Practices 2025](https://vuejs.org/guide/extras/composition-api-faq.html)
+- [Pinia Best Practices](https://masteringpinia.com/blog/5-best-practices-for-scalable-vuejs-state-management-with-pinia)
+- [Vue 3 + TypeScript Enterprise Architecture 2025](https://eastondev.com/blog/en/posts/dev/20251124-vue3-typescript-best-practices/)
+- [Feature-Sliced Design](https://feature-sliced.design/)
+- [Vite Advanced Guide 2025](https://codeparrot.ai/blogs/advanced-guide-to-using-vite-with-react-in-2025)
+- [Vue.js Large Scale App Structure](https://vueschool.io/articles/vuejs-tutorials/how-to-structure-a-large-scale-vue-js-application/)
+
+---
+
 *Ultima actualizacion: 2026-01-22*

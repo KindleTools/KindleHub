@@ -326,7 +326,7 @@ export const useBatchesStore = defineStore('batches', () => {
     try {
       // Convert Map to array of Clipping objects
       const clippings: Clipping[] = Array.from(currentBatch.value.clippings.values())
-        .map(({ batchClippingId, isSelected, isModified, warnings, ...clipping }) => clipping)
+        .map(({ batchClippingId: _b, isSelected: _s, isModified: _m, warnings: _w, ...clipping }) => clipping)
 
       processingProgress.value = 30
 

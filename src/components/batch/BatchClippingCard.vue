@@ -41,6 +41,10 @@ const saveEdit = () => {
   isEditing.value = false
 }
 
+const handleKeydown = (event: KeyboardEvent) => {
+  isEditing.value = false
+}
+
 const cancelEdit = () => {
   isEditing.value = false
 }
