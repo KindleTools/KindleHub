@@ -106,6 +106,19 @@ Sistema de pre-procesamiento de datos antes de importar a la base de datos.
 4. Decidir: Importar a biblioteca / Solo exportar / Descartar
 
 ### Pendiente
+
+**Prioridad Alta:**
+- [ ] Confirmación al salir con cambios sin guardar (`onBeforeRouteLeave` guard)
+- [ ] Recalcular stats si cambia el tipo de clipping en `updateClipping()`
+
+**Prioridad Media:**
+- [ ] Detección de duplicados en batch (usar `arePotentialDuplicates()` existente)
+- [ ] Toast de feedback en acciones (edición inline, bulk edit)
+- [ ] Keyboard shortcut Escape para cerrar edición (`@keyup.escape`)
+
+**Prioridad Baja:**
+- [ ] Virtual scrolling para batches grandes (5000+ clippings)
+- [ ] Persistir batch en localStorage (recuperar si se cierra el navegador)
 - [ ] Enhanced parser specifics (parser pendiente de actualización para emitir warnings detallados)
 
 ---
