@@ -152,6 +152,44 @@ export async function getAllClippings(): Promise<StoredClipping[]> {
 }
 
 /**
+ * Get a single clipping by ID.
+ */
+export async function getClippingById(id: number): Promise<StoredClipping | undefined> {
+  return db.clippings.get(id)
+}
+
+/**
+ * Update a clipping by ID.
+ */
+export async function updateClipping(id: number, data: Partial<StoredClipping>): Promise<void> {
+  await db.clippings.update(id, {
+    ...data,
+    updatedAt: new Date()
+  })
+}
+
+/**
+ * Add a single clipping to the database.
+ */
+export async function addClipping(clipping: Omit<StoredClipping, 'id'>): Promise<number> {
+  return db.clippings.add(clipping as StoredClipping)
+}
+
+/**
+ * Add multiple clippings to the database.
+ */
+export async function addClippings(clippings: Omit<StoredClipping, 'id'>[]): Promise<void> {
+  await db.clippings.bulkAdd(clippings as StoredClipping[])
+}
+
+/**
+ * Delete multiple clippings by IDs.
+ */
+export async function deleteClippings(ids: number[]): Promise<void> {
+  await db.clippings.bulkDelete(ids)
+}
+
+/**
  * Clear all data from the database.
  */
 export async function clearAllData(): Promise<void> {

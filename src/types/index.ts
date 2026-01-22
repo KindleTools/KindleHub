@@ -44,9 +44,8 @@ export interface SearchFilters {
  * Statistics about clippings
  */
 export interface ClippingsStats {
-  total: number
-  highlights: number
-  notes: number
-  bookmarks: number
-  books: number
+  totalClippings: number
+  totalHighlights: number
+  totalNotes: number
+  totalBookmarks: number
 }

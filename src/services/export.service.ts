@@ -15,7 +15,10 @@ import {
   JoplinExporter
 } from 'kindle-tools-ts'
 
-export type ExportFormat = 'markdown' | 'json' | 'csv' | 'html' | 'obsidian' | 'joplin'
+import type { ExportFormat } from '@/types'
+
+// Re-export for backward compatibility with existing imports
+export type { ExportFormat } from '@/types'
 
 export interface ExportResultData {
   format: ExportFormat

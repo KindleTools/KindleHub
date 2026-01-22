@@ -21,7 +21,11 @@ vi.mock('@/db/schema', () => ({
       orderBy: vi.fn().mockReturnThis(),
       reverse: vi.fn().mockReturnThis(),
       toArray: vi.fn(),
-      add: vi.fn(),
+      get: vi.fn(),
+      add: vi.fn().mockResolvedValue(123),
+      update: vi.fn(),
+      bulkAdd: vi.fn(),
+      bulkDelete: vi.fn(),
       clear: vi.fn(),
       count: vi.fn(),
       where: vi.fn().mockReturnThis(),
@@ -38,6 +42,11 @@ import {
   getBookById,
   getAllClippings,
   getClippingsByBookId,
+  getClippingById,
+  updateClipping,
+  addClipping,
+  addClippings,
+  deleteClippings,
   getStats
 } from '@/services/db.service'
 
@@ -125,6 +134,83 @@ describe('DB Service', () => {
       const result = await getClippingsByBookId(999)
 
       expect(result).toEqual([])
+    })
+  })
+
+  describe('getClippingById', () => {
+    it('returns clipping when found', async () => {
+      const mockClipping = { id: 1, content: 'Test clipping', type: 'highlight' }
+      vi.mocked(db.clippings.get).mockResolvedValue(mockClipping as any)
+
+      const result = await getClippingById(1)
+
+      expect(db.clippings.get).toHaveBeenCalledWith(1)
+      expect(result).toEqual(mockClipping)
+    })
+
+    it('returns undefined when not found', async () => {
+      vi.mocked(db.clippings.get).mockResolvedValue(undefined)
+
+      const result = await getClippingById(999)
+
+      expect(result).toBeUndefined()
+    })
+  })
+
+  describe('updateClipping', () => {
+    it('updates clipping with new data and timestamp', async () => {
+      await updateClipping(1, { content: 'Updated content' })
+
+      expect(db.clippings.update).toHaveBeenCalledWith(1, expect.objectContaining({
+        content: 'Updated content',
+        updatedAt: expect.any(Date)
+      }))
+    })
+  })
+
+  describe('addClipping', () => {
+    it('adds clipping and returns new ID', async () => {
+      const newClipping = {
+        bookId: 1,
+        originalId: 'test-123',
+        type: 'highlight' as const,
+        content: 'New clipping',
+        date: new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+
+      const result = await addClipping(newClipping)
+
+      expect(db.clippings.add).toHaveBeenCalledWith(newClipping)
+      expect(result).toBe(123) // mocked return value
+    })
+  })
+
+  describe('addClippings', () => {
+    it('adds multiple clippings in bulk', async () => {
+      const clippings = [
+        { bookId: 1, originalId: 'test-1', type: 'highlight' as const, content: 'Clip 1', date: new Date(), createdAt: new Date(), updatedAt: new Date() },
+        { bookId: 1, originalId: 'test-2', type: 'note' as const, content: 'Clip 2', date: new Date(), createdAt: new Date(), updatedAt: new Date() }
+      ]
+
+      await addClippings(clippings)
+
+      expect(db.clippings.bulkAdd).toHaveBeenCalledWith(clippings)
+    })
+  })
+
+  describe('deleteClippings', () => {
+    it('deletes multiple clippings by IDs', async () => {
+      await deleteClippings([1, 2, 3])
+
+      expect(db.clippings.bulkDelete).toHaveBeenCalledWith([1, 2, 3])
+    })
+
+    it('handles empty array', async () => {
+      await deleteClippings([])
+
+      expect(db.clippings.bulkDelete).toHaveBeenCalledWith([])
     })
   })
 

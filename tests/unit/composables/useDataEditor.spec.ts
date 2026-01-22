@@ -1,28 +1,30 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ref } from 'vue'
-import { useDataEditor, type EditableClipping } from '@/composables/useDataEditor'
-import { db } from '@/db/schema'
+import { useDataEditor } from '@/composables/useDataEditor'
 
-// Mock the database module
-vi.mock('@/db/schema', () => ({
-  db: {
-    clippings: {
-      update: vi.fn(),
-      bulkDelete: vi.fn(),
-      bulkAdd: vi.fn(),
-      add: vi.fn().mockResolvedValue(123),
-      get: vi.fn().mockResolvedValue({
-        id: 123,
-        bookId: 1,
-        content: '',
-        type: 'highlight',
-        date: new Date(),
-        createdAt: new Date(),
-        updatedAt: new Date()
-      })
-    }
-  }
+// Mock the db service module
+vi.mock('@/services/db.service', () => ({
+  updateClipping: vi.fn(),
+  deleteClippings: vi.fn(),
+  addClippings: vi.fn(),
+  addClipping: vi.fn().mockResolvedValue(123),
+  getClippingById: vi.fn().mockResolvedValue({
+    id: 123,
+    bookId: 1,
+    content: '',
+    type: 'highlight',
+    date: new Date(),
+    createdAt: new Date(),
+    updatedAt: new Date()
+  })
 }))
+
+import {
+  updateClipping,
+  deleteClippings,
+  addClippings,
+  addClipping as dbAddClipping
+} from '@/services/db.service'
 
 describe('useDataEditor', () => {
   const mockClippings = [
@@ -160,7 +162,7 @@ describe('useDataEditor', () => {
 
       await saveEdit(1)
 
-      expect(db.clippings.update).toHaveBeenCalledWith(1, expect.objectContaining({
+      expect(updateClipping).toHaveBeenCalledWith(1, expect.objectContaining({
         content: 'Updated Content'
       }))
       expect(editing?.isEditing).toBe(false)
@@ -179,7 +181,7 @@ describe('useDataEditor', () => {
       toggleSelect(1)
       await deleteSelected()
 
-      expect(db.clippings.bulkDelete).toHaveBeenCalledWith([1])
+      expect(deleteClippings).toHaveBeenCalledWith([1])
       expect(editableClippings.value.length).toBe(1) // Removed from local state
       expect(editableClippings.value.find((c) => c.id === 1)).toBeUndefined()
       expect(onUpdateMock).toHaveBeenCalled()
@@ -195,7 +197,7 @@ describe('useDataEditor', () => {
       toggleSelect(1)
       await duplicateSelected()
 
-      expect(db.clippings.bulkAdd).toHaveBeenCalledWith(expect.arrayContaining([
+      expect(addClippings).toHaveBeenCalledWith(expect.arrayContaining([
         expect.objectContaining({
           // Check that it's a copy
           content: 'Clipping 1',
@@ -215,7 +217,7 @@ describe('useDataEditor', () => {
 
       await addClipping(999)
 
-      expect(db.clippings.add).toHaveBeenCalledWith(expect.objectContaining({
+      expect(dbAddClipping).toHaveBeenCalledWith(expect.objectContaining({
         bookId: 999,
         type: 'highlight',
         content: ''

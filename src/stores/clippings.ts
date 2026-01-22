@@ -5,14 +5,8 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
 import type { StoredClipping } from '@/db/schema'
+import type { ClippingsStats } from '@/types'
 import { getAllClippings, getClippingsByBookId, getStats } from '@/services/db.service'
-
-export interface ClippingsStats {
-  totalClippings: number
-  totalHighlights: number
-  totalNotes: number
-  totalBookmarks: number
-}
 
 export const useClippingsStore = defineStore('clippings', () => {
   const clippings = ref<StoredClipping[]>([])

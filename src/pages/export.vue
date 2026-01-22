@@ -4,7 +4,7 @@ import { FileDown, BookOpen, Upload } from 'lucide-vue-next'
 import type { Clipping, ClippingLocation } from 'kindle-tools-ts'
 
 import { useBooksStore } from '@/stores/books'
-import { db } from '@/db/schema'
+import { getClippingsByBookId } from '@/services/db.service'
 
 const booksStore = useBooksStore()
 
@@ -22,7 +22,7 @@ onMounted(async () => {
   for (const book of booksStore.books) {
     if (!book.id) continue
 
-    const storedClippings = await db.clippings.where({ bookId: book.id }).toArray()
+    const storedClippings = await getClippingsByBookId(book.id!)
 
     for (const sc of storedClippings) {
       // Build location object with proper structure

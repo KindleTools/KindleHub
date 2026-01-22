@@ -5,7 +5,14 @@
  */
 import { ref, computed, type Ref } from 'vue'
 
-import { db, type StoredClipping } from '@/db/schema'
+import type { StoredClipping } from '@/db/schema'
+import {
+  updateClipping,
+  deleteClippings,
+  addClipping as dbAddClipping,
+  addClippings,
+  getClippingById
+} from '@/services/db.service'
 
 export interface EditableClipping extends StoredClipping {
   isSelected: boolean
@@ -120,15 +127,14 @@ export function useDataEditor(options: UseDataEditorOptions) {
       // Build update object, excluding undefined values
       const updateData: Partial<StoredClipping> = {
         content: clipping.content,
-        type: clipping.type,
-        updatedAt: new Date()
+        type: clipping.type
       }
       if (clipping.location !== undefined) updateData.location = clipping.location
       if (clipping.page !== undefined) updateData.page = clipping.page
       if (clipping.note !== undefined) updateData.note = clipping.note
       if (clipping.tags !== undefined) updateData.tags = clipping.tags
 
-      await db.clippings.update(clipping.id, updateData)
+      await updateClipping(clipping.id, updateData)
 
       clipping.isEditing = false
       clipping.originalData = null
@@ -154,7 +160,7 @@ export function useDataEditor(options: UseDataEditorOptions) {
         .map((c) => c.id)
         .filter((id): id is number => id !== undefined)
 
-      await db.clippings.bulkDelete(idsToDelete)
+      await deleteClippings(idsToDelete)
 
       // Remove from local state
       editableClippings.value = editableClippings.value.filter(
@@ -192,7 +198,7 @@ export function useDataEditor(options: UseDataEditorOptions) {
         updatedAt: new Date()
       }))
 
-      await db.clippings.bulkAdd(clippingsToDuplicate as StoredClipping[])
+      await addClippings(clippingsToDuplicate as Omit<StoredClipping, 'id'>[])
       clearSelection()
 
       if (onUpdate) await onUpdate()
@@ -220,10 +226,10 @@ export function useDataEditor(options: UseDataEditorOptions) {
         updatedAt: new Date()
       }
 
-      const id = await db.clippings.add(newClipping as StoredClipping)
+      const id = await dbAddClipping(newClipping)
 
       // Add to local state and start editing
-      const stored = await db.clippings.get(id)
+      const stored = await getClippingById(id)
       if (stored) {
         const editable: EditableClipping = {
           ...stored,
