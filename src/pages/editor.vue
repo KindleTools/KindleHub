@@ -91,7 +91,7 @@ onMounted(loadData)
           <div class="flex items-center gap-4">
             <button
               class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-              @click="router.push('/kindle-hub/library')"
+              @click="router.push('/library')"
             >
               <ArrowLeft class="w-5 h-5" />
             </button>
@@ -152,7 +152,7 @@ onMounted(loadData)
           Importa un archivo de clippings para empezar a editar
         </p>
         <router-link
-          to="/kindle-hub/import"
+          to="/import"
           class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors"
         >
           Importar archivo

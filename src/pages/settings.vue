@@ -38,7 +38,7 @@ async function handleClearData() {
     await clearAllData()
     showConfirmClear.value = false
     toast.success('Todos los datos han sido eliminados')
-    router.push('/kindle-hub/')
+    router.push('/')
   } catch (err) {
     console.error('Failed to clear data:', err)
     toast.error('Error al eliminar los datos')
@@ -92,7 +92,7 @@ function handleResetSettings() {
         <div class="flex items-center gap-4">
           <button
             class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-            @click="router.push('/kindle-hub/')"
+            @click="router.push('/')"
           >
             <ArrowLeft class="w-5 h-5" />
           </button>

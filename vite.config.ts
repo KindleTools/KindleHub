@@ -41,7 +41,7 @@ export default defineConfig({
     }
   },
 
-  base: '/kindle-hub/', // For GitHub Pages
+  base: '/KindleHub/', // For GitHub Pages (must match repo name)
 
   build: {
     target: 'esnext',

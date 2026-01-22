@@ -132,8 +132,115 @@ async function handleDelete() {
       </div>
     </div>
 
-    <!-- Table -->
-    <div class="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
+    <!-- Mobile Cards View -->
+    <div class="md:hidden space-y-3">
+      <div
+        v-for="clipping in editableClippings"
+        :key="'mobile-' + clipping.id"
+        :class="[
+          clipping.isSelected ? 'ring-2 ring-primary-500' : '',
+          clipping.isEditing ? 'ring-2 ring-blue-500' : ''
+        ]"
+        class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 space-y-3"
+      >
+        <!-- Header: Checkbox + Type + Actions -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <input
+              type="checkbox"
+              :checked="clipping.isSelected"
+              class="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-primary-600"
+              @change="toggleSelect(clipping.id!)"
+            />
+            <template v-if="clipping.isEditing">
+              <select
+                v-model="clipping.type"
+                class="text-sm rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700"
+              >
+                <option value="highlight">Highlight</option>
+                <option value="note">Note</option>
+                <option value="bookmark">Bookmark</option>
+              </select>
+            </template>
+            <template v-else>
+              <span
+                :class="getTypeColor(clipping.type)"
+                class="px-2 py-0.5 text-xs font-medium rounded-full capitalize"
+              >
+                {{ clipping.type }}
+              </span>
+            </template>
+          </div>
+          <div class="flex items-center gap-1">
+            <template v-if="clipping.isEditing">
+              <button
+                :disabled="isSaving"
+                class="p-2 text-green-600 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-md"
+                @click="saveEdit(clipping.id!)"
+              >
+                <Check class="w-5 h-5" />
+              </button>
+              <button
+                class="p-2 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-md"
+                @click="cancelEdit"
+              >
+                <X class="w-5 h-5" />
+              </button>
+            </template>
+            <template v-else>
+              <button
+                class="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
+                @click="startEdit(clipping.id!)"
+              >
+                <Edit3 class="w-5 h-5" />
+              </button>
+            </template>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div>
+          <template v-if="clipping.isEditing">
+            <textarea
+              v-model="clipping.content"
+              rows="4"
+              class="w-full text-sm rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700"
+              placeholder="Contenido del clipping..."
+              @keydown="handleKeydown($event, clipping)"
+            ></textarea>
+          </template>
+          <template v-else>
+            <p class="text-sm text-gray-900 dark:text-gray-100">
+              {{ clipping.content || '(vacio)' }}
+            </p>
+          </template>
+        </div>
+
+        <!-- Footer: Location + Date -->
+        <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 pt-2 border-t border-gray-100 dark:border-gray-700">
+          <template v-if="clipping.isEditing">
+            <input
+              v-model="clipping.location"
+              type="text"
+              class="w-28 text-xs rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700"
+              placeholder="Ubicacion"
+            />
+          </template>
+          <template v-else>
+            <span>{{ clipping.location || (clipping.page ? `Pag. ${clipping.page}` : '-') }}</span>
+          </template>
+          <span>{{ formatDate(clipping.date) }}</span>
+        </div>
+      </div>
+
+      <!-- Empty state mobile -->
+      <div v-if="editableClippings.length === 0" class="bg-white dark:bg-gray-800 rounded-lg shadow p-8 text-center">
+        <p class="text-gray-500 dark:text-gray-400">No hay clippings para mostrar</p>
+      </div>
+    </div>
+
+    <!-- Desktop Table View -->
+    <div class="hidden md:block overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
       <table class="w-full">
         <thead class="bg-gray-50 dark:bg-gray-700/50">
           <tr>
@@ -145,7 +252,7 @@ async function handleDelete() {
               Contenido
             </th>
             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-              Ubicación
+              Ubicacion
             </th>
             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
               Fecha
