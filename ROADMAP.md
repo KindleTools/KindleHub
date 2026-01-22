@@ -161,7 +161,17 @@ src/
 - Poder re-importar desde histórico
 
 ### Prioridad
-🟡 Media - Feature avanzada para usuarios expertos
+🟢 En Progreso - Fase 1 (Core) completada
+
+### Estado de Implementación
+- [x] Store y Tipos de datos (`batches.ts`)
+- [x] Página de revisión (`batch/[id].vue`)
+- [x] Utilidades de servicio (`batch.service.ts`)
+- [x] Redirección desde Importar
+- [ ] Edición inline de clippings
+- [ ] Acciones masivas (bulk actions)
+- [ ] Historial de lotes
+
 
 
 ---

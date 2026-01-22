@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import { CheckCircle, FileJson, FileText, Table, Upload, XCircle } from 'lucide-vue-next'
+import { FileJson, FileText, Table, Upload, XCircle } from 'lucide-vue-next'
 
 import { parseContent, type ImportFormat } from '@/services/parser.service'
-import { saveClippings } from '@/services/db.service'
-import { useBooksStore } from '@/stores/books'
+import { useBatchesStore } from '@/stores/batches'
 
-const booksStore = useBooksStore()
+const router = useRouter()
+const batchesStore = useBatchesStore()
 
 const selectedFormat = ref<ImportFormat>('txt')
 const isDragging = ref(false)
 const isImporting = ref(false)
 const progress = ref(0)
 const error = ref<string | null>(null)
-const result = ref<{ success: boolean, booksCount: number, clippingsCount: number } | null>(null)
 
 const fileInputRef = ref<HTMLInputElement>()
 
@@ -44,7 +43,6 @@ const processFile = async (file: File) => {
     isImporting.value = true
     progress.value = 0
     error.value = null
-    result.value = null
 
     // Read file
     progress.value = 10
@@ -56,25 +54,26 @@ const processFile = async (file: File) => {
     const parsed = await parseContent(content, selectedFormat.value)
     console.log('Parsed:', parsed.stats)
 
-    // Save to IndexedDB
+    // Create batch (in-memory, not saved yet)
     progress.value = 70
-    const saved = await saveClippings(parsed.clippings)
-    console.log('Saved:', saved)
+    const batchId = batchesStore.createBatch(
+      parsed.clippings,
+      file.name,
+      file.size,
+      {
+        duplicatesRemoved: parsed.stats.duplicatesRemoved,
+        linkedNotes: parsed.stats.linkedNotes
+      }
+    )
+    console.log('Created batch:', batchId)
 
     progress.value = 100
 
-    result.value = {
-      success: true,
-      booksCount: saved.booksCount,
-      clippingsCount: saved.clippingsCount
-    }
-
-    // Refresh books store
-    await booksStore.loadBooks()
+    // Navigate to batch editor for review
+    router.push(`/batch/${batchId}`)
   } catch (err) {
     console.error('Import error:', err)
     error.value = err instanceof Error ? err.message : 'Unknown error'
-    result.value = { success: false, booksCount: 0, clippingsCount: 0 }
   } finally {
     isImporting.value = false
   }
@@ -84,7 +83,6 @@ const reset = () => {
   isImporting.value = false
   progress.value = 0
   error.value = null
-  result.value = null
 }
 </script>
 
@@ -98,7 +96,7 @@ const reset = () => {
     </div>
 
     <!-- Import State: Idle -->
-    <div v-if="!isImporting && !result">
+    <div v-if="!isImporting && !error">
       <!-- Format Selector -->
       <div class="grid grid-cols-3 gap-4 mb-8">
         <button
@@ -178,36 +176,6 @@ const reset = () => {
         ></div>
       </div>
       <p class="text-sm text-gray-500 mt-2">{{ progress }}%</p>
-    </div>
-
-    <!-- Import State: Success -->
-    <div v-else-if="result?.success" class="text-center py-16">
-      <CheckCircle class="h-16 w-16 text-green-500 mx-auto mb-4" />
-      <h2 class="text-2xl font-semibold mb-2">Import Successful!</h2>
-
-      <div class="flex gap-8 justify-center my-8">
-        <div class="text-center">
-          <div class="text-4xl font-bold text-primary-600">
-            {{ result.booksCount }}
-          </div>
-          <div class="text-sm text-gray-600 dark:text-gray-400">Books</div>
-        </div>
-        <div class="text-center">
-          <div class="text-4xl font-bold text-primary-600">
-            {{ result.clippingsCount }}
-          </div>
-          <div class="text-sm text-gray-600 dark:text-gray-400">Highlights</div>
-        </div>
-      </div>
-
-      <div class="flex gap-4 justify-center">
-        <router-link to="/library" class="btn-primary">
-          View Library
-        </router-link>
-        <button class="btn-secondary" @click="reset">
-          Import Another File
-        </button>
-      </div>
     </div>
 
     <!-- Import State: Error -->

@@ -30,6 +30,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/batch/[id]': RouteRecordInfo<
+      '/batch/[id]',
+      '/batch/:id',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | never
+    >,
     '/books/[id]': RouteRecordInfo<
       '/books/[id]',
       '/books/:id',
@@ -95,6 +102,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/index.vue': {
       routes:
         | '/'
+      views:
+        | never
+    }
+    'src/pages/batch/[id].vue': {
+      routes:
+        | '/batch/[id]'
       views:
         | never
     }
