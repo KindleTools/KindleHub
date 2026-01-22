@@ -1,4 +1,4 @@
-/* eslint-env node */
+/* global process */
 import fs from 'fs'
 import path from 'path'
 
@@ -6,7 +6,7 @@ const coveragePath = './coverage/coverage-final.json'
 
 if (!fs.existsSync(coveragePath)) {
   console.log('No coverage file found. Please run "npm run test:coverage" first.')
-  // eslint-disable-next-line no-undef
+
   process.exit(1)
 }
 
@@ -16,7 +16,7 @@ const fileStats = []
 
 for (const filePath in coverage) {
   const fileCov = coverage[filePath]
-  // eslint-disable-next-line no-undef
+
   const relativePath = path.relative(process.cwd(), filePath)
 
   let totalStatements = 0

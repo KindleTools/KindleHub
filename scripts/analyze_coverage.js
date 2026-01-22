@@ -1,11 +1,11 @@
-/* eslint-env node */
+/* global process */
 import fs from 'fs'
 
 const coveragePath = './coverage/coverage-final.json'
 
 if (!fs.existsSync(coveragePath)) {
   console.log('No coverage file found')
-  // eslint-disable-next-line no-undef
+
   process.exit(1)
 }
 
