@@ -18,6 +18,121 @@
   },
   "app": {
     "title": "KindleHub",
-    "subtitle": "Powered by kindle-tools-ts"
+    "subtitle": "Powered by kindle-tools-ts",
+    "welcome": "Benvenuto in {app}",
+    "description": "Trasforma i tuoi ritagli Kindle in una base di conoscenza organizzata e ricercabile."
+  },
+  "home": {
+    "import_title": "Importa",
+    "import_desc": "Trascina e rilascia il tuo file My Clippings.txt",
+    "organize_title": "Organizza",
+    "organize_desc": "Deduplicazione intelligente e collegamento note",
+    "export_title": "Esporta",
+    "export_desc": "Markdown, Obsidian, JSON, CSV, HTML",
+    "cta_import": "Importa Ritagli",
+    "cta_library": "Vedi Libreria",
+    "stats_books": "Libri",
+    "stats_highlights": "Evidenziazioni",
+    "no_data": "Nessun ritaglio importato. Inizia importando i tuoi ritagli Kindle!"
+  },
+  "library": {
+    "title": "La mia Libreria",
+    "stats_summary": "{books} libri · {clippings} evidenziazioni",
+    "back_to_library": "Torna alla Libreria",
+    "book_not_found": "Libro non trovato",
+    "unknown_author": "Autore sconosciuto",
+    "last_read": "Ultima lettura: {date}"
+  },
+  "import": {
+    "title": "Importa Ritagli Kindle",
+    "subtitle": "Carica il tuo file \"My Clippings.txt\" per iniziare",
+    "drop_title": "Rilascia il file {format} qui",
+    "drop_subtitle": "o clicca per scegliere un file",
+    "help_title": "Dove trovare il tuo file",
+    "help_step1": "Collega il tuo Kindle al computer",
+    "help_step2": "Apri l'unità Kindle",
+    "help_step3": "Vai alla cartella {folder}",
+    "help_step4": "Trova {file}",
+    "processing_title": "Elaborazione file...",
+    "processing_desc": "Potrebbe richiedere un momento per file grandi",
+    "success": "Importazione riuscita!",
+    "failed": "Importazione fallita"
+  },
+  "export": {
+    "title": "Esporta",
+    "subtitle": "Esporta i tuoi ritagli in vari formati",
+    "loading": "Caricamento evidenziazioni...",
+    "no_content": "Nessuna evidenziazione da esportare",
+    "no_content_desc": "Importa prima i tuoi ritagli Kindle, poi torna qui per esportarli nel formato preferito.",
+    "cta_import": "Importa Ritagli"
+  },
+  "editor": {
+    "title": "Editor Dati",
+    "subtitle_book": "in \"{book}\"",
+    "all_books": "Tutti i Libri",
+    "no_clippings": "Nessun ritaglio",
+    "no_clippings_desc": "Importa un file per iniziare a modificare",
+    "cta_import": "Importa File"
+  },
+  "datatable": {
+    "select_all": "Seleziona tutto",
+    "selected": "{count} selezionati",
+    "add": "Aggiungi",
+    "duplicate": "Duplica",
+    "delete": "Elimina",
+    "type": "Tipo",
+    "content": "Contenuto",
+    "location": "Posizione",
+    "date": "Data",
+    "empty": "Nessun ritaglio da mostrare",
+    "placeholder_content": "Contenuto ritaglio...",
+    "placeholder_location": "Pos. 123-456",
+    "page_prefix": "Pag.",
+    "save_tooltip": "Salva (Invio)",
+    "cancel_tooltip": "Annulla (Esc)",
+    "edit_tooltip": "Modifica",
+    "delete_confirm": "Eliminare {count} ritaglio(i)?"
+  },
+  "batch": {
+    "selected": "selezionati",
+    "clear_selection": "Pulisci selezione",
+    "change_author": "Cambia Autore",
+    "change_title": "Cambia Titolo",
+    "delete": "Elimina",
+    "modal_author_title": "Cambia Autore",
+    "modal_title_title": "Cambia Titolo Libro",
+    "modal_desc": "Questo aggiornerà {count} ritaglio(i) selezionati.",
+    "placeholder_author": "Inserisci nome autore...",
+    "placeholder_title": "Inserisci titolo libro...",
+    "apply": "Applica a {count} ritaglio(i)",
+    "cancel": "Annulla"
+  },
+  "clipping": {
+    "highlight": "Evidenziazione",
+    "note": "Nota",
+    "bookmark": "Segnalibro",
+    "default": "Ritaglio",
+    "page": "Pagina {page}",
+    "location": "Posizione {loc}",
+    "no_content": "Nessun contenuto",
+    "your_note": "La tua nota"
+  },
+  "search": {
+    "title": "Cerca Evidenziazioni",
+    "placeholder": "Cerca tra tutte le evidenziazioni... (/ o Ctrl+F)",
+    "filters": "Filtri",
+    "filter_type": "Tipo",
+    "filter_book": "Libro",
+    "clear_filters": "Pulisci filtri",
+    "searching": "Ricerca...",
+    "results_found": "{count} risultato(i) trovati",
+    "no_results": "Nessun risultato trovato",
+    "empty_state_title": "Cerca nella tua libreria",
+    "empty_state_desc": "Scrivi qualcosa per cercare tra {count} ritagli"
+  },
+  "theme": {
+    "toggle": "Cambia tema",
+    "light": "Modo chiaro",
+    "dark": "Modo scuro"
   }
 }

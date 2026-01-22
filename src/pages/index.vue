@@ -37,7 +37,7 @@ const hasData = computed(() => booksStore.totalBooks > 0)
     <div class="grid md:grid-cols-3 gap-6 mb-12">
       <div class="card text-center">
         <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center mx-auto mb-4">
-          <Upload class="h-6 w-6 text-primary-600" />
+          <Upload class="h-6 w-6 text-primary-600" aria-hidden="true" />
         </div>
         <h3 class="font-semibold text-lg mb-2">{{ $t('home.import_title') }}</h3>
         <p class="text-gray-600 dark:text-gray-400 text-sm">
@@ -47,7 +47,7 @@ const hasData = computed(() => booksStore.totalBooks > 0)
 
       <div class="card text-center">
         <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mx-auto mb-4">
-          <Sparkles class="h-6 w-6 text-green-600" />
+          <Sparkles class="h-6 w-6 text-green-600" aria-hidden="true" />
         </div>
         <h3 class="font-semibold text-lg mb-2">{{ $t('home.organize_title') }}</h3>
         <p class="text-gray-600 dark:text-gray-400 text-sm">
@@ -57,7 +57,7 @@ const hasData = computed(() => booksStore.totalBooks > 0)
 
       <div class="card text-center">
         <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mx-auto mb-4">
-          <Download class="h-6 w-6 text-purple-600" />
+          <Download class="h-6 w-6 text-purple-600" aria-hidden="true" />
         </div>
         <h3 class="font-semibold text-lg mb-2">{{ $t('home.export_title') }}</h3>
         <p class="text-gray-600 dark:text-gray-400 text-sm">
@@ -69,11 +69,11 @@ const hasData = computed(() => booksStore.totalBooks > 0)
     <!-- CTA Buttons -->
     <div class="flex flex-col sm:flex-row gap-4 justify-center">
       <router-link to="/import" class="btn-primary text-lg px-8 py-3 inline-flex items-center justify-center gap-2">
-        <Upload class="h-5 w-5" />
+        <Upload class="h-5 w-5" aria-hidden="true" />
         {{ $t('home.cta_import') }}
       </router-link>
       <router-link to="/library" class="btn-secondary text-lg px-8 py-3 inline-flex items-center justify-center gap-2">
-        <BookOpen class="h-5 w-5" />
+        <BookOpen class="h-5 w-5" aria-hidden="true" />
         {{ $t('home.cta_library') }}
       </router-link>
     </div>

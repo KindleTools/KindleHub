@@ -110,7 +110,7 @@ const reset = () => {
           ]"
           @click="selectedFormat = format.id"
         >
-          <component :is="format.icon" class="h-8 w-8" />
+          <component :is="format.icon" class="h-8 w-8" aria-hidden="true" />
           <span class="font-medium">{{ format.label }}</span>
         </button>
       </div>
@@ -128,7 +128,7 @@ const reset = () => {
         @drop="handleDrop"
         @click="fileInputRef?.click()"
       >
-        <Upload class="h-16 w-16 mx-auto mb-4 text-gray-400" />
+        <Upload class="h-16 w-16 mx-auto mb-4 text-gray-400" aria-hidden="true" />
 
         <h3 class="text-xl font-semibold mb-2">
           {{ $t('import.drop_title', { format: selectedFormat.toUpperCase() }) }}
@@ -148,7 +148,7 @@ const reset = () => {
       <!-- Help Box -->
       <div class="mt-8 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
         <h3 class="font-semibold mb-2 flex items-center gap-2">
-          <FileText class="h-5 w-5" />
+          <FileText class="h-5 w-5" aria-hidden="true" />
           {{ $t('import.help_title') }}
         </h3>
         <ol class="list-decimal list-inside space-y-1 text-sm text-gray-700 dark:text-gray-300">
@@ -180,7 +180,7 @@ const reset = () => {
 
     <!-- Import State: Error -->
     <div v-else-if="error" class="text-center py-16">
-      <XCircle class="h-16 w-16 text-red-500 mx-auto mb-4" />
+      <XCircle class="h-16 w-16 text-red-500 mx-auto mb-4" aria-hidden="true" />
       <h2 class="text-2xl font-semibold mb-2">{{ $t('import.failed') }}</h2>
       <p class="text-red-600 dark:text-red-400 mb-6">{{ error }}</p>
 

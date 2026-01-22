@@ -18,6 +18,121 @@
   },
   "app": {
     "title": "KindleHub",
-    "subtitle": "Desenvolvido por kindle-tools-ts"
+    "subtitle": "Desenvolvido por kindle-tools-ts",
+    "welcome": "Bem-vindo ao {app}",
+    "description": "Transforme seus destaques do Kindle em uma base de conhecimento organizada e pesquisável."
+  },
+  "home": {
+    "import_title": "Importar",
+    "import_desc": "Arraste e solte seu arquivo My Clippings.txt",
+    "organize_title": "Organizar",
+    "organize_desc": "Desduplicação inteligente e vinculação de notas",
+    "export_title": "Exportar",
+    "export_desc": "Markdown, Obsidian, JSON, CSV, HTML",
+    "cta_import": "Importar Destaques",
+    "cta_library": "Ver Biblioteca",
+    "stats_books": "Livros",
+    "stats_highlights": "Destaques",
+    "no_data": "Nenhum destaque importado ainda. Comece importando seus destaques do Kindle!"
+  },
+  "library": {
+    "title": "Minha Biblioteca",
+    "stats_summary": "{books} livros · {clippings} destaques",
+    "back_to_library": "Voltar para Biblioteca",
+    "book_not_found": "Livro não encontrado",
+    "unknown_author": "Autor desconhecido",
+    "last_read": "Última leitura: {date}"
+  },
+  "import": {
+    "title": "Importar Destaques do Kindle",
+    "subtitle": "Faça upload do seu arquivo \"My Clippings.txt\" para começar",
+    "drop_title": "Solte seu arquivo {format} aqui",
+    "drop_subtitle": "ou clique para escolher um arquivo",
+    "help_title": "Onde encontrar seu arquivo",
+    "help_step1": "Conecte seu Kindle ao computador",
+    "help_step2": "Abra a unidade Kindle",
+    "help_step3": "Vá para a pasta {folder}",
+    "help_step4": "Encontre {file}",
+    "processing_title": "Processando arquivo...",
+    "processing_desc": "Isso pode levar um momento para arquivos grandes",
+    "success": "Importação realizada com sucesso!",
+    "failed": "Falha na importação"
+  },
+  "export": {
+    "title": "Exportar",
+    "subtitle": "Exporte seus destaques em vários formatos",
+    "loading": "Carregando destaques...",
+    "no_content": "Nenhum destaque para exportar",
+    "no_content_desc": "Importe seus recortes do Kindle primeiro, depois volte aqui para exportá-los no formato preferido.",
+    "cta_import": "Importar Destaques"
+  },
+  "editor": {
+    "title": "Editor de Dados",
+    "subtitle_book": "em \"{book}\"",
+    "all_books": "Todos os Livros",
+    "no_clippings": "Nenhum recorte",
+    "no_clippings_desc": "Importe um arquivo para começar a editar",
+    "cta_import": "Importar Arquivo"
+  },
+  "datatable": {
+    "select_all": "Selecionar tudo",
+    "selected": "{count} selecionado(s)",
+    "add": "Adicionar",
+    "duplicate": "Duplicar",
+    "delete": "Excluir",
+    "type": "Tipo",
+    "content": "Conteúdo",
+    "location": "Local",
+    "date": "Data",
+    "empty": "Nenhum recorte para mostrar",
+    "placeholder_content": "Conteúdo do recorte...",
+    "placeholder_location": "Loc. 123-456",
+    "page_prefix": "Pág.",
+    "save_tooltip": "Salvar (Enter)",
+    "cancel_tooltip": "Cancelar (Esc)",
+    "edit_tooltip": "Editar",
+    "delete_confirm": "Excluir {count} recorte(s)?"
+  },
+  "batch": {
+    "selected": "selecionado(s)",
+    "clear_selection": "Limpar seleção",
+    "change_author": "Alterar Autor",
+    "change_title": "Alterar Título",
+    "delete": "Excluir",
+    "modal_author_title": "Alterar Autor",
+    "modal_title_title": "Alterar Título do Livro",
+    "modal_desc": "Isso atualizará {count} recorte(s) selecionado(s).",
+    "placeholder_author": "Digite o nome do autor...",
+    "placeholder_title": "Digite o título do livro...",
+    "apply": "Aplicar a {count} recorte(s)",
+    "cancel": "Cancelar"
+  },
+  "clipping": {
+    "highlight": "Destaque",
+    "note": "Nota",
+    "bookmark": "Marcador",
+    "default": "Recorte",
+    "page": "Página {page}",
+    "location": "Local {loc}",
+    "no_content": "Sem conteúdo",
+    "your_note": "Sua nota"
+  },
+  "search": {
+    "title": "Pesquisar Destaques",
+    "placeholder": "Pesquisar em todos os destaques... (/ ou Ctrl+F)",
+    "filters": "Filtros",
+    "filter_type": "Tipo",
+    "filter_book": "Livro",
+    "clear_filters": "Limpar filtros",
+    "searching": "Pesquisando...",
+    "results_found": "{count} resultado(s) encontrado(s)",
+    "no_results": "Nenhum resultado encontrado",
+    "empty_state_title": "Pesquise na sua biblioteca",
+    "empty_state_desc": "Digite algo para pesquisar entre {count} recortes"
+  },
+  "theme": {
+    "toggle": "Alternar tema",
+    "light": "Modo claro",
+    "dark": "Modo escuro"
   }
 }

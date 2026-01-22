@@ -92,12 +92,13 @@ function handleResetSettings() {
         <div class="flex items-center gap-4">
           <button
             class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+            :aria-label="$t('common.back')"
             @click="router.push('/')"
           >
             <ArrowLeft class="w-5 h-5" />
           </button>
           <h1 class="text-xl font-bold text-gray-900 dark:text-white">
-            Configuración
+            {{ $t('nav.settings') }}
           </h1>
         </div>
       </div>
@@ -108,7 +109,7 @@ function handleResetSettings() {
       <!-- Appearance -->
       <section class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
         <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-          Apariencia
+          {{ $t('settings.appearance') }}
         </h2>
 
         <div class="space-y-4">
@@ -116,11 +117,12 @@ function handleResetSettings() {
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
               <Moon class="w-5 h-5 text-gray-500" />
-              <span class="text-gray-700 dark:text-gray-300">Modo oscuro</span>
+              <span class="text-gray-700 dark:text-gray-300">{{ $t('theme.dark') }}</span>
             </div>
             <button
               class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
               :class="isDark ? 'bg-primary-600' : 'bg-gray-200'"
+              :aria-label="$t('theme.toggle')"
               @click="toggleDark()"
             >
               <span
@@ -134,7 +136,7 @@ function handleResetSettings() {
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
               <Globe class="w-5 h-5 text-gray-500" />
-              <span class="text-gray-700 dark:text-gray-300">Idioma</span>
+              <span class="text-gray-700 dark:text-gray-300">{{ $t('settings.language') }}</span>
             </div>
             <select
               :value="settingsStore.language"
@@ -155,13 +157,13 @@ function handleResetSettings() {
       <!-- Export Preferences -->
       <section class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
         <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-          Exportación
+          {{ $t('settings.export_title') }}
         </h2>
 
         <div class="space-y-4">
           <!-- Default format -->
           <div class="flex items-center justify-between">
-            <span class="text-gray-700 dark:text-gray-300">Formato por defecto</span>
+            <span class="text-gray-700 dark:text-gray-300">{{ $t('settings.default_format') }}</span>
             <select
               :value="settingsStore.exportPreferences.defaultFormat"
               class="text-sm rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700"
@@ -175,7 +177,7 @@ function handleResetSettings() {
 
           <!-- Include metadata -->
           <div class="flex items-center justify-between">
-            <span class="text-gray-700 dark:text-gray-300">Incluir metadatos</span>
+            <span class="text-gray-700 dark:text-gray-300">{{ $t('settings.include_metadata') }}</span>
             <input
               type="checkbox"
               :checked="settingsStore.exportPreferences.includeMetadata"
@@ -186,7 +188,7 @@ function handleResetSettings() {
 
           <!-- Group by book -->
           <div class="flex items-center justify-between">
-            <span class="text-gray-700 dark:text-gray-300">Agrupar por libro</span>
+            <span class="text-gray-700 dark:text-gray-300">{{ $t('settings.group_by_book') }}</span>
             <input
               type="checkbox"
               :checked="settingsStore.exportPreferences.groupByBook"
@@ -200,7 +202,7 @@ function handleResetSettings() {
       <!-- Data Management -->
       <section class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
         <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-          Datos
+          {{ $t('settings.data_management') }}
         </h2>
 
         <div class="space-y-3">
@@ -212,8 +214,8 @@ function handleResetSettings() {
           >
             <Download class="w-5 h-5 text-gray-500" />
             <div>
-              <p class="font-medium">Exportar backup</p>
-              <p class="text-sm text-gray-500">Guardar todos los datos en un archivo JSON</p>
+              <p class="font-medium">{{ $t('settings.export_backup') }}</p>
+              <p class="text-sm text-gray-500">{{ $t('settings.export_backup_desc') }}</p>
             </div>
           </button>
 
@@ -224,8 +226,8 @@ function handleResetSettings() {
           >
             <RotateCcw class="w-5 h-5 text-gray-500" />
             <div>
-              <p class="font-medium">Restaurar configuración</p>
-              <p class="text-sm text-gray-500">Volver a los valores por defecto</p>
+              <p class="font-medium">{{ $t('settings.reset_settings') }}</p>
+              <p class="text-sm text-gray-500">{{ $t('settings.reset_settings_desc') }}</p>
             </div>
           </button>
 
@@ -236,8 +238,8 @@ function handleResetSettings() {
           >
             <Trash2 class="w-5 h-5" />
             <div>
-              <p class="font-medium">Eliminar todos los datos</p>
-              <p class="text-sm text-red-500">Esta acción no se puede deshacer</p>
+              <p class="font-medium">{{ $t('settings.clear_data') }}</p>
+              <p class="text-sm text-red-500">{{ $t('settings.clear_data_desc') }}</p>
             </div>
           </button>
         </div>

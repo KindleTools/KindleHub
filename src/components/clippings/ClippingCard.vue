@@ -87,6 +87,7 @@ const formatLocation = computed(() => {
         <component
           :is="typeConfig.icon"
           :class="['h-4 w-4', typeConfig.iconColor]"
+          aria-hidden="true"
         />
         <span :class="['text-xs font-medium uppercase tracking-wide', typeConfig.iconColor]">
           {{ typeConfig.label }}
@@ -94,11 +95,11 @@ const formatLocation = computed(() => {
       </div>
       <div class="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
         <span v-if="formatLocation" class="flex items-center gap-1">
-          <FileText class="h-3 w-3" />
+          <FileText class="h-3 w-3" aria-hidden="true" />
           {{ formatLocation }}
         </span>
         <span v-if="clipping.date" class="flex items-center gap-1">
-          <Calendar class="h-3 w-3" />
+          <Calendar class="h-3 w-3" aria-hidden="true" />
           {{ formatDate(clipping.date) }}
         </span>
       </div>
@@ -120,7 +121,7 @@ const formatLocation = computed(() => {
       class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700"
     >
       <div class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 mb-1">
-        <Link2 class="h-3 w-3" />
+        <Link2 class="h-3 w-3" aria-hidden="true" />
         <span>{{ $t('clipping.your_note') }}</span>
       </div>
       <p class="text-sm text-gray-700 dark:text-gray-300 italic">

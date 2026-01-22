@@ -18,6 +18,121 @@
   },
   "app": {
     "title": "KindleHub",
-    "subtitle": "Propulsé par kindle-tools-ts"
+    "subtitle": "Propulsé par kindle-tools-ts",
+    "welcome": "Bienvenue sur {app}",
+    "description": "Transformez vos surlignements Kindle en une base de connaissances organisée et consultable."
+  },
+  "home": {
+    "import_title": "Importer",
+    "import_desc": "Glissez et déposez votre fichier My Clippings.txt",
+    "organize_title": "Organiser",
+    "organize_desc": "Déduplication intelligente et liaison de notes",
+    "export_title": "Exporter",
+    "export_desc": "Markdown, Obsidian, JSON, CSV, HTML",
+    "cta_import": "Importer les Surlignements",
+    "cta_library": "Voir la Bibliothèque",
+    "stats_books": "Livres",
+    "stats_highlights": "Surlignements",
+    "no_data": "Aucun surlignement importé. Commencez par importer vos surlignements Kindle !"
+  },
+  "library": {
+    "title": "Ma Bibliothèque",
+    "stats_summary": "{books} livres · {clippings} surlignements",
+    "back_to_library": "Retour à la Bibliothèque",
+    "book_not_found": "Livre introuvable",
+    "unknown_author": "Auteur inconnu",
+    "last_read": "Dernière lecture : {date}"
+  },
+  "import": {
+    "title": "Importer les Surlignements Kindle",
+    "subtitle": "Téléchargez votre fichier \"My Clippings.txt\" pour commencer",
+    "drop_title": "Déposez votre fichier {format} ici",
+    "drop_subtitle": "ou cliquez pour choisir un fichier",
+    "help_title": "Où trouver votre fichier",
+    "help_step1": "Connectez votre Kindle à votre ordinateur",
+    "help_step2": "Ouvrez le lecteur Kindle",
+    "help_step3": "Allez dans le dossier {folder}",
+    "help_step4": "Trouvez {file}",
+    "processing_title": "Traitement du fichier...",
+    "processing_desc": "Cela peut prendre un moment pour les gros fichiers",
+    "success": "Importation réussie !",
+    "failed": "Échec de l'importation"
+  },
+  "export": {
+    "title": "Exporter",
+    "subtitle": "Exportez vos surlignements dans divers formats",
+    "loading": "Chargement des surlignements...",
+    "no_content": "Aucun surlignement à exporter",
+    "no_content_desc": "Importez d'abord vos coupures Kindle, puis revenez ici pour les exporter dans votre format préféré.",
+    "cta_import": "Importer les Surlignements"
+  },
+  "editor": {
+    "title": "Éditeur de Données",
+    "subtitle_book": "dans \"{book}\"",
+    "all_books": "Tous les Livres",
+    "no_clippings": "Aucune coupure",
+    "no_clippings_desc": "Importez un fichier pour commencer à éditer",
+    "cta_import": "Importer Fichier"
+  },
+  "datatable": {
+    "select_all": "Tout sélectionner",
+    "selected": "{count} sélectionné(s)",
+    "add": "Ajouter",
+    "duplicate": "Dupliquer",
+    "delete": "Supprimer",
+    "type": "Type",
+    "content": "Contenu",
+    "location": "Emplacement",
+    "date": "Date",
+    "empty": "Aucune coupure à afficher",
+    "placeholder_content": "Contenu de la coupure...",
+    "placeholder_location": "Emp. 123-456",
+    "page_prefix": "P.",
+    "save_tooltip": "Enregistrer (Entrée)",
+    "cancel_tooltip": "Annuler (Échap)",
+    "edit_tooltip": "Modifier",
+    "delete_confirm": "Supprimer {count} coupure(s) ?"
+  },
+  "batch": {
+    "selected": "sélectionné(s)",
+    "clear_selection": "Effacer la sélection",
+    "change_author": "Changer l'Auteur",
+    "change_title": "Changer le Titre",
+    "delete": "Supprimer",
+    "modal_author_title": "Changer l'Auteur",
+    "modal_title_title": "Changer le Titre du Livre",
+    "modal_desc": "Ceci mettra à jour {count} coupure(s) sélectionnée(s).",
+    "placeholder_author": "Entrez le nom de l'auteur...",
+    "placeholder_title": "Entrez le titre du livre...",
+    "apply": "Appliquer à {count} coupure(s)",
+    "cancel": "Annuler"
+  },
+  "clipping": {
+    "highlight": "Surlignement",
+    "note": "Note",
+    "bookmark": "Signet",
+    "default": "Coupure",
+    "page": "Page {page}",
+    "location": "Emplacement {loc}",
+    "no_content": "Aucun contenu",
+    "your_note": "Votre note"
+  },
+  "search": {
+    "title": "Rechercher des Surlignements",
+    "placeholder": "Rechercher dans tous les surlignements... (/ ou Ctrl+F)",
+    "filters": "Filtres",
+    "filter_type": "Type",
+    "filter_book": "Livre",
+    "clear_filters": "Effacer les filtres",
+    "searching": "Recherche...",
+    "results_found": "{count} résultat(s) trouvé(s)",
+    "no_results": "Aucun résultat trouvé",
+    "empty_state_title": "Recherchez dans votre bibliothèque",
+    "empty_state_desc": "Tapez quelque chose pour rechercher parmi {count} coupures"
+  },
+  "theme": {
+    "toggle": "Changer de thème",
+    "light": "Mode clair",
+    "dark": "Mode sombre"
   }
 }

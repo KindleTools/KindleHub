@@ -18,6 +18,121 @@
   },
   "app": {
     "title": "KindleHub",
-    "subtitle": "Powered by kindle-tools-ts"
+    "subtitle": "Powered by kindle-tools-ts",
+    "welcome": "Willkommen bei {app}",
+    "description": "Verwandeln Sie Ihre Kindle-Markierungen in eine organisierte, durchsuchbare Wissensdatenbank."
+  },
+  "home": {
+    "import_title": "Importieren",
+    "import_desc": "Ziehen Sie Ihre My Clippings.txt Datei hierher",
+    "organize_title": "Organisieren",
+    "organize_desc": "Intelligente Deduplizierung und Notizverknüpfung",
+    "export_title": "Exportieren",
+    "export_desc": "Markdown, Obsidian, JSON, CSV, HTML",
+    "cta_import": "Markierungen Importieren",
+    "cta_library": "Bibliothek Anzeigen",
+    "stats_books": "Bücher",
+    "stats_highlights": "Markierungen",
+    "no_data": "Noch keine Markierungen importiert. Starten Sie mit dem Import Ihrer Kindle-Highlights!"
+  },
+  "library": {
+    "title": "Meine Bibliothek",
+    "stats_summary": "{books} Bücher · {clippings} Markierungen",
+    "back_to_library": "Zurück zur Bibliothek",
+    "book_not_found": "Buch nicht gefunden",
+    "unknown_author": "Unbekannter Autor",
+    "last_read": "Zuletzt gelesen: {date}"
+  },
+  "import": {
+    "title": "Kindle Markierungen Importieren",
+    "subtitle": "Laden Sie Ihre \"My Clippings.txt\" Datei hoch um zu beginnen",
+    "drop_title": "{format}-Datei hier ablegen",
+    "drop_subtitle": "oder klicken um Datei zu wählen",
+    "help_title": "Wo Sie Ihre Datei finden",
+    "help_step1": "Verbinden Sie Ihr Kindle mit dem Computer",
+    "help_step2": "Öffnen Sie das Kindle-Laufwerk",
+    "help_step3": "Gehen Sie zum Ordner {folder}",
+    "help_step4": "Finden Sie {file}",
+    "processing_title": "Verarbeite Datei...",
+    "processing_desc": "Dies kann bei großen Dateien einen Moment dauern",
+    "success": "Import erfolgreich!",
+    "failed": "Import fehlgeschlagen"
+  },
+  "export": {
+    "title": "Exportieren",
+    "subtitle": "Exportieren Sie Ihre Markierungen in verschiedene Formate",
+    "loading": "Lade Markierungen...",
+    "no_content": "Keine Markierungen zum Exportieren",
+    "no_content_desc": "Importieren Sie zuerst Ihre Kindle-Clippings, kommen Sie dann hierher zurück um sie zu exportieren.",
+    "cta_import": "Markierungen Importieren"
+  },
+  "editor": {
+    "title": "Daten-Editor",
+    "subtitle_book": "in \"{book}\"",
+    "all_books": "Alle Bücher",
+    "no_clippings": "Keine Markierungen",
+    "no_clippings_desc": "Importieren Sie eine Datei um zu bearbeiten",
+    "cta_import": "Datei Importieren"
+  },
+  "datatable": {
+    "select_all": "Alle auswählen",
+    "selected": "{count} ausgewählt",
+    "add": "Hinzufügen",
+    "duplicate": "Duplizieren",
+    "delete": "Löschen",
+    "type": "Typ",
+    "content": "Inhalt",
+    "location": "Position",
+    "date": "Datum",
+    "empty": "Keine Markierungen anzuzeigen",
+    "placeholder_content": "Inhalt der Markierung...",
+    "placeholder_location": "Pos. 123-456",
+    "page_prefix": "S.",
+    "save_tooltip": "Speichern (Enter)",
+    "cancel_tooltip": "Abbrechen (Esc)",
+    "edit_tooltip": "Bearbeiten",
+    "delete_confirm": "{count} Markierung(en) löschen?"
+  },
+  "batch": {
+    "selected": "ausgewählt",
+    "clear_selection": "Auswahl aufheben",
+    "change_author": "Autor ändern",
+    "change_title": "Titel ändern",
+    "delete": "Löschen",
+    "modal_author_title": "Autor ändern",
+    "modal_title_title": "Buchtitel ändern",
+    "modal_desc": "Dies aktualisiert {count} ausgewählte Markierung(en).",
+    "placeholder_author": "Autorenname eingeben...",
+    "placeholder_title": "Buchtitel eingeben...",
+    "apply": "Auf {count} Markierung(en) anwenden",
+    "cancel": "Abbrechen"
+  },
+  "clipping": {
+    "highlight": "Markierung",
+    "note": "Notiz",
+    "bookmark": "Lesezeichen",
+    "default": "Clipping",
+    "page": "Seite {page}",
+    "location": "Position {loc}",
+    "no_content": "Kein Inhalt",
+    "your_note": "Ihre Notiz"
+  },
+  "search": {
+    "title": "Markierungen suchen",
+    "placeholder": "Alle Markierungen durchsuchen... (/ oder Strg+F)",
+    "filters": "Filter",
+    "filter_type": "Typ",
+    "filter_book": "Buch",
+    "clear_filters": "Filter zurücksetzen",
+    "searching": "Suche...",
+    "results_found": "{count} Ergebnis(se) gefunden",
+    "no_results": "Keine Ergebnisse gefunden",
+    "empty_state_title": "Bibliothek durchsuchen",
+    "empty_state_desc": "Tippen Sie etwas ein, um {count} Markierungen zu durchsuchen"
+  },
+  "theme": {
+    "toggle": "Design wechseln",
+    "light": "Heller Modus",
+    "dark": "Dunkler Modus"
   }
 }

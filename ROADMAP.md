@@ -538,14 +538,16 @@ export const i18n = createI18n({
 **Tareas**:
 - [x] Instalar `vue-i18n`
 - [x] Crear estructura de archivos de traducción
-- [ ] Extraer strings de componentes principales (Pendiente)
+- [x] Extraer strings de componentes principales (Completado)
 - [x] Conectar con `settings.language`
-- [ ] Extraer strings: Layout & Navigation <!-- id: 17 -->
-- [ ] Extraer strings: Home & Library Pages <!-- id: 18 -->
-- [ ] Extraer strings: Import & Export Pages <!-- id: 19 -->
-- [ ] Extraer strings: Editor & Search Pages <!-- id: 20 -->
-- [ ] Extraer strings: Components (Cards, Modals) <!-- id: 21 -->
-- [ ] Update all locale files (EN, ES, IT, DE, FR, PT) <!-- id: 22 -->
+- [x] Extraer strings: Layout & Navigation <!-- id: 17 -->
+- [x] Extraer strings: Home & Library Pages <!-- id: 18 -->
+- [x] Extraer strings: Import & Export Pages <!-- id: 19 -->
+- [x] Extraer strings: Editor & Search Pages <!-- id: 20 -->
+- [x] Extraer strings: Components (Cards, Modals) <!-- id: 21 -->
+- [x] Update locale files (EN, ES comprehensive) <!-- id: 22 -->
+- [ ] Update other locales (IT, DE, FR, PT) to match EN/ES structure <!-- id: 23 -->
+- [ ] Auditoría de traducciones (Fix English strings appearing in other languages) <!-- id: 24 -->
 - [x] Implementar detección automática del navegador
 - [x] Agregar idiomas adicionales: IT, DE, FR, PT
 

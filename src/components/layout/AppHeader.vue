@@ -17,7 +17,7 @@ const themeTooltip = computed(() => isDark.value ? t('theme.light') : t('theme.d
       <div class="flex items-center justify-between">
         <!-- Logo -->
         <router-link to="/" class="flex items-center gap-3">
-          <BookOpen class="h-8 w-8 text-primary-600" />
+          <BookOpen class="h-8 w-8 text-primary-600" aria-hidden="true" />
           <div>
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
               {{ $t('app.title') }}
@@ -81,8 +81,8 @@ const themeTooltip = computed(() => isDark.value ? t('theme.light') : t('theme.d
             :aria-label="$t('theme.toggle')"
             @click="toggleDark()"
           >
-            <Moon v-if="!isDark" class="h-5 w-5 text-gray-600" />
-            <Sun v-else class="h-5 w-5 text-yellow-500" />
+            <Moon v-if="!isDark" class="h-5 w-5 text-gray-600" aria-hidden="true" />
+            <Sun v-else class="h-5 w-5 text-yellow-500" aria-hidden="true" />
           </button>
         </UiTooltip>
       </div>

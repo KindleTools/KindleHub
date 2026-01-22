@@ -18,6 +18,121 @@
   },
   "app": {
     "title": "KindleHub",
-    "subtitle": "Impulsado por kindle-tools-ts"
+    "subtitle": "Impulsado por kindle-tools-ts",
+    "welcome": "Bienvenido a {app}",
+    "description": "Transforma tus subrayados de Kindle en una base de conocimiento organizada y buscable."
+  },
+  "home": {
+    "import_title": "Importar",
+    "import_desc": "Arrastra y suelta tu archivo My Clippings.txt",
+    "organize_title": "Organizar",
+    "organize_desc": "Deduplicación inteligente y vinculación de notas",
+    "export_title": "Exportar",
+    "export_desc": "Markdown, Obsidian, JSON, CSV, HTML",
+    "cta_import": "Importar Recortes",
+    "cta_library": "Ver Biblioteca",
+    "stats_books": "Libros",
+    "stats_highlights": "Subrayados",
+    "no_data": "No hay recortes importados aún. ¡Empieza importando tus subrayados de Kindle!"
+  },
+  "library": {
+    "title": "Mi Biblioteca",
+    "stats_summary": "{books} libros · {clippings} subrayados",
+    "back_to_library": "Volver a la Biblioteca",
+    "book_not_found": "Libro no encontrado",
+    "unknown_author": "Autor desconocido",
+    "last_read": "Leído por última vez: {date}"
+  },
+  "import": {
+    "title": "Importar Recortes de Kindle",
+    "subtitle": "Sube tu archivo \"My Clippings.txt\" para empezar",
+    "drop_title": "Suelta tu archivo {format} aquí",
+    "drop_subtitle": "o haz clic para elegir un archivo",
+    "help_title": "Dónde encontrar tu archivo",
+    "help_step1": "Conecta tu Kindle al ordenador",
+    "help_step2": "Abre la unidad Kindle",
+    "help_step3": "Ve a la carpeta {folder}",
+    "help_step4": "Busca {file}",
+    "processing_title": "Procesando archivo...",
+    "processing_desc": "Esto puede tardar un momento en archivos grandes",
+    "success": "¡Importación exitosa!",
+    "failed": "Importación fallida"
+  },
+  "export": {
+    "title": "Exportar",
+    "subtitle": "Exporta tus subrayados a varios formatos",
+    "loading": "Cargando subrayados...",
+    "no_content": "No hay subrayados para exportar",
+    "no_content_desc": "Importa primero tus recortes de Kindle, luego vuelve aquí para exportarlos en tu formato preferido.",
+    "cta_import": "Importar Recortes"
+  },
+  "editor": {
+    "title": "Editor de Datos",
+    "subtitle_book": "en \"{book}\"",
+    "all_books": "Todos los Libros",
+    "no_clippings": "No hay recortes",
+    "no_clippings_desc": "Importa un archivo para empezar a editar",
+    "cta_import": "Importar Archivo"
+  },
+  "datatable": {
+    "select_all": "Seleccionar todo",
+    "selected": "{count} seleccionado(s)",
+    "add": "Añadir",
+    "duplicate": "Duplicar",
+    "delete": "Eliminar",
+    "content": "Contenido",
+    "location": "Ubicación",
+    "date": "Fecha",
+    "type": "Tipo",
+    "empty": "No hay recortes para mostrar",
+    "placeholder_content": "Contenido del recorte...",
+    "placeholder_location": "Loc. 123-456",
+    "page_prefix": "Pág.",
+    "save_tooltip": "Guardar (Enter)",
+    "cancel_tooltip": "Cancelar (Esc)",
+    "edit_tooltip": "Editar",
+    "delete_confirm": "¿Eliminar {count} recorte(s)?"
+  },
+  "batch": {
+    "selected": "seleccionado(s)",
+    "clear_selection": "Limpiar selección",
+    "change_author": "Cambiar Autor",
+    "change_title": "Cambiar Título",
+    "delete": "Eliminar",
+    "modal_author_title": "Cambiar Autor",
+    "modal_title_title": "Cambiar Título del Libro",
+    "modal_desc": "Esto actualizará {count} recorte(s) seleccionado(s).",
+    "placeholder_author": "Introduce nombre del autor...",
+    "placeholder_title": "Introduce título del libro...",
+    "apply": "Aplicar a {count} recorte(s)",
+    "cancel": "Cancelar"
+  },
+  "clipping": {
+    "highlight": "Subrayado",
+    "note": "Nota",
+    "bookmark": "Marcador",
+    "default": "Recorte",
+    "page": "Página {page}",
+    "location": "Ubicación {loc}",
+    "no_content": "Sin contenido",
+    "your_note": "Tu nota"
+  },
+  "search": {
+    "title": "Buscar Subrayados",
+    "placeholder": "Buscar en todos los subrayados... (/ o Ctrl+F)",
+    "filters": "Filtros",
+    "filter_type": "Tipo",
+    "filter_book": "Libro",
+    "clear_filters": "Limpiar filtros",
+    "searching": "Buscando...",
+    "results_found": "{count} resultado(s) encontrado(s)",
+    "no_results": "No se encontraron resultados",
+    "empty_state_title": "Busca en tu biblioteca",
+    "empty_state_desc": "Escribe algo para buscar entre {count} recortes"
+  },
+  "theme": {
+    "toggle": "Cambiar tema",
+    "light": "Modo claro",
+    "dark": "Modo oscuro"
   }
 }

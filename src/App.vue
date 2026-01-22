@@ -11,12 +11,20 @@ useGlobalShortcuts()
 
 <template>
   <div :class="{ dark: isDark }" class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+    <!-- Skip to main content -->
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-lg focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+    >
+      {{ $t('common.skip_to_content') }}
+    </a>
+
     <div class="flex flex-col min-h-screen">
       <!-- Header -->
       <LayoutAppHeader />
 
       <!-- Main Content -->
-      <main class="flex-1 container mx-auto px-4 py-8">
+      <main id="main-content" class="flex-1 container mx-auto px-4 py-8" tabindex="-1">
         <router-view v-slot="{ Component }">
           <Transition name="page" mode="out-in">
             <component :is="Component" />
