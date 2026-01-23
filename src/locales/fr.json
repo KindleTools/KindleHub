@@ -6,7 +6,8 @@
     "export": "Exporter",
     "editor": "Éditeur",
     "search": "Rechercher",
-    "settings": "Paramètres"
+    "settings": "Paramètres",
+    "menu": "Menu"
   },
   "common": {
     "loading": "Chargement...",
@@ -14,7 +15,11 @@
     "cancel": "Annuler",
     "delete": "Supprimer",
     "edit": "Modifier",
-    "close": "Fermer"
+    "close": "Fermer",
+    "back": "Retour",
+    "retry": "Réessayer",
+    "processing": "Traitement...",
+    "skip_to_content": "Aller au contenu"
   },
   "app": {
     "title": "KindleHub",
@@ -105,7 +110,14 @@
     "placeholder_author": "Entrez le nom de l'auteur...",
     "placeholder_title": "Entrez le titre du livre...",
     "apply": "Appliquer à {count} coupure(s)",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "edit_saved": "Modifications enregistrées",
+    "bulk_updated": "{count} élément(s) mis à jour",
+    "bulk_deleted": "{count} élément(s) supprimé(s)",
+    "leave_title": "Modifications non enregistrées",
+    "leave_message": "Vous avez modifié des coupures qui n'ont pas encore été importées. Voulez-vous vraiment partir ?",
+    "leave_confirm": "Partir",
+    "leave_cancel": "Rester"
   },
   "clipping": {
     "highlight": "Surlignement",

@@ -6,7 +6,8 @@
     "export": "Exportieren",
     "editor": "Editor",
     "search": "Suche",
-    "settings": "Einstellungen"
+    "settings": "Einstellungen",
+    "menu": "Menü"
   },
   "common": {
     "loading": "Laden...",
@@ -14,7 +15,11 @@
     "cancel": "Abbrechen",
     "delete": "Löschen",
     "edit": "Bearbeiten",
-    "close": "Schließen"
+    "close": "Schließen",
+    "back": "Zurück",
+    "retry": "Wiederholen",
+    "processing": "Verarbeiten...",
+    "skip_to_content": "Zum Inhalt springen"
   },
   "app": {
     "title": "KindleHub",
@@ -105,7 +110,14 @@
     "placeholder_author": "Autorenname eingeben...",
     "placeholder_title": "Buchtitel eingeben...",
     "apply": "Auf {count} Markierung(en) anwenden",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "edit_saved": "Änderungen gespeichert",
+    "bulk_updated": "{count} Element(e) aktualisiert",
+    "bulk_deleted": "{count} Element(e) gelöscht",
+    "leave_title": "Ungespeicherte Änderungen",
+    "leave_message": "Sie haben Markierungen bearbeitet, die noch nicht importiert wurden. Möchten Sie wirklich gehen?",
+    "leave_confirm": "Verlassen",
+    "leave_cancel": "Bleiben"
   },
   "clipping": {
     "highlight": "Markierung",

@@ -1,4 +1,3 @@
-/* global process */
 import fs from 'fs'
 
 const coveragePath = './coverage/coverage-final.json'

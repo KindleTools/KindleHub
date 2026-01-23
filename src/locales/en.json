@@ -110,7 +110,14 @@
     "placeholder_author": "Enter author name...",
     "placeholder_title": "Enter book title...",
     "apply": "Apply to {count} clipping(s)",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "edit_saved": "Changes saved",
+    "bulk_updated": "{count} item(s) updated",
+    "bulk_deleted": "{count} item(s) deleted",
+    "leave_title": "Unsaved changes",
+    "leave_message": "You have edited clippings that haven't been imported yet. Are you sure you want to leave?",
+    "leave_confirm": "Leave",
+    "leave_cancel": "Stay"
   },
   "clipping": {
     "highlight": "Highlight",

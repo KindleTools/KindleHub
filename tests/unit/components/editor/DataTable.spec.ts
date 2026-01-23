@@ -22,6 +22,7 @@ vi.mock('@/composables/useDataEditor', () => ({
   useDataEditor: (options: any) => ({
     editableClippings: computed(() => {
       const source = options?.clippings?.value || []
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return source.map((c: any) => ({
         ...c,
         isSelected: false,
@@ -30,11 +31,16 @@ vi.mock('@/composables/useDataEditor', () => ({
     }),
     selectAll: ref(false),
     isSaving: ref(false),
+    error: ref(null),
     hasSelection: computed(() => false),
     selectedCount: computed(() => 0),
+    selectedClippings: computed(() => []),
+    editingClipping: computed(() => undefined),
     initializeClippings: vi.fn(),
+    syncWithSource: vi.fn(),
     toggleSelectAll: mockToggleSelectAll,
     toggleSelect: mockToggleSelect,
+    clearSelection: vi.fn(),
     startEdit: mockStartEdit,
     cancelEdit: mockCancelEdit,
     saveEdit: mockSaveEdit,

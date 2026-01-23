@@ -6,7 +6,8 @@
     "export": "Exportar",
     "editor": "Editor",
     "search": "Buscar",
-    "settings": "Configuración"
+    "settings": "Configuración",
+    "menu": "Menú"
   },
   "common": {
     "loading": "Cargando...",
@@ -14,7 +15,11 @@
     "cancel": "Cancelar",
     "delete": "Eliminar",
     "edit": "Editar",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "back": "Volver",
+    "retry": "Reintentar",
+    "processing": "Procesando...",
+    "skip_to_content": "Saltar al contenido"
   },
   "app": {
     "title": "KindleHub",
@@ -105,7 +110,14 @@
     "placeholder_author": "Introduce nombre del autor...",
     "placeholder_title": "Introduce título del libro...",
     "apply": "Aplicar a {count} recorte(s)",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "edit_saved": "Cambios guardados",
+    "bulk_updated": "{count} elemento(s) actualizado(s)",
+    "bulk_deleted": "{count} elemento(s) eliminado(s)",
+    "leave_title": "Cambios sin guardar",
+    "leave_message": "Has editado recortes que aún no se han importado. ¿Seguro que quieres salir?",
+    "leave_confirm": "Salir",
+    "leave_cancel": "Quedarse"
   },
   "clipping": {
     "highlight": "Subrayado",
