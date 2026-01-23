@@ -36,3 +36,8 @@ Thumbs.db
 
 # Test files
 My Clippings*.txt
+
+# Lint files
+.eslintcache
+lint-report*
+lint-output*

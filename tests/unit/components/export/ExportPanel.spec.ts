@@ -30,6 +30,7 @@ describe('ExportPanel.vue', () => {
       date: new Date('2023-01-01'),
       type: 'highlight'
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ] as any[]
 
   beforeEach(() => {
@@ -87,7 +88,8 @@ describe('ExportPanel.vue', () => {
 
   it('handles export click', async () => {
     const mockExportData = new Blob(['test'], { type: 'text/plain' })
-    vi.mocked(exportService.exportClippings).mockResolvedValue(mockExportData)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    vi.mocked(exportService.exportClippings).mockResolvedValue(mockExportData as any)
 
     const wrapper = mount(ExportPanel, {
       props: { clippings: mockClippings },

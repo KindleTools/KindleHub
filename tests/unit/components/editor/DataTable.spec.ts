@@ -10,13 +10,24 @@ const mockSaveEdit = vi.fn()
 const mockDeleteSelected = vi.fn()
 const mockToggleSelect = vi.fn()
 const mockToggleSelectAll = vi.fn()
+// Mock vue-i18n
+vi.mock('vue-i18n', () => ({
+  useI18n: () => ({
+    t: (key: string) => key
+  })
+}))
 
 vi.mock('@/composables/useDataEditor', () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useDataEditor: (options: any) => ({
-    editableClippings: computed(() => [
-      { id: 1, content: 'Test Content 1', isSelected: false, isEditing: false, type: 'highlight', date: new Date() },
-      { id: 2, content: 'Test Content 2', isSelected: false, isEditing: false, type: 'note', date: new Date() }
-    ]),
+    editableClippings: computed(() => {
+      const source = options?.clippings?.value || []
+      return source.map((c: any) => ({
+        ...c,
+        isSelected: false,
+        isEditing: false
+      }))
+    }),
     selectAll: ref(false),
     isSaving: ref(false),
     hasSelection: computed(() => false),
@@ -35,7 +46,7 @@ vi.mock('@/composables/useDataEditor', () => ({
 
 // Mock Date formatter since standard mocking might be verbose
 vi.mock('@/utils/date.utils', () => ({
-  formatDate: (date: Date) => '2023-01-01'
+  formatDate: (_date: Date) => '2023-01-01'
 }))
 
 describe('DataTable.vue', () => {
@@ -62,6 +73,7 @@ describe('DataTable.vue', () => {
       isSelected: false,
       isEditing: false
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ] as any[]
 
   beforeEach(() => {
@@ -84,8 +96,8 @@ describe('DataTable.vue', () => {
     // Check if component renders anything
     expect(wrapper.element).toBeDefined()
 
-    // TODO: Fix text content assertion - mock data flow issue
-    // expect(wrapper.text()).toContain('Test Content 1')
+    // Check text content
+    expect(wrapper.text()).toContain('Test Content 1')
   })
 
   it('renders empty state when no clippings', () => {

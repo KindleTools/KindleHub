@@ -15,7 +15,8 @@ export default [
       '**/*.d.ts',
       '**/auto-imports.d.ts',
       '**/components.d.ts',
-      '**/typed-router.d.ts'
+      '**/typed-router.d.ts',
+      '**/coverage/**'
     ]
   },
 
@@ -47,6 +48,7 @@ export default [
       globals: {
         ...globals.browser,
         ...globals.es2022,
+        ...globals.node,
         ...autoImportGlobals.globals
       },
       parserOptions: {
