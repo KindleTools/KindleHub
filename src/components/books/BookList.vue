@@ -1,25 +1,31 @@
 <script setup lang="ts">
-import { computed, ref, onMounted, onUnmounted } from 'vue'
+import { computed, ref, onMounted, onUnmounted, watch } from 'vue'
 import { useVirtualizer } from '@tanstack/vue-virtual'
 import { Upload } from 'lucide-vue-next'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import BooksBookCard from '@/components/books/BookCard.vue'
+import BooksBookListItem from '@/components/books/BookListItem.vue'
 
 import type { Book } from '@/db/schema'
 
 interface Props {
   books: Book[]
   isLoading?: boolean
+  view?: 'grid' | 'list'
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  view: 'grid'
+})
 
 // Container ref for virtualizer
 const parentRef = ref<HTMLElement | null>(null)
+const windowWidth = ref(window.innerWidth)
 
 // Responsive column calculation
-const windowWidth = ref(window.innerWidth)
 const columns = computed(() => {
+  if (props.view === 'list') return 1
+
   const w = windowWidth.value
   if (w >= 1280) return 5 // xl
   if (w >= 1024) return 4 // lg
@@ -48,12 +54,20 @@ const rows = computed(() => {
   return result
 })
 
+// Item height estimation
+const itemHeight = computed(() => props.view === 'list' ? 96 : 320)
+
 // Initialize virtualizer
 const rowVirtualizer = useVirtualizer({
-  count: computed(() => rows.value.length), // Must be a computed/ref
+  count: computed(() => rows.value.length) as any,
   getScrollElement: () => parentRef.value,
-  estimateSize: () => 320, // Approximate height of a book card row + gap
+  estimateSize: () => itemHeight.value,
   overscan: 5
+})
+
+// Force update virtualizer when view changes to re-measure
+watch(() => props.view, () => {
+  rowVirtualizer.value.measure()
 })
 
 const virtualRows = computed(() => rowVirtualizer.value.getVirtualItems())
@@ -63,11 +77,13 @@ const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
 <template>
   <div ref="parentRef" class="h-full overflow-y-auto w-full">
     <!-- Loading State -->
-    <div v-if="isLoading" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 pb-6">
-      <BooksBookCard
+    <div v-if="isLoading" class="grid gap-6 pb-6" :class="view === 'grid' ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5' : 'grid-cols-1'">
+      <component
+        :is="view === 'grid' ? BooksBookCard : BooksBookListItem"
         v-for="i in 8"
         :key="i"
         :loading="true"
+        :book="{} as Book"
       />
     </div>
 
@@ -90,7 +106,7 @@ const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
       </template>
     </EmptyState>
 
-    <!-- Virtualized Grid -->
+    <!-- Virtualized Grid/List -->
     <div
       v-else
       :style="{
@@ -101,23 +117,28 @@ const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
     >
       <div
         v-for="virtualRow in virtualRows"
-        :key="virtualRow.key"
+        :key="virtualRow.key.toString()"
         :style="{
           position: 'absolute',
           top: 0,
           left: 0,
           width: '100%',
           height: `${virtualRow.size}px`,
-          transform: `translateY(${virtualRow.start}px)`
+          transform: `translateY(${virtualRow.start}px)`,
+          ...(columns > 1 ? { gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` } : {})
         }"
-        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 px-1"
+        class="grid gap-6 px-1"
+        :class="columns > 1 ? '' : 'grid-cols-1'"
       >
         <div
           v-for="book in rows[virtualRow.index]"
           :key="book.id"
           class="h-full"
         >
-          <BooksBookCard :book="book" />
+          <component
+            :is="view === 'grid' ? BooksBookCard : BooksBookListItem"
+            :book="book"
+          />
         </div>
       </div>
     </div>

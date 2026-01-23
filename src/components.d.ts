@@ -16,6 +16,7 @@ declare module 'vue' {
     BatchBatchWarnings: typeof import('./components/batch/BatchWarnings.vue')['default']
     BooksBookCard: typeof import('./components/books/BookCard.vue')['default']
     BooksBookList: typeof import('./components/books/BookList.vue')['default']
+    BooksBookListItem: typeof import('./components/books/BookListItem.vue')['default']
     ClippingsClippingCard: typeof import('./components/clippings/ClippingCard.vue')['default']
     ClippingsClippingList: typeof import('./components/clippings/ClippingList.vue')['default']
     EditorDataTable: typeof import('./components/editor/DataTable.vue')['default']
