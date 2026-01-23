@@ -30,6 +30,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     StatsActivityChart: typeof import('./components/stats/ActivityChart.vue')['default']
+    StatsHeatmapChart: typeof import('./components/stats/HeatmapChart.vue')['default']
     StatsInsightsPanel: typeof import('./components/stats/InsightsPanel.vue')['default']
     StatsStatCard: typeof import('./components/stats/StatCard.vue')['default']
     StatsTopBooksChart: typeof import('./components/stats/TopBooksChart.vue')['default']

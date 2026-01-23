@@ -108,6 +108,24 @@ export function useStatistics() {
       .sort((a, b) => a.month.localeCompare(b.month))
   })
 
+  // Heatmap data (for Calendar Chart)
+  const heatmapData = computed<[string, number][]>(() => {
+    const clippings = clippingsStore.clippings as StoredClipping[]
+    if (clippings.length === 0) return []
+
+    const grouped = clippings.reduce(
+      (acc, c) => {
+        if (!(c.date instanceof Date)) return acc
+        const day = format(c.date, 'yyyy-MM-dd')
+        acc[day] = (acc[day] || 0) + 1
+        return acc
+      },
+      {} as Record<string, number>
+    )
+
+    return Object.entries(grouped)
+  })
+
   // Average clippings per book
   const avgClippingsPerBook = computed(() => {
     if (totalBooks.value === 0) return 0
@@ -214,6 +232,7 @@ export function useStatistics() {
     typeDistribution,
     topBooks,
     timelineData,
+    heatmapData,
 
     // Derived metrics
     avgClippingsPerBook,

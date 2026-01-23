@@ -3,15 +3,32 @@
  * DataTable Component - Editable table for clippings.
  */
 import { computed, watch, onMounted, ref, onUnmounted } from 'vue'
-import { Trash2, Copy, Plus, Check, X, Edit3 } from 'lucide-vue-next'
+import { Trash2, Copy, Plus, Check, X, Edit3, Minimize2, Maximize2 } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import { useVirtualizer } from '@tanstack/vue-virtual'
+import { useLocalStorage } from '@vueuse/core'
 
 import type { StoredClipping } from '@/db/schema'
 import { useDataEditor, type EditableClipping } from '@/composables/useDataEditor'
 import UiTooltip from '@/components/ui/Tooltip.vue'
 
 const { t } = useI18n()
+
+// View Settings
+const density = useLocalStorage<'comfortable' | 'compact'>('datatable-density', 'comfortable')
+const visibleColumns = useLocalStorage<string[]>('datatable-columns', ['type', 'content', 'location', 'date'])
+
+const toggleColumn = (col: string) => {
+  if (visibleColumns.value.includes(col)) {
+    visibleColumns.value = visibleColumns.value.filter((c) => c !== col)
+  } else {
+    visibleColumns.value.push(col)
+  }
+}
+
+const toggleDensity = () => {
+  density.value = density.value === 'comfortable' ? 'compact' : 'comfortable'
+}
 
 const props = defineProps<{
   clippings: StoredClipping[]
@@ -62,7 +79,7 @@ const mobileParentRef = ref<HTMLElement | null>(null)
 const desktopRowVirtualizer = useVirtualizer(computed(() => ({
   count: editableClippings.value.length,
   getScrollElement: () => desktopParentRef.value,
-  estimateSize: () => 53, // Approximate row height
+  estimateSize: () => density.value === 'compact' ? 40 : 53, // Approximate row height
   overscan: 10
 })))
 const desktopVirtualRows = computed(() => desktopRowVirtualizer.value.getVirtualItems())
@@ -148,6 +165,32 @@ async function handleDelete() {
         <span class="text-sm text-gray-600 dark:text-gray-400">
           {{ $t('datatable.selected', { count: selectedCount }) }}
         </span>
+
+        <div class="h-4 w-px bg-gray-200 dark:bg-gray-700 mx-2"></div>
+
+        <!-- Density Toggle -->
+        <UiTooltip :text="density === 'comfortable' ? 'Compact view' : 'Comfortable view'" position="top">
+          <button
+            class="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 transition-colors"
+            @click="toggleDensity"
+          >
+            <Minimize2 v-if="density === 'comfortable'" class="w-4 h-4" />
+            <Maximize2 v-else class="w-4 h-4" />
+          </button>
+        </UiTooltip>
+
+        <!-- Column Visibility (Simple Toggle for now) -->
+        <div class="flex items-center gap-1 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-1">
+          <button
+            v-for="col in ['type', 'content', 'location', 'date']"
+            :key="col"
+            class="px-2 py-0.5 text-xs rounded-md transition-colors capitalize"
+            :class="visibleColumns.includes(col) ? 'bg-white dark:bg-gray-600 shadow-sm text-primary-600 dark:text-primary-400 font-medium' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'"
+            @click="toggleColumn(col)"
+          >
+            {{ col }}
+          </button>
+        </div>
       </div>
 
       <div class="flex gap-2 ml-auto">
@@ -328,20 +371,36 @@ async function handleDelete() {
         <table class="w-full relative">
           <thead class="bg-gray-50 dark:bg-gray-700/50 sticky top-0 z-10">
             <tr>
-              <th class="w-12 px-4 py-3 bg-gray-50 dark:bg-gray-700/50"></th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-700/50">
+              <th class="w-12 px-4 bg-gray-50 dark:bg-gray-700/50" :class="density === 'compact' ? 'py-2' : 'py-3'"></th>
+              <th
+                v-if="visibleColumns.includes('type')"
+                class="px-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-700/50"
+                :class="density === 'compact' ? 'py-2' : 'py-3'"
+              >
                 {{ $t('datatable.type') }}
               </th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-700/50">
+              <th
+                v-if="visibleColumns.includes('content')"
+                class="px-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-700/50"
+                :class="density === 'compact' ? 'py-2' : 'py-3'"
+              >
                 {{ $t('datatable.content') }}
               </th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-700/50">
+              <th
+                v-if="visibleColumns.includes('location')"
+                class="px-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-700/50"
+                :class="density === 'compact' ? 'py-2' : 'py-3'"
+              >
                 {{ $t('datatable.location') }}
               </th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-700/50">
+              <th
+                v-if="visibleColumns.includes('date')"
+                class="px-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-700/50"
+                :class="density === 'compact' ? 'py-2' : 'py-3'"
+              >
                 {{ $t('datatable.date') }}
               </th>
-              <th class="w-24 px-4 py-3 bg-gray-50 dark:bg-gray-700/50"></th>
+              <th class="w-24 px-4 bg-gray-50 dark:bg-gray-700/50" :class="density === 'compact' ? 'py-2' : 'py-3'"></th>
             </tr>
           </thead>
           <tbody>
@@ -359,7 +418,7 @@ async function handleDelete() {
               class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors absolute w-full flex items-center"
             >
               <!-- Manual Flex Layout for Table Rows to support absolute positioning -->
-              <td class="w-12 px-4 py-3 flex-none">
+              <td class="w-12 px-4 flex-none" :class="density === 'compact' ? 'py-2' : 'py-3'">
                 <input
                   type="checkbox"
                   :checked="getClipping(virtualRow.index).isSelected"
@@ -370,11 +429,16 @@ async function handleDelete() {
               </td>
 
               <!-- Type -->
-              <td class="flex-1 px-4 py-3 min-w-[120px]">
+              <td
+                v-if="visibleColumns.includes('type')"
+                class="flex-1 px-4 min-w-[120px]"
+                :class="density === 'compact' ? 'py-2' : 'py-3'"
+              >
                 <template v-if="getClipping(virtualRow.index).isEditing">
                   <select
                     v-model="getClipping(virtualRow.index).type"
                     class="w-full text-sm rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:ring-primary-500 focus:border-primary-500"
+                    :class="density === 'compact' ? 'py-1' : 'py-1.5'"
                   >
                     <option value="highlight">{{ $t('clipping.highlight') }}</option>
                     <option value="note">{{ $t('clipping.note') }}</option>
@@ -383,8 +447,11 @@ async function handleDelete() {
                 </template>
                 <template v-else>
                   <span
-                    :class="getTypeColor(getClipping(virtualRow.index).type)"
-                    class="inline-block px-2 py-0.5 text-xs font-medium rounded-full capitalize"
+                    class="inline-block px-2 text-xs font-medium rounded-full capitalize"
+                    :class="[
+                      getTypeColor(getClipping(virtualRow.index).type),
+                      density === 'compact' ? 'py-px' : 'py-0.5'
+                    ]"
                   >
                     {{ getClipping(virtualRow.index).type }}
                   </span>
@@ -392,11 +459,15 @@ async function handleDelete() {
               </td>
 
               <!-- Content -->
-              <td class="flex-[3] px-4 py-3 max-w-md">
+              <td
+                v-if="visibleColumns.includes('content')"
+                class="flex-[3] px-4 max-w-md"
+                :class="density === 'compact' ? 'py-2' : 'py-3'"
+              >
                 <template v-if="getClipping(virtualRow.index).isEditing">
                   <textarea
                     v-model="getClipping(virtualRow.index).content"
-                    rows="2"
+                    :rows="density === 'compact' ? 1 : 2"
                     class="w-full text-sm rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:ring-primary-500 focus:border-primary-500"
                     :placeholder="$t('datatable.placeholder_content')"
                     @keydown="handleKeydown($event, getClipping(virtualRow.index))"
@@ -410,12 +481,17 @@ async function handleDelete() {
               </td>
 
               <!-- Location -->
-              <td class="flex-1 px-4 py-3 whitespace-nowrap">
+              <td
+                v-if="visibleColumns.includes('location')"
+                class="flex-1 px-4 whitespace-nowrap"
+                :class="density === 'compact' ? 'py-2' : 'py-3'"
+              >
                 <template v-if="getClipping(virtualRow.index).isEditing">
                   <input
                     v-model="getClipping(virtualRow.index).location"
                     type="text"
                     class="w-full text-sm rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:ring-primary-500 focus:border-primary-500"
+                    :class="density === 'compact' ? 'py-1' : 'py-1.5'"
                     :placeholder="$t('datatable.placeholder_location')"
                   />
                 </template>
@@ -427,12 +503,16 @@ async function handleDelete() {
               </td>
 
               <!-- Date -->
-              <td class="flex-1 px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+              <td
+                v-if="visibleColumns.includes('date')"
+                class="flex-1 px-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400"
+                :class="density === 'compact' ? 'py-2' : 'py-3'"
+              >
                 {{ formatDate(getClipping(virtualRow.index).date) }}
               </td>
 
               <!-- Actions -->
-              <td class="w-24 px-4 py-3 flex-none">
+              <td class="w-24 px-4 flex-none" :class="density === 'compact' ? 'py-2' : 'py-3'">
                 <div class="flex items-center gap-1 justify-end">
                   <template v-if="getClipping(virtualRow.index).isEditing">
                     <UiTooltip :text="$t('datatable.save_tooltip')" position="top">

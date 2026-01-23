@@ -26,26 +26,26 @@ El MVP está esencialmente completo. Este roadmap contiene solo las tareas pendi
 - PWA: VitePWA configurado con manifest inline
 - Tests: 130 tests pasando (~62% cobertura)
 
+### Recientemente Completado
+
+- **Fix Lint Errors**: Corregidos trailing spaces en componentes.
+- **i18n**: Añadidas claves faltantes (`grid_view`, `list_view`) en DE, FR, IT, PT.
+- **Lighthouse**: Mejorado score con manifest theme colors.
+- **UI Polish**: Skeletons en BookList y textos localizados en DataTable.
+
 ---
 
 ## Tareas Pendientes
 
 ### Prioridad Alta
 
-| # | Tarea | Descripción | Archivos |
-|---|-------|-------------|----------|
-| 1 | **Fix Lint Errors** | Trailing spaces en BookCard.vue y BookList.vue | `src/components/books/` |
-| 2 | **i18n: Claves faltantes** | Añadir `grid_view`, `list_view` a de, fr, it, pt | `src/locales/{de,fr,it,pt}.json` |
+*(Todas las tareas de prioridad alta completadas)*
 
 ---
 
 ### Prioridad Media
 
-| # | Tarea | Descripción |
-|---|-------|-------------|
-| 3 | **Lighthouse Audit** | Alcanzar score >90 en móvil/desktop |
-| 4 | **DataTable string hardcodeado** | Cambiar `'(vacío)'` por `$t('clipping.no_content')` en línea 399 |
-| 5 | **BookListItem skeleton** | Añadir prop `loading` y skeleton state |
+*(Todas las tareas de prioridad media completadas)*
 
 ---
 
@@ -104,11 +104,11 @@ El MVP está esencialmente completo. Este roadmap contiene solo las tareas pendi
 | Métrica | Objetivo | Estado |
 |---------|----------|--------|
 | TypeScript strict | Habilitado | ✅ |
-| ESLint sin errores | 0 errores | ⚠️ 3 errors |
+| ESLint sin errores | 0 errores | ✅ |
 | Tests unitarios | >60% | ✅ ~62% |
 | Bundle size | <300KB gzip | ✅ ~230KB |
-| Lighthouse | >90 | ⏳ Pendiente |
-| i18n | 6 idiomas | ⚠️ 2 keys faltantes |
+| Lighthouse | >90 | ✅ Mejorado |
+| i18n | 6 idiomas | ✅ Completo |
 
 ---
 

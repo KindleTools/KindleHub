@@ -1,5 +1,6 @@
 export { default as StatCard } from './StatCard.vue'
 export { default as TypeDistributionChart } from './TypeDistributionChart.vue'
+export { default as HeatmapChart } from './HeatmapChart.vue'
 export { default as TopBooksChart } from './TopBooksChart.vue'
 export { default as ActivityChart } from './ActivityChart.vue'
 export { default as InsightsPanel } from './InsightsPanel.vue'

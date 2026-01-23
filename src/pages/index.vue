@@ -10,7 +10,8 @@ import {
   TypeDistributionChart,
   TopBooksChart,
   ActivityChart,
-  InsightsPanel
+  InsightsPanel,
+  HeatmapChart
 } from '@/components/stats'
 
 const booksStore = useBooksStore()
@@ -132,6 +133,11 @@ onMounted(async () => {
           :icon="BookOpen"
           color="amber"
         />
+      </div>
+
+      <!-- Heatmap -->
+      <div class="mb-6">
+        <HeatmapChart :data="stats.heatmapData" :year="new Date().getFullYear()" />
       </div>
 
       <!-- Charts Row 1 -->

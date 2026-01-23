@@ -11,10 +11,22 @@ const isDark = useDark()
 const toggleDark = useToggle(isDark)
 const mobileMenuOpen = ref(false)
 const themeTooltip = computed(() => isDark.value ? t('theme.light') : t('theme.dark'))
+
+import { useWindowScroll } from '@vueuse/core'
+const { y } = useWindowScroll()
+const isScrolled = computed(() => y.value > 10)
+
 </script>
 
 <template>
-  <header class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+  <header
+    class="sticky top-0 z-50 transition-all duration-300"
+    :class="[
+      isScrolled
+        ? 'bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-sm border-b border-gray-200/50 dark:border-gray-700/50'
+        : 'bg-white dark:bg-gray-800 border-b border-transparent'
+    ]"
+  >
     <div class="container mx-auto px-4 py-4">
       <div class="flex items-center justify-between">
         <!-- Logo -->
