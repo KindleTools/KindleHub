@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { FileJson, FileText, Table, Upload, XCircle } from 'lucide-vue-next'
 
+import ImportOptions from '@/components/import/ImportOptions.vue'
 import { parseContent, type ImportFormat } from '@/services/parser.service'
 import { useBatchesStore } from '@/stores/batches'
+import { useSettingsStore } from '@/stores/settings'
 
 const router = useRouter()
 const batchesStore = useBatchesStore()
+const settingsStore = useSettingsStore()
 
 const selectedFormat = ref<ImportFormat>('txt')
 const isDragging = ref(false)
@@ -49,9 +52,16 @@ const processFile = async (file: File) => {
     const content = await file.text()
     console.log('File content length:', content.length)
 
-    // Parse with kindle-tools-ts
+    // Parse with kindle-tools-ts using import preferences
     progress.value = 30
-    const parsed = await parseContent(content, selectedFormat.value)
+    const { importPreferences } = settingsStore
+    const parsed = await parseContent(content, selectedFormat.value, {
+      language: importPreferences.language === 'auto' ? undefined : importPreferences.language,
+      mergeOverlapping: importPreferences.mergeOverlapping,
+      extractTags: importPreferences.extractTags,
+      highlightsOnly: importPreferences.highlightsOnly,
+      removeUnlinkedNotes: importPreferences.removeUnlinkedNotes
+    })
     console.log('Parsed:', parsed.stats)
 
     // Create batch (in-memory, not saved yet)
@@ -97,6 +107,9 @@ const reset = () => {
 
     <!-- Import State: Idle -->
     <div v-if="!isImporting && !error">
+      <!-- Import Options Panel -->
+      <ImportOptions />
+
       <!-- Format Selector -->
       <div class="grid grid-cols-3 gap-4 mb-8">
         <button

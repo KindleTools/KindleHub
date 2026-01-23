@@ -66,7 +66,22 @@
     "processing_title": "Procesando archivo...",
     "processing_desc": "Esto puede tardar un momento en archivos grandes",
     "success": "¡Importación exitosa!",
-    "failed": "Importación fallida"
+    "failed": "Importación fallida",
+    "options": {
+      "title": "Opciones de Importación",
+      "language": "Idioma",
+      "language_desc": "Idioma de tus subrayados de Kindle",
+      "merge_overlapping": "Fusionar subrayados superpuestos",
+      "merge_overlapping_desc": "Combina subrayados cuando extiendes una selección",
+      "extract_tags": "Extraer etiquetas de notas",
+      "extract_tags_desc": "Analizar hashtags o etiquetas separadas por comas",
+      "highlights_only": "Solo subrayados",
+      "highlights_only_desc": "Importar solo subrayados, ignorar notas y marcadores",
+      "show_advanced": "Mostrar opciones avanzadas",
+      "hide_advanced": "Ocultar opciones avanzadas",
+      "remove_unlinked": "Eliminar notas sin vincular",
+      "remove_unlinked_desc": "Borrar notas que no pudieron vincularse a un subrayado"
+    }
   },
   "export": {
     "title": "Exportar",

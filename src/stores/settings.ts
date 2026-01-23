@@ -9,10 +9,27 @@ export interface ExportPreferences {
   defaultFormat: 'markdown' | 'json' | 'csv' | 'obsidian' | 'joplin' | 'html'
   includeMetadata: boolean
   groupByBook: boolean
+  // Advanced export options
+  markdownPreset: 'default' | 'minimal' | 'obsidian' | 'notion' | 'academic' | 'compact' | 'verbose'
+  folderStructure: 'flat' | 'by-book' | 'by-author' | 'by-author-book'
+  includeStats: boolean
+  includeTags: boolean
+  noteGranularity: 'per-clipping' | 'per-book'
+}
+
+export type SupportedParsingLanguage = 'auto' | 'en' | 'es' | 'pt' | 'de' | 'fr' | 'it' | 'zh' | 'ja' | 'ko' | 'nl' | 'ru'
+
+export interface ImportPreferences {
+  language: SupportedParsingLanguage
+  mergeOverlapping: boolean
+  extractTags: boolean
+  highlightsOnly: boolean
+  removeUnlinkedNotes: boolean
 }
 
 export interface AppSettings {
   exportPreferences: ExportPreferences
+  importPreferences: ImportPreferences
   language: SupportedLocale
 }
 
@@ -22,7 +39,19 @@ const defaultSettings: AppSettings = {
   exportPreferences: {
     defaultFormat: 'markdown',
     includeMetadata: true,
-    groupByBook: true
+    groupByBook: true,
+    markdownPreset: 'default',
+    folderStructure: 'by-author',
+    includeStats: false,
+    includeTags: true,
+    noteGranularity: 'per-clipping'
+  },
+  importPreferences: {
+    language: 'auto',
+    mergeOverlapping: true,
+    extractTags: false,
+    highlightsOnly: false,
+    removeUnlinkedNotes: false
   },
   // Default fallback if logic fails or first run (though i18n logic handles first run)
   language: 'en'
@@ -43,6 +72,7 @@ export const useSettingsStore = defineStore('settings', () => {
 
   // State
   const exportPreferences = ref<ExportPreferences>(initialSettings.exportPreferences)
+  const importPreferences = ref<ImportPreferences>(initialSettings.importPreferences ?? defaultSettings.importPreferences)
   const language = ref<AppSettings['language']>(initialSettings.language)
 
   // Sync i18n on load (in case localStorage overrides detection)
@@ -54,16 +84,21 @@ export const useSettingsStore = defineStore('settings', () => {
   function saveSettings() {
     const settings: AppSettings = {
       exportPreferences: exportPreferences.value,
+      importPreferences: importPreferences.value,
       language: language.value
     }
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings))
   }
 
-  watch([exportPreferences, language], saveSettings, { deep: true })
+  watch([exportPreferences, importPreferences, language], saveSettings, { deep: true })
 
   // Actions
   function updateExportPreferences(prefs: Partial<ExportPreferences>) {
     exportPreferences.value = { ...exportPreferences.value, ...prefs }
+  }
+
+  function updateImportPreferences(prefs: Partial<ImportPreferences>) {
+    importPreferences.value = { ...importPreferences.value, ...prefs }
   }
 
   function setLanguage(lang: AppSettings['language']) {
@@ -74,14 +109,17 @@ export const useSettingsStore = defineStore('settings', () => {
 
   function resetToDefaults() {
     exportPreferences.value = { ...defaultSettings.exportPreferences }
+    importPreferences.value = { ...defaultSettings.importPreferences }
     language.value = defaultSettings.language
     i18n.global.locale.value = defaultSettings.language
   }
 
   return {
     exportPreferences,
+    importPreferences,
     language,
     updateExportPreferences,
+    updateImportPreferences,
     setLanguage,
     resetToDefaults
   }

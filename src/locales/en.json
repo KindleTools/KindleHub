@@ -66,7 +66,22 @@
     "processing_title": "Processing your file...",
     "processing_desc": "This may take a moment for large files",
     "success": "Import successful!",
-    "failed": "Import Failed"
+    "failed": "Import Failed",
+    "options": {
+      "title": "Import Options",
+      "language": "Language",
+      "language_desc": "Language of your Kindle highlights",
+      "merge_overlapping": "Merge overlapping highlights",
+      "merge_overlapping_desc": "Combine highlights when you extend a selection",
+      "extract_tags": "Extract tags from notes",
+      "extract_tags_desc": "Parse hashtags or comma-separated tags from notes",
+      "highlights_only": "Highlights only",
+      "highlights_only_desc": "Import only highlights, ignore notes and bookmarks",
+      "show_advanced": "Show advanced options",
+      "hide_advanced": "Hide advanced options",
+      "remove_unlinked": "Remove unlinked notes",
+      "remove_unlinked_desc": "Delete notes that couldn't be linked to a highlight"
+    }
   },
   "export": {
     "title": "Export",

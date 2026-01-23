@@ -64,7 +64,22 @@
     "processing_title": "Elaborazione file...",
     "processing_desc": "Potrebbe richiedere un momento per file grandi",
     "success": "Importazione riuscita!",
-    "failed": "Importazione fallita"
+    "failed": "Importazione fallita",
+    "options": {
+      "title": "Opzioni di Importazione",
+      "language": "Lingua",
+      "language_desc": "Lingua delle tue evidenziazioni Kindle",
+      "merge_overlapping": "Unisci evidenziazioni sovrapposte",
+      "merge_overlapping_desc": "Combina le evidenziazioni quando estendi una selezione",
+      "extract_tags": "Estrai tag dalle note",
+      "extract_tags_desc": "Analizza hashtag o tag separati da virgola dalle note",
+      "highlights_only": "Solo evidenziazioni",
+      "highlights_only_desc": "Importa solo evidenziazioni, ignora note e segnalibri",
+      "show_advanced": "Mostra opzioni avanzate",
+      "hide_advanced": "Nascondi opzioni avanzate",
+      "remove_unlinked": "Rimuovi note non collegate",
+      "remove_unlinked_desc": "Elimina le note che non possono essere collegate a un'evidenziazione"
+    }
   },
   "export": {
     "title": "Esporta",

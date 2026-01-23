@@ -64,7 +64,22 @@
     "processing_title": "Processando arquivo...",
     "processing_desc": "Isso pode levar um momento para arquivos grandes",
     "success": "Importação realizada com sucesso!",
-    "failed": "Falha na importação"
+    "failed": "Falha na importação",
+    "options": {
+      "title": "Opções de Importação",
+      "language": "Idioma",
+      "language_desc": "Idioma dos seus destaques do Kindle",
+      "merge_overlapping": "Mesclar destaques sobrepostos",
+      "merge_overlapping_desc": "Combinar destaques quando você estende uma seleção",
+      "extract_tags": "Extrair tags das notas",
+      "extract_tags_desc": "Analisar hashtags ou tags separadas por vírgula das notas",
+      "highlights_only": "Apenas destaques",
+      "highlights_only_desc": "Importar apenas destaques, ignorar notas e marcadores",
+      "show_advanced": "Mostrar opções avançadas",
+      "hide_advanced": "Ocultar opções avançadas",
+      "remove_unlinked": "Remover notas não vinculadas",
+      "remove_unlinked_desc": "Excluir notas que não puderam ser vinculadas a um destaque"
+    }
   },
   "export": {
     "title": "Exportar",

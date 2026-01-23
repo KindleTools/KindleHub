@@ -64,7 +64,22 @@
     "processing_title": "Verarbeite Datei...",
     "processing_desc": "Dies kann bei großen Dateien einen Moment dauern",
     "success": "Import erfolgreich!",
-    "failed": "Import fehlgeschlagen"
+    "failed": "Import fehlgeschlagen",
+    "options": {
+      "title": "Importoptionen",
+      "language": "Sprache",
+      "language_desc": "Sprache Ihrer Kindle-Markierungen",
+      "merge_overlapping": "Überlappende Markierungen zusammenführen",
+      "merge_overlapping_desc": "Markierungen kombinieren, wenn Sie eine Auswahl erweitern",
+      "extract_tags": "Tags aus Notizen extrahieren",
+      "extract_tags_desc": "Hashtags oder kommagetrennte Tags aus Notizen analysieren",
+      "highlights_only": "Nur Markierungen",
+      "highlights_only_desc": "Nur Markierungen importieren, Notizen und Lesezeichen ignorieren",
+      "show_advanced": "Erweiterte Optionen anzeigen",
+      "hide_advanced": "Erweiterte Optionen ausblenden",
+      "remove_unlinked": "Unverknüpfte Notizen entfernen",
+      "remove_unlinked_desc": "Notizen löschen, die nicht mit einer Markierung verknüpft werden konnten"
+    }
   },
   "export": {
     "title": "Exportieren",

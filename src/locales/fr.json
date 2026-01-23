@@ -64,7 +64,22 @@
     "processing_title": "Traitement du fichier...",
     "processing_desc": "Cela peut prendre un moment pour les gros fichiers",
     "success": "Importation réussie !",
-    "failed": "Échec de l'importation"
+    "failed": "Échec de l'importation",
+    "options": {
+      "title": "Options d'importation",
+      "language": "Langue",
+      "language_desc": "Langue de vos surlignements Kindle",
+      "merge_overlapping": "Fusionner les surlignements superposés",
+      "merge_overlapping_desc": "Combiner les surlignements lorsque vous étendez une sélection",
+      "extract_tags": "Extraire les tags des notes",
+      "extract_tags_desc": "Analyser les hashtags ou tags séparés par des virgules",
+      "highlights_only": "Surlignements uniquement",
+      "highlights_only_desc": "Importer uniquement les surlignements, ignorer notes et signets",
+      "show_advanced": "Afficher les options avancées",
+      "hide_advanced": "Masquer les options avancées",
+      "remove_unlinked": "Supprimer les notes non liées",
+      "remove_unlinked_desc": "Supprimer les notes qui n'ont pas pu être liées à un surlignement"
+    }
   },
   "export": {
     "title": "Exporter",
