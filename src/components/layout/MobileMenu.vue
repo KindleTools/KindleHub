@@ -16,6 +16,7 @@ const { t } = useI18n()
 const navigation = [
   { name: 'nav.home', href: '/' },
   { name: 'nav.library', href: '/library' },
+  { name: 'nav.stats', href: '/stats' },
   { name: 'nav.import', href: '/import' },
   { name: 'nav.export', href: '/export' },
   { name: 'nav.editor', href: '/editor' },

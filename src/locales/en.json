@@ -2,12 +2,38 @@
   "nav": {
     "home": "Home",
     "library": "Library",
+    "stats": "Statistics",
     "import": "Import",
     "export": "Export",
     "editor": "Editor",
     "search": "Search",
     "settings": "Settings",
     "menu": "Menu"
+  },
+  "stats": {
+    "title": "Statistics",
+    "subtitle": "Deep dive into your reading habits",
+    "total_highlights": "Total Highlights",
+    "total_books": "Books Read",
+    "total_authors": "Authors",
+    "days_active": "Active Days",
+    "activity": "Activity",
+    "no_data": "No data available",
+    "top_books": "Top Books",
+    "type_distribution": "Type Distribution",
+    "advanced_stats": "Advanced Statistics",
+    "reading_patterns": "Reading Patterns (Day x Hour)",
+    "heatmap_desc": "Visual representation of your reading activity by day of week and hour of day.",
+    "consistency": "Reading Consistency",
+    "streak_desc": "Calendar view showing your reading days.",
+    "authors_books": "Authors & Books",
+    "treemap_desc": "Proportion of highlights by author and book.",
+    "monthly_breakdown": "Monthly Breakdown",
+    "monthly_breakdown_desc": "Highlights, notes, and bookmarks per month.",
+    "length_distribution": "Highlight Length Distribution",
+    "length_distribution_desc": "Box plot showing the range of highlight lengths.",
+    "books_scatter": "Books: Highlights vs Notes",
+    "scatter_desc": "Scatter plot comparing number of notes vs highlights per book."
   },
   "common": {
     "loading": "Loading...",
@@ -195,24 +221,17 @@
     "light": "Light mode",
     "dark": "Dark mode"
   },
-  "stats": {
-    "dashboard": "Dashboard",
-    "dashboard_desc": "Overview of your reading activity and highlights",
-    "total_highlights": "Highlights",
-    "total_books": "Books",
-    "total_authors": "Authors",
-    "years_reading": "Years Reading",
-    "type_distribution": "Type Distribution",
-    "top_books": "Top Books",
-    "activity": "Activity Over Time",
-    "insights": "Insights",
-    "no_data": "No data yet",
-    "no_insights": "Import more highlights to unlock insights",
-    "insight_peak_month": "Your peak month was {month} with {count} highlights",
-    "insight_highlight_preference": "{percentage}% of your clippings are highlights",
-    "insight_top_author": "Your most highlighted author is {author} with {count} highlights",
-    "insight_avg_per_book": "You average {avg} highlights per book",
-    "insight_years_reading": "You've been reading for {years} years"
+
+  "date": {
+    "weekday_short": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    }
   },
   "settings": {
     "data_cleared": "All data has been deleted",

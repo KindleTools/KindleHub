@@ -53,6 +53,12 @@ const isScrolled = computed(() => y.value > 10)
             {{ $t('nav.library') }}
           </router-link>
           <router-link
+            to="/stats"
+            class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+          >
+            {{ $t('nav.stats') }}
+          </router-link>
+          <router-link
             to="/import"
             class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
           >

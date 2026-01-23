@@ -33,7 +33,8 @@ const colors = computed(() => ({
 const accessibilitySummary = computed(() => {
   if (props.data.length === 0) return t('stats.no_data')
   const total = props.data.reduce((sum, p) => sum + p.count, 0)
-  const peak = props.data.reduce((max, p) => p.count > max.count ? p : max, props.data[0])
+  const peak = props.data.reduce((max, p) => p.count > max.count ? p : max, { label: '', count: 0, date: new Date() })
+  if (!peak) return t('stats.no_data')
   return `${t('stats.activity')}: ${total} ${t('stats.total_highlights')} total. Peak: ${peak.label} (${peak.count})`
 })
 
@@ -111,7 +112,7 @@ const chartOption = computed(() => ({
 </script>
 
 <template>
-  <div class="card" role="figure" :aria-label="accessibilitySummary">
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700 h-full" role="figure" :aria-label="accessibilitySummary">
     <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
       {{ $t('stats.activity') }}
     </h3>
@@ -119,11 +120,11 @@ const chartOption = computed(() => ({
       v-if="data.length > 0"
       :option="chartOption"
       autoresize
-      class="h-48 sm:h-64"
+      class="h-64 sm:h-64"
     />
     <div
       v-else
-      class="h-48 sm:h-64 flex items-center justify-center text-gray-400 text-sm"
+      class="h-64 sm:h-64 flex items-center justify-center text-gray-400 text-sm"
     >
       {{ $t('stats.no_data') }}
     </div>

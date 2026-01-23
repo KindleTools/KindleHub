@@ -12,6 +12,7 @@ import type { TypeDistribution } from '@/composables/useStatistics'
 
 use([PieChart, TooltipComponent, LegendComponent, CanvasRenderer])
 
+// Expects TypeDistribution object
 const props = defineProps<{
   data: TypeDistribution
 }>()
@@ -30,11 +31,14 @@ const colors = computed(() => ({
 
 // Accessibility: generate summary text
 const accessibilitySummary = computed(() => {
-  const total = props.data.highlights + props.data.notes + props.data.bookmarks
+  const { highlights, notes, bookmarks } = props.data
+  const total = highlights + notes + bookmarks
   if (total === 0) return t('stats.no_data')
-  const hPct = Math.round((props.data.highlights / total) * 100)
-  const nPct = Math.round((props.data.notes / total) * 100)
-  const bPct = Math.round((props.data.bookmarks / total) * 100)
+
+  const hPct = Math.round((highlights / total) * 100)
+  const nPct = Math.round((notes / total) * 100)
+  const bPct = Math.round((bookmarks / total) * 100)
+
   return `${t('stats.type_distribution')}: ${t('clipping.highlight')} ${hPct}%, ${t('clipping.note')} ${nPct}%, ${t('clipping.bookmark')} ${bPct}%`
 })
 
@@ -53,6 +57,11 @@ const chartOption = computed(() => ({
       color: colors.value.legendText
     }
   },
+  color: [
+    '#f59e0b', // Highlight (Yellow)
+    '#10b981', // Note (Green)
+    '#6366f1' // Bookmark (Indigo)
+  ],
   series: [
     {
       type: 'pie',
@@ -97,14 +106,14 @@ const chartOption = computed(() => ({
 </script>
 
 <template>
-  <div class="card" role="figure" :aria-label="accessibilitySummary">
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700 h-full" role="figure" :aria-label="accessibilitySummary">
     <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
       {{ $t('stats.type_distribution') }}
     </h3>
     <VChart
       :option="chartOption"
       autoresize
-      class="h-48 sm:h-64"
+      class="h-64"
     />
   </div>
 </template>

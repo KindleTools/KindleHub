@@ -2,6 +2,7 @@
   "nav": {
     "home": "Inicio",
     "library": "Biblioteca",
+    "stats": "Estadísticas",
     "import": "Importar",
     "export": "Exportar",
     "editor": "Editor",
@@ -212,7 +213,34 @@
     "insight_highlight_preference": "{percentage}% de tus recortes son subrayados",
     "insight_top_author": "Tu autor más subrayado es {author} con {count} subrayados",
     "insight_avg_per_book": "Promedias {avg} subrayados por libro",
-    "insight_years_reading": "Llevas leyendo {years} años"
+    "insight_years_reading": "Llevas leyendo {years} años",
+    "title": "Estadísticas",
+    "subtitle": "Profundiza en tus hábitos de lectura",
+    "days_active": "Días Activos",
+    "advanced_stats": "Estadísticas Avanzadas",
+    "reading_patterns": "Patrones de Lectura (Día x Hora)",
+    "heatmap_desc": "Representación visual de tu actividad por día de la semana y hora.",
+    "consistency": "Consistencia de Lectura",
+    "streak_desc": "Vista de calendario mostrando tus días de lectura.",
+    "authors_books": "Autores y Libros",
+    "treemap_desc": "Proporción de subrayados por autor y libro.",
+    "monthly_breakdown": "Desglose Mensual",
+    "monthly_breakdown_desc": "Subrayados, notas y marcadores por mes.",
+    "length_distribution": "Distribución de Longitud",
+    "length_distribution_desc": "Diagrama de caja mostrando el rango de longitudes.",
+    "books_scatter": "Libros: Subrayados vs Notas",
+    "scatter_desc": "Gráfico de dispersión comparando notas vs subrayados por libro."
+  },
+  "date": {
+    "weekday_short": {
+      "sun": "Dom",
+      "mon": "Lun",
+      "tue": "Mar",
+      "wed": "Mié",
+      "thu": "Jue",
+      "fri": "Vie",
+      "sat": "Sáb"
+    }
   },
   "settings": {
     "data_cleared": "Todos los datos han sido eliminados",

@@ -11,7 +11,8 @@ import {
   TopBooksChart,
   ActivityChart,
   InsightsPanel,
-  HeatmapChart
+  /* HeatmapChart, */ // Kept commented out if we want to switch back later or use it elsewhere
+  StreakChart
 } from '@/components/stats'
 
 const booksStore = useBooksStore()
@@ -137,7 +138,7 @@ onMounted(async () => {
 
       <!-- Heatmap -->
       <div class="mb-6">
-        <HeatmapChart :data="stats.heatmapData" :year="new Date().getFullYear()" />
+        <StreakChart :data="stats.calendarData" :year="new Date().getFullYear()" />
       </div>
 
       <!-- Charts Row 1 -->
