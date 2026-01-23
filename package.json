@@ -38,11 +38,13 @@
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.23",
+    "@tanstack/vue-virtual": "^3.13.18",
     "@vueuse/core": "^14.1.0",
     "date-fns": "^4.1.0",
     "dexie": "^4.2.1",
     "dompurify": "^3.3.1",
     "fuse.js": "^7.1.0",
+    "jszip": "^3.10.1",
     "kindle-tools-ts": "file:kindle-tools-ts-0.5.0.tgz",
     "lucide-vue-next": "^0.562.0",
     "pinia": "^3.0.4",

@@ -50,6 +50,30 @@ vi.mock('@/composables/useDataEditor', () => ({
   })
 }))
 
+// Mock @tanstack/vue-virtual
+vi.mock('@tanstack/vue-virtual', () => ({
+  useVirtualizer: (optionsOrRef: any) => {
+    return computed(() => {
+      const options = optionsOrRef.value || optionsOrRef
+      const count = options.count?.value ?? options.count ?? 0
+
+      return {
+        getVirtualItems: () => {
+          return Array.from({ length: count }, (_, i) => ({
+            index: i,
+            key: i,
+            start: i * 50,
+            size: 50,
+            end: (i + 1) * 50
+          }))
+        },
+        getTotalSize: () => count * 50,
+        scrollOffset: 0
+      }
+    })
+  }
+}))
+
 // Mock Date formatter since standard mocking might be verbose
 vi.mock('@/utils/date.utils', () => ({
   formatDate: (_date: Date) => '2023-01-01'
