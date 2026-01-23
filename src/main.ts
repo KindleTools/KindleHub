@@ -11,6 +11,15 @@ const router = createRouter({
   routes
 })
 
+router.afterEach((to) => {
+  const baseTitle = 'KindleHub'
+  const pageTitle = to.name
+    ? String(to.name).charAt(0).toUpperCase() + String(to.name).slice(1)
+    : ''
+
+  document.title = pageTitle ? `${pageTitle} - ${baseTitle}` : baseTitle
+})
+
 // Create Pinia store
 const pinia = createPinia()
 

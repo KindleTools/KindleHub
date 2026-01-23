@@ -253,18 +253,53 @@ await exporter.export(clippings, {
 
 ---
 
+### 10. Exportar Metadatos de Formato (Prioridad: Baja)
+
+**Contexto**: Al refactorizar KindleHub (v1.1), se creó un `FORMAT_REGISTRY` unificado que contiene factory functions + metadatos. Cada consumidor debe definir sus propios metadatos (filename, mimeType, extension, label).
+
+**Estado actual en kindle-tools-ts**:
+- ✅ Exporta `Exporter` (interfaz) y `BaseExporter` (clase abstracta)
+- ✅ Cada exporter tiene `name` y `extension`
+- ❌ No exporta `mimeType` ni metadatos adicionales
+
+**Propuesta**:
+```typescript
+// Añadir a la interfaz Exporter
+export interface Exporter {
+  name: string
+  extension: string
+  mimeType?: string       // Nuevo - e.g., 'text/markdown'
+  isMultiFile?: boolean   // Nuevo - true para obsidian/joplin
+  export(...): Promise<ExportResult>
+}
+
+// O alternativamente, exportar metadatos como constante
+export const EXPORTER_METADATA: Record<string, { mimeType: string; isMultiFile: boolean }> = {
+  markdown: { mimeType: 'text/markdown', isMultiFile: false },
+  // ...
+}
+```
+
+**Beneficio**: Evita que cada consumidor duplique esta información técnica.
+
+**Contraargumento**: Los metadatos de UI (label, description, icon) sí deben quedar en el consumidor. Solo los técnicos (mimeType, isMultiFile) podrían estar en la lib.
+
+**Workaround actual en KindleHub**: `FORMAT_REGISTRY` unificado en `export.service.ts`.
+
+---
+
 ## 📋 Mejoras Técnicas (Zod Next Steps)
 
 **Contexto**: Tras la migración a Zod (v2.0), existen oportunidades para aprovechar mejor la librería.
 
-### 10. Validación de Configuración (Runtime)
+### 11. Validación de Configuración (Runtime)
 - **Idea**: Usar `ParseOptionsSchema.parse(input)` para validar inputs de usuario (CLI/GUI).
 - **Beneficio**: Validación robusta y mensajes de error detallados gratis.
 
-### 11. Transformadores para RegExp
+### 12. Transformadores para RegExp
 - **Idea**: Usar `z.preprocess()` o `transform()` en `ParseOptionsSchema` para convertir strings a RegExp automáticamente (útil para cargar config desde JSON).
 
-### 12. Performance Check
+### 13. Performance Check
 - **Idea**: Validar impacto de rendimiento si se usa `ClippingStrictSchema.parse()` en bucles masivos. Zod puede ser intensivo en CPU.
 
 ---
@@ -298,4 +333,4 @@ Al desarrollar KindleHub, si encuentras que necesitas algo de kindle-tools-ts qu
 ---
 
 *Este documento se actualiza conforme se desarrolla KindleHub.*
-*Última actualización: 2026-01-20*
+*Última actualización: 2026-01-23*

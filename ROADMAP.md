@@ -63,7 +63,7 @@
 | 4 | **Virtual Scrolling** | Performance | Implementar `@tanstack/vue-virtual` en `BookList.vue` y `DataTable.vue` para >500 items | 3-4h |
 | 5 | **Lighthouse Audit** | Performance | Alcanzar score >90 en móvil/desktop. Optimizar LCP, CLS, FID | 2-3h |
 | 6 | **PWA Basics** | Acceso | Ver sección PWA Support abajo | 2-3h |
-| 7 | **Patrón Factory para Exportadores** | Código | Refactorizar switch de 6 casos en `export.service.ts` con Registry/Factory | 1h |
+| ~~7~~ | ~~**Patrón Factory para Exportadores**~~ | ~~Código~~ | ✅ Completado - Unified `FORMAT_REGISTRY` con single source of truth | - |
 
 ---
 

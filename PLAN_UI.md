@@ -1,8 +1,131 @@
 # Plan de Mejoras UI/UX - KindleHub
 
-> **Última actualización**: 2026-01-22
-> **Estado base**: MVP ~98% completado
+> **Última actualización**: 2026-01-23
+> **Estado base**: MVP ~99% completado
 > **Objetivo**: Elevar la experiencia de usuario al nivel "premium"
+
+---
+
+## Fase 0: Bug Fixes (Crítico)
+
+### 0.1 i18n Hardcoded Strings en Settings
+
+**Problema**: `src/pages/settings.vue` tiene strings en español hardcodeados en lugar de usar i18n.
+
+**Ubicaciones**:
+- Línea 40: `'Todos los datos han sido eliminados'`
+- Línea 44: `'Error al eliminar los datos'`
+- Línea 72: `'Backup exportado correctamente'`
+- Línea 75: `'Error al exportar el backup'`
+- Línea 83: `'Configuracion restaurada'`
+- Líneas 251-252: ConfirmModal con título/mensaje hardcodeados
+
+**Solución**:
+```vue
+<script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+
+// Usar t() en todas las llamadas a toast
+toast.success(t('settings.data_cleared'))
+toast.error(t('settings.data_clear_error'))
+toast.success(t('settings.backup_exported'))
+toast.error(t('settings.backup_export_error'))
+toast.info(t('settings.settings_reset'))
+</script>
+
+```
+
+**Claves a agregar en todos los locales**:
+```json
+{
+  "settings": {
+    "data_cleared": "All data has been deleted",
+    "data_clear_error": "Error deleting data",
+    "backup_exported": "Backup exported successfully",
+    "backup_export_error": "Error exporting backup",
+    "settings_reset": "Settings restored",
+    "confirm_clear_title": "Delete all data?",
+    "confirm_clear_message": "This action will delete all stored books and clippings. This cannot be undone."
+  }
+}
+```
+
+**Archivos a modificar**:
+- `src/pages/settings.vue`
+- `src/i18n/locales/en.json`
+- `src/i18n/locales/es.json`
+- `src/i18n/locales/it.json`
+- `src/i18n/locales/de.json`
+- `src/i18n/locales/fr.json`
+- `src/i18n/locales/pt.json`
+
+---
+
+### 0.2 Refactoring: Factory Pattern para Exportadores
+
+**Problema**: `export.service.ts` tiene un switch con 6 casos muy similares, acoplando la lógica de selección con la implementación.
+
+**Estado actual**: ~80 líneas con switch repetitivo.
+
+**Solución**: Implementar patrón Registry/Factory.
+
+```typescript
+// src/services/export.service.ts
+
+interface FormatMetadata {
+  filename: string
+  mimeType: string
+  isMultiFile: boolean
+}
+
+const exporterRegistry: Record<ExportFormat, () => BaseExporter> = {
+  markdown: () => new MarkdownExporter(),
+  json: () => new JsonExporter(),
+  csv: () => new CsvExporter(),
+  html: () => new HtmlExporter(),
+  obsidian: () => new ObsidianExporter(),
+  joplin: () => new JoplinExporter()
+}
+
+const formatMetadata: Record<ExportFormat, FormatMetadata> = {
+  markdown: { filename: 'kindle-highlights.md', mimeType: 'text/markdown', isMultiFile: false },
+  json: { filename: 'kindle-highlights.json', mimeType: 'application/json', isMultiFile: false },
+  csv: { filename: 'kindle-highlights.csv', mimeType: 'text/csv', isMultiFile: false },
+  html: { filename: 'kindle-highlights.html', mimeType: 'text/html', isMultiFile: false },
+  obsidian: { filename: 'obsidian-export.zip', mimeType: 'application/zip', isMultiFile: true },
+  joplin: { filename: 'joplin-export.jex', mimeType: 'application/zip', isMultiFile: true }
+}
+
+export async function exportClippings(
+  clippings: Clipping[],
+  format: ExportFormat,
+  options?: Partial<ExporterOptions>
+): Promise<ExportResultData> {
+  const exporter = exporterRegistry[format]()
+  const metadata = formatMetadata[format]
+  const result = await exporter.export(clippings, { ...defaultOptions, ...options })
+
+  if (result.isErr()) throw new Error(result.error.message)
+
+  return {
+    format,
+    ...metadata,
+    content: result.value.output,
+    files: result.value.files ?? []
+  }
+}
+```
+
+**Beneficios**:
+- Reducir `exportClippings` de ~80 líneas a ~15 líneas
+- Facilitar agregar nuevos formatos (solo añadir entrada al registry)
+- Separar metadatos de lógica de exportación
+- Mejor testabilidad
+
+**Archivos a modificar**:
+- `src/services/export.service.ts`
+- `tests/unit/services/export.service.spec.ts` (actualizar tests)
 
 ---
 
@@ -413,6 +536,8 @@ En cada BookCard mostrar:
 
 | Fase | Descripción | Esfuerzo | Impacto | Prioridad |
 |------|-------------|----------|---------|-----------|
+| 0.1 | i18n Bug Fix Settings | Bajo | Alto | 🔴 **Crítica** |
+| 0.2 | Factory Pattern Export | Medio | Medio | 🟡 Media |
 | 1.1 | Mobile Navigation | Bajo | Alto | 🔴 Alta |
 | 1.2 | Empty States SVG | Bajo | Medio | 🟡 Media |
 | 1.3 | Skeleton BookCard | Bajo | Bajo | 🟢 Baja |
@@ -425,12 +550,14 @@ En cada BookCard mostrar:
 
 ## Orden de Implementación Recomendado
 
-1. **Mobile Navigation** (Fase 1.1) - Crítico para UX móvil
-2. **Dashboard Stats** (Fase 2) - Mayor valor percibido
-3. **Empty States** (Fase 1.2) - Mejora la primera impresión
-4. **Editor Inline** (Fase 3.1) - Mejora flujo de trabajo
-5. **Biblioteca Premium** (Fase 4) - Diferenciación visual
-6. **Polish** (Fase 5) - Toques finales
+1. **i18n Bug Fix** (Fase 0.1) - Corregir strings hardcodeados en Settings
+2. **Mobile Navigation** (Fase 1.1) - Crítico para UX móvil
+3. **Dashboard Stats** (Fase 2) - Mayor valor percibido
+4. **Empty States** (Fase 1.2) - Mejora la primera impresión
+5. **Factory Pattern** (Fase 0.2) - Mejora mantenibilidad
+6. **Editor Inline** (Fase 3.1) - Mejora flujo de trabajo
+7. **Biblioteca Premium** (Fase 4) - Diferenciación visual
+8. **Polish** (Fase 5) - Toques finales
 
 ---
 
@@ -483,7 +610,17 @@ src/
 ├── pages/
 │   ├── index.vue             # Nuevo dashboard con stats
 │   ├── library.vue           # View toggle + empty state
-│   └── search.vue            # Empty state mejorado
+│   ├── search.vue            # Empty state mejorado
+│   └── settings.vue          # [FASE 0] Fix i18n hardcoded strings
+├── services/
+│   └── export.service.ts     # [FASE 0] Factory pattern refactor
+├── i18n/locales/
+│   ├── en.json               # [FASE 0] Agregar claves settings.*
+│   ├── es.json               # [FASE 0] Agregar claves settings.*
+│   ├── it.json               # [FASE 0] Agregar claves settings.*
+│   ├── de.json               # [FASE 0] Agregar claves settings.*
+│   ├── fr.json               # [FASE 0] Agregar claves settings.*
+│   └── pt.json               # [FASE 0] Agregar claves settings.*
 └── App.vue                   # Page transitions
 ```
 
@@ -499,3 +636,4 @@ src/
 ---
 
 *Plan creado: 2026-01-22*
+*Última actualización: 2026-01-23*
