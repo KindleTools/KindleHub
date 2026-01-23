@@ -1,167 +1,114 @@
 # KindleHub - Roadmap
 
-> **Estado actual**: MVP avanzado (~99% completado)
+> **Estado actual**: MVP completado (~99%)
 > **Última actualización**: 2026-01-23
 
 ---
 
-## Resumen de Estado
+## Resumen
 
-### 🚀 Recién Completado (Sprint Actual)
+El MVP está esencialmente completo. Este roadmap contiene solo las tareas pendientes y mejoras opcionales.
 
-- ✨ **Mobile Navigation**: Menú hamburguesa y slide-over responsive integrado.
-- ✨ **UI Polish**: Empty States con ilustraciones SVG, Skeleton Loading.
-- ✨ **Tests**: 130 tests pasando, ~62% cobertura.
-- ✨ **Auditoría i18n**: Script de detección de claves faltantes implementado.
-- ✨ **ESLint Config**: Configuración completa con coverage ignorado y globals de Node.
+### Completado
 
-### ✅ Completado (MVP Core)
-
-**Core Features:**
-- Importación: TXT, CSV, JSON desde kindle-tools-ts
+- Importación: TXT, CSV, JSON
 - Almacenamiento: IndexedDB con Dexie.js
-- Visualización: Library de libros, detalle de libro, cards de clippings
-- Editor: Tabla editable con CRUD, selección múltiple, acciones masivas
-- Búsqueda: Full-text con Fuse.js, filtros por tipo/libro/fecha
-- Exportación: 6 formatos (Markdown, JSON, CSV, HTML, Obsidian, Joplin) con preview
-- Settings: Dark mode, preferencias de exportación, backup/restore
-- Sistema de Lotes (Batches): Edición pre-importación, warnings, historial
-
-**UX & Infraestructura:**
-- Toast notifications, Skeleton, ConfirmModal, Tooltips
-- Animaciones y transiciones (200-300ms)
-- Responsive design completo
-- Keyboard shortcuts (Ctrl+K, /, Escape)
-- Accesibilidad (ARIA labels, focus management, HeadlessUI, Skip Links)
-- i18n: 6 idiomas (EN, ES, IT, DE, FR, PT)
-- Error handling centralizado (AppError + useErrorHandler)
-
-**Arquitectura:**
-- Vue 3 + Vite 7 + TypeScript strict + Tailwind + Pinia
-- Lazy loading de rutas (importMode: 'async')
-- Service layer desacoplado (db.service.ts con CRUD completo)
-- Tests centralizados en `tests/unit/` (130 tests)
+- Visualización: Library con grid/list, dashboard con ECharts
+- Editor: Tabla editable con inline editing, CRUD, acciones masivas
+- Búsqueda: Full-text con Fuse.js, filtros
+- Exportación: 6 formatos con preview y Factory Pattern
+- Settings: Dark mode, i18n (6 idiomas), backup/restore
+- Sistema de Batches: Edición pre-importación, warnings, historial, route guard, duplicates detection
+- UX: Toast, Skeleton, ConfirmModal, Tooltips, Page Transitions, Skip Links
+- Utilidades: date.utils.ts, color.utils.ts
+- Mobile: Navegación slide-over, responsive completo
+- Performance: Virtual scrolling en BookList y DataTable
+- PWA: VitePWA configurado con manifest inline
+- Tests: 130 tests pasando (~62% cobertura)
 
 ---
 
-## 📋 Plan de Implementación
+## Tareas Pendientes
 
-### 🔴 Prioridad Alta (Mejoras y Deuda Técnica)
+### Prioridad Alta
 
-| # | Tarea | Impacto | Archivos/Acciones | Estimación |
-|---|-------|---------|-------------------|------------|
-| 1 | **Auditoría de Traducciones** | UX | Rellenar claves faltantes en `src/i18n/locales/{de,fr,it,pt}.json` detectadas por script | 1-2h |
-| 2 | **Fix DataTable Tests** | Calidad | Mejorar mocking de `useDataEditor` en `tests/unit/components/editor/DataTable.spec.ts` | 1h |
-| 3 | **Fix Lint Errors** | Calidad | Resolver error residual de ESLint (ejecutar `npm run lint`) | 15min |
-
----
-
-### 🟡 Prioridad Media (Optimizaciones)
-
-| # | Tarea | Impacto | Detalles Técnicos | Estimación |
-|---|-------|---------|-------------------|------------|
-| 4 | **Virtual Scrolling** | Performance | Implementar `@tanstack/vue-virtual` en `BookList.vue` y `DataTable.vue` para >500 items | 3-4h |
-| 5 | **Lighthouse Audit** | Performance | Alcanzar score >90 en móvil/desktop. Optimizar LCP, CLS, FID | 2-3h |
-| 6 | **PWA Basics** | Acceso | Ver sección PWA Support abajo | 2-3h |
-| ~~7~~ | ~~**Patrón Factory para Exportadores**~~ | ~~Código~~ | ✅ Completado - Unified `FORMAT_REGISTRY` con single source of truth | - |
+| # | Tarea | Descripción | Archivos |
+|---|-------|-------------|----------|
+| 1 | **Fix Lint Errors** | Trailing spaces en BookCard.vue y BookList.vue | `src/components/books/` |
+| 2 | **i18n: Claves faltantes** | Añadir `grid_view`, `list_view` a de, fr, it, pt | `src/locales/{de,fr,it,pt}.json` |
 
 ---
 
-### 🟠 Mejoras del Sistema de Batches (Siguientes Iteraciones)
+### Prioridad Media
 
-#### Alta Prioridad
-
-| # | Tarea | Impacto | Detalles |
-|---|-------|---------|----------|
-| B1 | **Undo/Redo para ediciones** | UX | Historial de cambios en batch, Ctrl+Z para deshacer |
-| B2 | **Filtros en vista de batch** | UX | Filtrar por tipo, libro, solo items con warnings |
-| B3 | **Selección inteligente** | UX | Shift+click para rango, Ctrl+A seleccionar todo |
-
-#### Media Prioridad
-
-| # | Tarea | Impacto | Detalles |
-|---|-------|---------|----------|
-| B4 | **Merge de duplicados** | Feature | Fusionar dos clippings combinando notas |
-| B5 | **Preview de cambios** | UX | Mostrar diff antes de importar |
-| B6 | **Marcar ambos duplicados** | UX | Actualmente solo c1 se marca, c2 también debería |
-| B7 | **Re-detectar duplicados tras edición** | Calidad | Llamar `detectDuplicates()` cuando cambia `content` |
-
-#### Baja Prioridad
-
-| # | Tarea | Impacto | Detalles |
-|---|-------|---------|----------|
-| B8 | **Batch history con detalle** | Feature | Ver qué clippings se importaron, re-importar batch descartado |
-| B9 | **Virtual scrolling para batches** | Performance | Usar `vue-virtual-scroller` para 5000+ clippings |
-| B10 | **Persistir batch en localStorage** | UX | Guardar estado periódicamente, restaurar al montar |
+| # | Tarea | Descripción |
+|---|-------|-------------|
+| 3 | **Lighthouse Audit** | Alcanzar score >90 en móvil/desktop |
+| 4 | **DataTable string hardcodeado** | Cambiar `'(vacío)'` por `$t('clipping.no_content')` en línea 399 |
+| 5 | **BookListItem skeleton** | Añadir prop `loading` y skeleton state |
 
 ---
 
-### 🟢 Prioridad Baja (Nuevas Features)
+### Prioridad Baja (Mejoras Opcionales)
 
-| # | Tarea | Impacto | Notas |
-|---|-------|---------|-------|
-| 7 | **Importar desde URL** | Feature | Permitir pegar URL de Goodreads/Amazon (future scope) |
-| 8 | **Estadísticas Avanzadas** | Feature | Gráficos de lectura por mes/año con Chart.js |
-| 9 | **Temas Personalizables** | UX | Permitir elegir accent color desde Settings |
-
----
-
-## � PWA Support (Tarea #6)
-
-### Checklist de Implementación
-
-- [ ] **manifest.json** para instalabilidad
-  - Crear `public/manifest.json` con nombre, iconos, theme_color, background_color
-  - Añadir `<link rel="manifest">` en `index.html`
-  
-- [ ] **Service Worker** para offline
-  - Instalar `vite-plugin-pwa`
-  - Configurar workbox en `vite.config.ts`
-  - Estrategia: NetworkFirst para API, CacheFirst para assets
-  
-- [ ] **Iconos para instalación**
-  - Generar iconos en múltiples tamaños: 192x192, 512x512
-  - Añadir apple-touch-icon para iOS
-  - Crear maskable icon para Android
-
-### Archivos a crear/modificar:
-
-```
-public/
-├── manifest.json          [NEW]
-├── icons/
-│   ├── icon-192x192.png   [NEW]
-│   ├── icon-512x512.png   [NEW]
-│   └── apple-touch-icon.png [NEW]
-src/
-├── vite.config.ts         [MODIFY] - añadir VitePWA plugin
-index.html                 [MODIFY] - añadir manifest link
-```
+| # | Tarea | Descripción |
+|---|-------|-------------|
+| 6 | **Column Visibility Toggle** | Permitir ocultar columnas en DataTable |
+| 7 | **Density Toggle** | Vista compacta/normal/expandida en editor |
+| 8 | **EmptyState ilustraciones** | Reemplazar iconos Lucide con SVGs personalizados |
+| 9 | **Glassmorphism Header** | Efecto blur en scroll |
+| 10 | **Heatmap de lectura** | Implementar `heatmapData` en useStatistics |
 
 ---
 
-## �🔄 Estado de Tests
+## Mejoras del Sistema de Batches (Futuro)
 
-**Cobertura:** ~62% (16 archivos, 130 tests)
+### Alta Prioridad
 
-- ✅ **Core Services**: Parser, DB, Export (100% passing)
-- ✅ **UI Components**: AppHeader, BookCard, ExportPanel, ClippingCard (Passing)
-- ✅ **Stores**: books, clippings (Passing)
-- ✅ **Composables**: useSearch (Passing)
+| # | Tarea | Descripción |
+|---|-------|-------------|
+| B1 | Undo/Redo | Historial de cambios en batch, Ctrl+Z |
+| B2 | Filtros en batch | Filtrar por tipo, libro, items con warnings |
+| B3 | Selección inteligente | Shift+click para rango, Ctrl+A |
+
+### Media Prioridad
+
+| # | Tarea | Descripción |
+|---|-------|-------------|
+| B4 | Merge duplicados | Fusionar dos clippings combinando notas |
+| B5 | Preview de cambios | Mostrar diff antes de importar |
+| B6 | Marcar ambos duplicados | Actualmente solo c1 se marca |
+| B7 | Re-detectar duplicados | Llamar `detectDuplicates()` al cambiar content |
+
+### Baja Prioridad
+
+| # | Tarea | Descripción |
+|---|-------|-------------|
+| B8 | Batch history detallado | Ver qué se importó, re-importar descartado |
+| B9 | Persistir en localStorage | Guardar estado periódicamente |
 
 ---
 
-## 📊 Métricas de Calidad
+## Backlog (Sin fecha)
+
+- Test Coverage >80%
+- Tests E2E con Playwright
+- Screenshots/GIFs en README
+- Importar desde URL (Goodreads/Amazon)
+- Temas personalizables (accent color)
+
+---
+
+## Métricas de Calidad
 
 | Métrica | Objetivo | Estado |
 |---------|----------|--------|
-| TypeScript strict | Habilitado | ✅ OK |
-| ESLint sin errores | 0 errores | ✅ OK |
-| Tests unitarios | >60% coverage | ✅ ~62% |
+| TypeScript strict | Habilitado | ✅ |
+| ESLint sin errores | 0 errores | ⚠️ 3 errors |
+| Tests unitarios | >60% | ✅ ~62% |
 | Bundle size | <300KB gzip | ✅ ~230KB |
 | Lighthouse | >90 | ⏳ Pendiente |
-| Responsive | Mobile-first | ✅ OK |
-| i18n | Multi-idioma | ⚠️ Faltan keys |
+| i18n | 6 idiomas | ⚠️ 2 keys faltantes |
 
 ---
 

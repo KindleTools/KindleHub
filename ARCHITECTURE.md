@@ -72,9 +72,22 @@ components/
 ├── export/
 │   ├── ExportPanel.vue        # Format picker + preview + download
 │   └── FormatPicker.vue       # Visual format selector
-└── layout/
-    ├── AppHeader.vue          # Navigation + dark mode toggle
-    └── AppFooter.vue          # Footer links
+├── layout/
+│   ├── AppHeader.vue          # Navigation + dark mode toggle
+│   ├── AppFooter.vue          # Footer links
+│   └── MobileMenu.vue         # Slide-over navigation for mobile
+├── stats/
+│   ├── StatCard.vue           # Metric card with icon and value
+│   ├── ActivityChart.vue      # Line chart (ECharts)
+│   ├── TopBooksChart.vue      # Horizontal bar chart (ECharts)
+│   ├── TypeDistributionChart.vue  # Donut chart (ECharts)
+│   └── InsightsPanel.vue      # Smart insights list
+└── ui/
+    ├── EmptyState.vue         # Empty state with icon and CTA
+    ├── Skeleton.vue           # Loading placeholder
+    ├── Toast.vue              # Notification toast
+    ├── Tooltip.vue            # Hover tooltip
+    └── ConfirmModal.vue       # Confirmation dialog
 ```
 
 ### 3. Composables
@@ -116,6 +129,15 @@ Full-text search with Fuse.js:
 - `results` - Filtered and highlighted results
 - `highlightMatches(text, indices)` - HTML highlighting
 - `setFilter(key, value)` - Filter management
+
+#### `useStatistics.ts`
+Dashboard statistics and insights:
+- `totalClippings`, `totalBooks`, `totalAuthors`, `yearsReading` - Basic metrics
+- `typeDistribution` - For donut chart (highlights/notes/bookmarks)
+- `topBooks` - Top 10 books by clipping count
+- `timelineData` - Monthly activity for line chart
+- `insights` - Smart insights with i18n keys (peak month, preferences, etc.)
+- `hasData`, `isLoading` - State management
 
 ### 4. Pinia Stores
 
@@ -622,4 +644,4 @@ For very large libraries (1000+ books):
 
 ---
 
-*Last updated: 2026-01-22*
+*Last updated: 2026-01-23*

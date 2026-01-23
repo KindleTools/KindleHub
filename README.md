@@ -27,9 +27,15 @@ Kindle highlights often remain trapped in `My Clippings.txt` or scattered across
 
 ### Library & Visualization
 - Beautiful book cards with generated gradient covers
+- Grid and list view toggle with virtualization
 - Book detail view with all clippings
 - Color-coded clipping types (highlights, notes, bookmarks)
-- Real-time statistics
+- Interactive dashboard with ECharts:
+  - Activity timeline chart
+  - Top books bar chart
+  - Type distribution donut chart
+  - Smart insights panel
+- Mobile-friendly responsive design with slide-over navigation
 
 ### Search & Filter
 - Full-text fuzzy search powered by Fuse.js
@@ -72,6 +78,7 @@ Kindle highlights often remain trapped in `My Clippings.txt` or scattered across
 | **Icons** | Lucide Vue Next |
 | **Database** | Dexie.js 4+ (IndexedDB) |
 | **Search** | Fuse.js 7+ |
+| **Charts** | ECharts 6+ (vue-echarts) |
 | **Core Engine** | kindle-tools-ts 0.5.0 |
 | **Testing** | Vitest 4+ |
 | **Linting** | ESLint 9+ |
@@ -84,11 +91,13 @@ Kindle highlights often remain trapped in `My Clippings.txt` or scattered across
 kindle-hub/
 ├── src/
 │   ├── components/
-│   │   ├── books/        # BookCard, BookList
+│   │   ├── books/        # BookCard, BookList, BookListItem
 │   │   ├── clippings/    # ClippingCard, ClippingList
 │   │   ├── editor/       # DataTable
 │   │   ├── export/       # ExportPanel, FormatPicker
-│   │   └── layout/       # AppHeader, AppFooter
+│   │   ├── layout/       # AppHeader, AppFooter, MobileMenu
+│   │   ├── stats/        # StatCard, Charts (ECharts)
+│   │   └── ui/           # EmptyState, Skeleton, Toast, etc.
 │   ├── composables/      # useDataEditor, useSearch
 │   ├── db/               # Dexie schema
 │   ├── pages/            # File-based routing
@@ -149,23 +158,26 @@ The app will run at `http://localhost:5173`.
 
 ## Project Status
 
-**Current**: MVP Functional (~95% complete)
+**Current**: MVP Complete (~99%)
 
 | Feature | Status |
 |---------|--------|
 | Import (TXT/CSV/JSON) | Done |
-| Library View | Done |
+| Library View (Grid/List) | Done |
 | Book Detail | Done |
-| Data Editor | Done |
+| Data Editor (Inline) | Done |
 | Global Search | Done |
 | Export (6 formats) | Done |
 | Settings | Done |
 | Dark Mode | Done |
-| UX Polish (toasts, animations) | Pending |
+| Dashboard with Charts | Done |
+| Mobile Navigation | Done |
+| Page Transitions | Done |
+| i18n (6 languages) | Done |
 | PWA Support | Backlog |
-| Test Coverage >60% | Pending |
+| Test Coverage >80% | Backlog |
 
-See [ROADMAP.md](ROADMAP.md) for detailed pending tasks.
+See [PLAN_UI.md](PLAN_UI.md) for remaining improvements.
 
 ---
 
