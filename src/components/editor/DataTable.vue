@@ -404,7 +404,7 @@ async function handleDelete() {
                 </template>
                 <template v-else>
                   <p class="text-sm text-gray-900 dark:text-gray-100 line-clamp-2">
-                    {{ getClipping(virtualRow.index).content || '(vacío)' }}
+                    {{ getClipping(virtualRow.index).content || $t('datatable.empty') }}
                   </p>
                 </template>
               </td>

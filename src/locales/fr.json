@@ -20,7 +20,9 @@
     "retry": "Réessayer",
     "processing": "Traitement...",
     "skip_to_content": "Aller au contenu",
-    "reset": "Réinitialiser"
+    "reset": "Réinitialiser",
+    "grid_view": "Vue grille",
+    "list_view": "Vue liste"
   },
   "app": {
     "title": "KindleHub",

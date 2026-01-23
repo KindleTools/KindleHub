@@ -44,7 +44,10 @@ export default defineConfig({
         name: 'KindleHub',
         short_name: 'KindleHub',
         description: 'Manage and export your Kindle highlights and notes',
-        theme_color: '#ffffff',
+        theme_color: '#0ea5e9', // Primary-500
+        background_color: '#ffffff',
+        display: 'standalone',
+        orientation: 'portrait',
         icons: [
           {
             src: 'pwa-192x192.png',
@@ -55,6 +58,12 @@ export default defineConfig({
             src: 'pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png'
+          },
+          {
+            src: 'pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable'
           }
         ]
       }

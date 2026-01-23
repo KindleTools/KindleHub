@@ -3,14 +3,22 @@ import { computed } from 'vue'
 import { BookOpen, User, Hash, Calendar } from 'lucide-vue-next'
 import type { Book } from '@/db/schema'
 import { formatDate } from '@/utils/date.utils'
+import UiSkeleton from '@/components/ui/Skeleton.vue'
 
-const props = defineProps<{
-  book: Book
-}>()
+interface Props {
+  book?: Book
+  loading?: boolean
+}
 
-const lastRead = computed(() => formatDate(props.book.lastReadDate))
+const props = defineProps<Props>()
+
+const lastRead = computed(() => {
+  if (props.loading || !props.book) return ''
+  return formatDate(props.book.lastReadDate)
+})
 
 const isRecentlyRead = computed(() => {
+  if (props.loading || !props.book) return false
   const now = new Date()
   const lastReadDate = new Date(props.book.lastReadDate)
   const diffTime = Math.abs(now.getTime() - lastReadDate.getTime())
@@ -20,7 +28,27 @@ const isRecentlyRead = computed(() => {
 </script>
 
 <template>
+  <div v-if="loading" class="flex items-center gap-4 p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+    <UiSkeleton
+      variant="rounded"
+      height="4rem"
+      width="3rem"
+      class="flex-shrink-0"
+    />
+    <div class="flex-1 grid grid-cols-12 gap-4 items-center">
+      <div class="col-span-12 md:col-span-6">
+        <UiSkeleton variant="text" width="60%" class="mb-2" />
+        <UiSkeleton variant="text" width="40%" />
+      </div>
+      <div class="hidden md:flex col-span-6 justify-end gap-6">
+        <UiSkeleton variant="text" width="4rem" />
+        <UiSkeleton variant="text" width="4rem" />
+      </div>
+    </div>
+  </div>
+
   <router-link
+    v-else-if="book"
     :to="`/books/${book.id}`"
     class="flex items-center gap-4 p-3 bg-white dark:bg-gray-800 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors border border-gray-100 dark:border-gray-700/50 group relative"
   >
