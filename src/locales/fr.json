@@ -178,6 +178,25 @@
     "light": "Mode clair",
     "dark": "Mode sombre"
   },
+  "stats": {
+    "dashboard": "Tableau de Bord",
+    "dashboard_desc": "Aperçu de votre activité de lecture et surlignements",
+    "total_highlights": "Surlignements",
+    "total_books": "Livres",
+    "total_authors": "Auteurs",
+    "years_reading": "Années de Lecture",
+    "type_distribution": "Distribution par Type",
+    "top_books": "Livres les Plus Surlignés",
+    "activity": "Activité dans le Temps",
+    "insights": "Aperçus",
+    "no_data": "Pas encore de données",
+    "no_insights": "Importez plus de surlignements pour débloquer les aperçus",
+    "insight_peak_month": "Votre mois de pointe était {month} avec {count} surlignements",
+    "insight_highlight_preference": "{percentage}% de vos coupures sont des surlignements",
+    "insight_top_author": "Votre auteur le plus surligné est {author} avec {count} surlignements",
+    "insight_avg_per_book": "Vous avez en moyenne {avg} surlignements par livre",
+    "insight_years_reading": "Vous lisez depuis {years} ans"
+  },
   "settings": {
     "data_cleared": "Toutes les données ont été supprimées",
     "data_clear_error": "Erreur lors de la suppression des données",

@@ -178,6 +178,25 @@
     "light": "Modo claro",
     "dark": "Modo oscuro"
   },
+  "stats": {
+    "dashboard": "Panel de Control",
+    "dashboard_desc": "Resumen de tu actividad de lectura y subrayados",
+    "total_highlights": "Subrayados",
+    "total_books": "Libros",
+    "total_authors": "Autores",
+    "years_reading": "Años Leyendo",
+    "type_distribution": "Distribución por Tipo",
+    "top_books": "Libros Más Subrayados",
+    "activity": "Actividad en el Tiempo",
+    "insights": "Estadísticas",
+    "no_data": "Sin datos aún",
+    "no_insights": "Importa más subrayados para desbloquear estadísticas",
+    "insight_peak_month": "Tu mes más activo fue {month} con {count} subrayados",
+    "insight_highlight_preference": "{percentage}% de tus recortes son subrayados",
+    "insight_top_author": "Tu autor más subrayado es {author} con {count} subrayados",
+    "insight_avg_per_book": "Promedias {avg} subrayados por libro",
+    "insight_years_reading": "Llevas leyendo {years} años"
+  },
   "settings": {
     "data_cleared": "Todos los datos han sido eliminados",
     "data_clear_error": "Error al eliminar los datos",

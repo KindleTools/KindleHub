@@ -178,6 +178,25 @@
     "light": "Heller Modus",
     "dark": "Dunkler Modus"
   },
+  "stats": {
+    "dashboard": "Dashboard",
+    "dashboard_desc": "Übersicht Ihrer Leseaktivität und Markierungen",
+    "total_highlights": "Markierungen",
+    "total_books": "Bücher",
+    "total_authors": "Autoren",
+    "years_reading": "Jahre des Lesens",
+    "type_distribution": "Verteilung nach Typ",
+    "top_books": "Meistmarkierte Bücher",
+    "activity": "Aktivität im Zeitverlauf",
+    "insights": "Einblicke",
+    "no_data": "Noch keine Daten",
+    "no_insights": "Importieren Sie mehr Markierungen, um Einblicke freizuschalten",
+    "insight_peak_month": "Ihr Spitzenmonat war {month} mit {count} Markierungen",
+    "insight_highlight_preference": "{percentage}% Ihrer Ausschnitte sind Markierungen",
+    "insight_top_author": "Ihr meistmarkierter Autor ist {author} mit {count} Markierungen",
+    "insight_avg_per_book": "Sie haben durchschnittlich {avg} Markierungen pro Buch",
+    "insight_years_reading": "Sie lesen seit {years} Jahren"
+  },
   "settings": {
     "data_cleared": "Alle Daten wurden gelöscht",
     "data_clear_error": "Fehler beim Löschen der Daten",

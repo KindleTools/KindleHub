@@ -178,6 +178,25 @@
     "light": "Light mode",
     "dark": "Dark mode"
   },
+  "stats": {
+    "dashboard": "Dashboard",
+    "dashboard_desc": "Overview of your reading activity and highlights",
+    "total_highlights": "Highlights",
+    "total_books": "Books",
+    "total_authors": "Authors",
+    "years_reading": "Years Reading",
+    "type_distribution": "Type Distribution",
+    "top_books": "Top Books",
+    "activity": "Activity Over Time",
+    "insights": "Insights",
+    "no_data": "No data yet",
+    "no_insights": "Import more highlights to unlock insights",
+    "insight_peak_month": "Your peak month was {month} with {count} highlights",
+    "insight_highlight_preference": "{percentage}% of your clippings are highlights",
+    "insight_top_author": "Your most highlighted author is {author} with {count} highlights",
+    "insight_avg_per_book": "You average {avg} highlights per book",
+    "insight_years_reading": "You've been reading for {years} years"
+  },
   "settings": {
     "data_cleared": "All data has been deleted",
     "data_clear_error": "Error deleting data",

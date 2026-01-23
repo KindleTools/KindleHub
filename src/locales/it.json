@@ -178,6 +178,25 @@
     "light": "Modo chiaro",
     "dark": "Modo scuro"
   },
+  "stats": {
+    "dashboard": "Dashboard",
+    "dashboard_desc": "Panoramica della tua attività di lettura e evidenziazioni",
+    "total_highlights": "Evidenziazioni",
+    "total_books": "Libri",
+    "total_authors": "Autori",
+    "years_reading": "Anni di Lettura",
+    "type_distribution": "Distribuzione per Tipo",
+    "top_books": "Libri Più Evidenziati",
+    "activity": "Attività nel Tempo",
+    "insights": "Approfondimenti",
+    "no_data": "Ancora nessun dato",
+    "no_insights": "Importa più evidenziazioni per sbloccare approfondimenti",
+    "insight_peak_month": "Il tuo mese di punta è stato {month} con {count} evidenziazioni",
+    "insight_highlight_preference": "{percentage}% dei tuoi ritagli sono evidenziazioni",
+    "insight_top_author": "L'autore più evidenziato è {author} con {count} evidenziazioni",
+    "insight_avg_per_book": "In media hai {avg} evidenziazioni per libro",
+    "insight_years_reading": "Leggi da {years} anni"
+  },
   "settings": {
     "data_cleared": "Tutti i dati sono stati eliminati",
     "data_clear_error": "Errore durante l'eliminazione dei dati",

@@ -178,6 +178,25 @@
     "light": "Modo claro",
     "dark": "Modo escuro"
   },
+  "stats": {
+    "dashboard": "Painel de Controle",
+    "dashboard_desc": "Visão geral da sua atividade de leitura e destaques",
+    "total_highlights": "Destaques",
+    "total_books": "Livros",
+    "total_authors": "Autores",
+    "years_reading": "Anos Lendo",
+    "type_distribution": "Distribuição por Tipo",
+    "top_books": "Livros Mais Destacados",
+    "activity": "Atividade ao Longo do Tempo",
+    "insights": "Estatísticas",
+    "no_data": "Ainda sem dados",
+    "no_insights": "Importe mais destaques para desbloquear estatísticas",
+    "insight_peak_month": "Seu mês de pico foi {month} com {count} destaques",
+    "insight_highlight_preference": "{percentage}% dos seus recortes são destaques",
+    "insight_top_author": "Seu autor mais destacado é {author} com {count} destaques",
+    "insight_avg_per_book": "Você tem em média {avg} destaques por livro",
+    "insight_years_reading": "Você está lendo há {years} anos"
+  },
   "settings": {
     "data_cleared": "Todos os dados foram excluídos",
     "data_clear_error": "Erro ao excluir dados",
