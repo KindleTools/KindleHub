@@ -19,7 +19,8 @@
     "back": "Voltar",
     "retry": "Tentar novamente",
     "processing": "Processando...",
-    "skip_to_content": "Pular para o conteúdo"
+    "skip_to_content": "Pular para o conteúdo",
+    "reset": "Redefinir"
   },
   "app": {
     "title": "KindleHub",
@@ -46,7 +47,9 @@
     "back_to_library": "Voltar para Biblioteca",
     "book_not_found": "Livro não encontrado",
     "unknown_author": "Autor desconhecido",
-    "last_read": "Última leitura: {date}"
+    "last_read": "Última leitura: {date}",
+    "no_books_title": "Ainda sem livros",
+    "no_books_desc": "Importe seus destaques do Kindle para ver sua biblioteca. Seus livros e recortes aparecerão aqui."
   },
   "import": {
     "title": "Importar Destaques do Kindle",
@@ -100,7 +103,9 @@
     "save_tooltip": "Salvar (Enter)",
     "cancel_tooltip": "Cancelar (Esc)",
     "edit_tooltip": "Editar",
-    "delete_confirm": "Excluir {count} recorte(s)?"
+    "delete_confirm": "Excluir {count} recorte(s)?",
+    "select_clipping": "Selecionar recorte",
+    "edit_clipping": "Editar recorte"
   },
   "batch": {
     "selected": "selecionado(s)",
@@ -121,7 +126,29 @@
     "leave_title": "Alterações não salvas",
     "leave_message": "Você editou recortes que ainda não foram importados. Tem certeza que deseja sair?",
     "leave_confirm": "Sair",
-    "leave_cancel": "Ficar"
+    "leave_cancel": "Ficar",
+    "review_title": "Revisar Importação",
+    "export_only": "Apenas Exportar",
+    "discard": "Descartar",
+    "import_library": "Importar para Biblioteca",
+    "checking_needed": "Verificação necessária",
+    "edited_badge": "Editado",
+    "no_batch_title": "Nenhum lote para revisar",
+    "no_batch_desc": "Importe um arquivo primeiro para revisar seus recortes.",
+    "go_to_import": "Ir para Importar",
+    "clippings_count": "{count} recortes",
+    "added_date": "Adicionado {date}",
+    "label_content": "Conteúdo",
+    "label_private_note": "Nota Privada",
+    "placeholder_note": "Adicionar nota pessoal...",
+    "save_changes": "Salvar Alterações",
+    "label_page": "Página",
+    "label_location": "Local",
+    "note_prefix": "Nota:",
+    "stats_books": "Livros",
+    "stats_highlights": "Destaques",
+    "stats_notes": "Notas",
+    "stats_bookmarks": "Marcadores"
   },
   "clipping": {
     "highlight": "Destaque",
@@ -158,6 +185,16 @@
     "backup_export_error": "Erro ao exportar backup",
     "settings_reset": "Configurações restauradas",
     "confirm_clear_title": "Excluir todos os dados?",
-    "confirm_clear_message": "Esta ação excluirá todos os livros e recortes armazenados. Isso não pode ser desfeito."
+    "confirm_clear_message": "Esta ação excluirá todos os livros e recortes armazenados. Isso não pode ser desfeito.",
+    "confirm_reset_title": "Redefinir configurações?",
+    "confirm_reset_message": "Isso reverterá suas preferências para os valores padrão. Seus dados (livros e destaques) NÃO serão excluídos.",
+    "formats": {
+      "markdown": "Markdown",
+      "json": "JSON",
+      "csv": "CSV",
+      "obsidian": "Obsidian",
+      "joplin": "Joplin",
+      "html": "HTML"
+    }
   }
 }

@@ -19,7 +19,8 @@
     "back": "Retour",
     "retry": "Réessayer",
     "processing": "Traitement...",
-    "skip_to_content": "Aller au contenu"
+    "skip_to_content": "Aller au contenu",
+    "reset": "Réinitialiser"
   },
   "app": {
     "title": "KindleHub",
@@ -46,7 +47,9 @@
     "back_to_library": "Retour à la Bibliothèque",
     "book_not_found": "Livre introuvable",
     "unknown_author": "Auteur inconnu",
-    "last_read": "Dernière lecture : {date}"
+    "last_read": "Dernière lecture : {date}",
+    "no_books_title": "Pas encore de livres",
+    "no_books_desc": "Importez vos surlignements Kindle pour voir votre bibliothèque. Vos livres et coupures apparaîtront ici."
   },
   "import": {
     "title": "Importer les Surlignements Kindle",
@@ -100,7 +103,9 @@
     "save_tooltip": "Enregistrer (Entrée)",
     "cancel_tooltip": "Annuler (Échap)",
     "edit_tooltip": "Modifier",
-    "delete_confirm": "Supprimer {count} coupure(s) ?"
+    "delete_confirm": "Supprimer {count} coupure(s) ?",
+    "select_clipping": "Sélectionner la coupure",
+    "edit_clipping": "Modifier la coupure"
   },
   "batch": {
     "selected": "sélectionné(s)",
@@ -121,7 +126,29 @@
     "leave_title": "Modifications non enregistrées",
     "leave_message": "Vous avez modifié des coupures qui n'ont pas encore été importées. Voulez-vous vraiment partir ?",
     "leave_confirm": "Partir",
-    "leave_cancel": "Rester"
+    "leave_cancel": "Rester",
+    "review_title": "Vérifier l'Importation",
+    "export_only": "Exporter Seulement",
+    "discard": "Rejeter",
+    "import_library": "Importer vers Bibliothèque",
+    "checking_needed": "Vérification nécessaire",
+    "edited_badge": "Modifié",
+    "no_batch_title": "Aucun lot à vérifier",
+    "no_batch_desc": "Importez d'abord un fichier pour vérifier vos coupures.",
+    "go_to_import": "Aller à Importer",
+    "clippings_count": "{count} coupures",
+    "added_date": "Ajouté {date}",
+    "label_content": "Contenu",
+    "label_private_note": "Note Privée",
+    "placeholder_note": "Ajouter une note personnelle...",
+    "save_changes": "Enregistrer Modifications",
+    "label_page": "Page",
+    "label_location": "Emplacement",
+    "note_prefix": "Note :",
+    "stats_books": "Livres",
+    "stats_highlights": "Surlignements",
+    "stats_notes": "Notes",
+    "stats_bookmarks": "Signets"
   },
   "clipping": {
     "highlight": "Surlignement",
@@ -158,6 +185,16 @@
     "backup_export_error": "Erreur lors de l'exportation de la sauvegarde",
     "settings_reset": "Paramètres restaurés",
     "confirm_clear_title": "Supprimer toutes les données ?",
-    "confirm_clear_message": "Cette action supprimera tous les livres et coupures enregistrés. Cette action est irréversible."
+    "confirm_clear_message": "Cette action supprimera tous les livres et coupures enregistrés. Cette action est irréversible.",
+    "confirm_reset_title": "Réinitialiser les paramètres ?",
+    "confirm_reset_message": "Cela rétablira vos préférences aux valeurs par défaut. Vos données (livres et surlignements) ne seront PAS supprimées.",
+    "formats": {
+      "markdown": "Markdown",
+      "json": "JSON",
+      "csv": "CSV",
+      "obsidian": "Obsidian",
+      "joplin": "Joplin",
+      "html": "HTML"
+    }
   }
 }

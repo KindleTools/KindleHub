@@ -19,7 +19,8 @@
     "back": "Zurück",
     "retry": "Wiederholen",
     "processing": "Verarbeiten...",
-    "skip_to_content": "Zum Inhalt springen"
+    "skip_to_content": "Zum Inhalt springen",
+    "reset": "Zurücksetzen"
   },
   "app": {
     "title": "KindleHub",
@@ -46,7 +47,9 @@
     "back_to_library": "Zurück zur Bibliothek",
     "book_not_found": "Buch nicht gefunden",
     "unknown_author": "Unbekannter Autor",
-    "last_read": "Zuletzt gelesen: {date}"
+    "last_read": "Zuletzt gelesen: {date}",
+    "no_books_title": "Noch keine Bücher",
+    "no_books_desc": "Importieren Sie Ihre Kindle-Markierungen, um Ihre Bibliothek zu sehen. Ihre Bücher und Ausschnitte erscheinen hier."
   },
   "import": {
     "title": "Kindle Markierungen Importieren",
@@ -100,7 +103,9 @@
     "save_tooltip": "Speichern (Enter)",
     "cancel_tooltip": "Abbrechen (Esc)",
     "edit_tooltip": "Bearbeiten",
-    "delete_confirm": "{count} Markierung(en) löschen?"
+    "delete_confirm": "{count} Markierung(en) löschen?",
+    "select_clipping": "Ausschnitt auswählen",
+    "edit_clipping": "Ausschnitt bearbeiten"
   },
   "batch": {
     "selected": "ausgewählt",
@@ -121,7 +126,29 @@
     "leave_title": "Ungespeicherte Änderungen",
     "leave_message": "Sie haben Markierungen bearbeitet, die noch nicht importiert wurden. Möchten Sie wirklich gehen?",
     "leave_confirm": "Verlassen",
-    "leave_cancel": "Bleiben"
+    "leave_cancel": "Bleiben",
+    "review_title": "Import Überprüfen",
+    "export_only": "Nur Exportieren",
+    "discard": "Verwerfen",
+    "import_library": "In Bibliothek importieren",
+    "checking_needed": "Überprüfung erforderlich",
+    "edited_badge": "Bearbeitet",
+    "no_batch_title": "Kein Batch zu überprüfen",
+    "no_batch_desc": "Importieren Sie zuerst eine Datei, um Ihre Ausschnitte zu überprüfen.",
+    "go_to_import": "Zu Import gehen",
+    "clippings_count": "{count} Ausschnitte",
+    "added_date": "Hinzugefügt {date}",
+    "label_content": "Inhalt",
+    "label_private_note": "Private Notiz",
+    "placeholder_note": "Persönliche Notiz hinzufügen...",
+    "save_changes": "Änderungen speichern",
+    "label_page": "Seite",
+    "label_location": "Position",
+    "note_prefix": "Notiz:",
+    "stats_books": "Bücher",
+    "stats_highlights": "Markierungen",
+    "stats_notes": "Notizen",
+    "stats_bookmarks": "Lesezeichen"
   },
   "clipping": {
     "highlight": "Markierung",
@@ -158,6 +185,16 @@
     "backup_export_error": "Fehler beim Exportieren des Backups",
     "settings_reset": "Einstellungen wiederhergestellt",
     "confirm_clear_title": "Alle Daten löschen?",
-    "confirm_clear_message": "Diese Aktion löscht alle gespeicherten Bücher und Ausschnitte. Dies kann nicht rückgängig gemacht werden."
+    "confirm_clear_message": "Diese Aktion löscht alle gespeicherten Bücher und Ausschnitte. Dies kann nicht rückgängig gemacht werden.",
+    "confirm_reset_title": "Einstellungen zurücksetzen?",
+    "confirm_reset_message": "Hiermit werden Ihre Einstellungen auf die Standardwerte zurückgesetzt. Ihre Daten (Bücher und Markierungen) werden NICHT gelöscht.",
+    "formats": {
+      "markdown": "Markdown",
+      "json": "JSON",
+      "csv": "CSV",
+      "obsidian": "Obsidian",
+      "joplin": "Joplin",
+      "html": "HTML"
+    }
   }
 }

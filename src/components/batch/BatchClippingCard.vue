@@ -107,7 +107,7 @@ const formatDate = (date: Date | string | null | undefined) => {
             type="checkbox"
             :checked="clipping.isSelected"
             class="h-5 w-5 rounded border-gray-300 text-primary-600 focus:ring-primary-500 cursor-pointer"
-            aria-label="Select"
+            :aria-label="t('datatable.select_clipping')"
             @change="batchesStore.toggleSelection(clipping.batchClippingId)"
           />
         </div>
@@ -135,12 +135,12 @@ const formatDate = (date: Date | string | null | undefined) => {
             <!-- Warning Badge -->
             <div v-if="clipping.warnings.length > 0" class="flex items-center gap-1 text-orange-500 text-xs bg-orange-50 dark:bg-orange-900/20 px-1.5 py-0.5 rounded">
               <AlertTriangle class="h-3 w-3" />
-              <span>Checking needed</span>
+              <span>{{ t('batch.checking_needed') }}</span>
             </div>
 
             <!-- Modified Badge -->
             <div v-if="clipping.isModified" class="text-xs bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400 px-1.5 py-0.5 rounded">
-              Edited
+              {{ t('batch.edited_badge') }}
             </div>
 
             <div class="flex-1"></div>
@@ -148,8 +148,8 @@ const formatDate = (date: Date | string | null | undefined) => {
             <!-- Quick Actions -->
             <button
               class="opacity-0 group-hover:opacity-100 p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded text-gray-400 hover:text-primary-600 transition-all"
-              title="Edit"
-              aria-label="Edit clipping"
+              :title="t('datatable.edit_tooltip')"
+              :aria-label="t('datatable.edit_clipping')"
               @click="initEdit"
             >
               <Edit2 class="h-4 w-4" />
@@ -164,13 +164,13 @@ const formatDate = (date: Date | string | null | undefined) => {
           <!-- User Note attached -->
           <div v-if="clipping.note" class="mt-3 pl-3 border-l-2 border-primary-300 dark:border-primary-700">
             <p class="text-sm text-gray-600 dark:text-gray-400 italic">
-              <span class="font-medium not-italic mb-1 block text-xs text-gray-500">Note:</span>
+              <span class="font-medium not-italic mb-1 block text-xs text-gray-500">{{ t('batch.note_prefix') }}</span>
               {{ clipping.note }}
             </p>
           </div>
 
           <div class="mt-3 flex items-center gap-2 text-xs text-gray-400">
-            <span>Added {{ formatDate(clipping.date) }}</span>
+            <span>{{ t('batch.added_date', { date: formatDate(clipping.date) }) }}</span>
           </div>
         </div>
       </div>
@@ -180,7 +180,7 @@ const formatDate = (date: Date | string | null | undefined) => {
     <div v-else class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg border-2 border-primary-500 z-10">
       <div class="space-y-4">
         <div>
-          <label class="block text-xs font-medium text-gray-500 uppercase mb-1">Content</label>
+          <label class="block text-xs font-medium text-gray-500 uppercase mb-1">{{ t('batch.label_content') }}</label>
           <textarea
             v-model="editForm.content"
             rows="4"
@@ -190,19 +190,19 @@ const formatDate = (date: Date | string | null | undefined) => {
         </div>
 
         <div>
-          <label class="block text-xs font-medium text-gray-500 uppercase mb-1">Private Note</label>
+          <label class="block text-xs font-medium text-gray-500 uppercase mb-1">{{ t('batch.label_private_note') }}</label>
           <textarea
             v-model="editForm.note"
             rows="2"
             class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 text-sm focus:border-primary-500 focus:ring-primary-500"
-            placeholder="Add a personal note..."
+            :placeholder="t('batch.placeholder_note')"
             @keyup.escape="cancelEdit"
           ></textarea>
         </div>
 
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-medium text-gray-500 uppercase mb-1">Page</label>
+            <label class="block text-xs font-medium text-gray-500 uppercase mb-1">{{ t('batch.label_page') }}</label>
             <input
               v-model.number="editForm.page"
               type="number"
@@ -211,7 +211,7 @@ const formatDate = (date: Date | string | null | undefined) => {
             />
           </div>
           <div>
-            <label class="block text-xs font-medium text-gray-500 uppercase mb-1">Location</label>
+            <label class="block text-xs font-medium text-gray-500 uppercase mb-1">{{ t('batch.label_location') }}</label>
             <input
               v-model="editForm.location"
               type="text"
@@ -226,14 +226,14 @@ const formatDate = (date: Date | string | null | undefined) => {
             class="px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 rounded"
             @click="cancelEdit"
           >
-            Cancel
+            {{ t('common.cancel') }}
           </button>
           <button
             class="btn-primary px-3 py-1.5 text-sm flex items-center gap-1"
             @click="saveEdit"
           >
             <Check class="h-4 w-4" />
-            Save Changes
+            {{ t('batch.save_changes') }}
           </button>
         </div>
       </div>

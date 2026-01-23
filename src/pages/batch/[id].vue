@@ -139,7 +139,7 @@ const handleExportOnly = () => {
               <ArrowLeft class="h-5 w-5" />
             </button>
             <div>
-              <h1 class="text-xl font-bold">Review Import</h1>
+              <h1 class="text-xl font-bold">{{ t('batch.review_title') }}</h1>
               <p v-if="batchesStore.currentBatch" class="text-sm text-gray-500 dark:text-gray-400">
                 {{ batchesStore.currentBatch.fileName }}
                 <span class="mx-1">•</span>
@@ -157,14 +157,14 @@ const handleExportOnly = () => {
               @click="handleExportOnly"
             >
               <Download class="h-4 w-4" />
-              Export Only
+              {{ t('batch.export_only') }}
             </button>
             <button
               class="btn-secondary flex items-center gap-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
               @click="handleDiscard"
             >
               <X class="h-4 w-4" />
-              Discard
+              {{ t('batch.discard') }}
             </button>
             <button
               class="btn-primary flex items-center gap-2"
@@ -172,7 +172,7 @@ const handleExportOnly = () => {
               @click="handleImport"
             >
               <Upload class="h-4 w-4" />
-              Import to Library
+              {{ t('batch.import_library') }}
             </button>
           </div>
         </div>
@@ -188,7 +188,7 @@ const handleExportOnly = () => {
             <BookIcon class="h-8 w-8 text-primary-500" />
             <div>
               <div class="text-2xl font-bold">{{ batchesStore.currentBatch.stats.totalBooks }}</div>
-              <div class="text-sm text-gray-500">Books</div>
+              <div class="text-sm text-gray-500">{{ t('batch.stats_books') }}</div>
             </div>
           </div>
         </div>
@@ -197,7 +197,7 @@ const handleExportOnly = () => {
             <Highlighter class="h-8 w-8 text-yellow-500" />
             <div>
               <div class="text-2xl font-bold">{{ batchesStore.currentBatch.stats.byType.highlights }}</div>
-              <div class="text-sm text-gray-500">Highlights</div>
+              <div class="text-sm text-gray-500">{{ t('batch.stats_highlights') }}</div>
             </div>
           </div>
         </div>
@@ -206,7 +206,7 @@ const handleExportOnly = () => {
             <StickyNote class="h-8 w-8 text-blue-500" />
             <div>
               <div class="text-2xl font-bold">{{ batchesStore.currentBatch.stats.byType.notes }}</div>
-              <div class="text-sm text-gray-500">Notes</div>
+              <div class="text-sm text-gray-500">{{ t('batch.stats_notes') }}</div>
             </div>
           </div>
         </div>
@@ -215,7 +215,7 @@ const handleExportOnly = () => {
             <Bookmark class="h-8 w-8 text-gray-500" />
             <div>
               <div class="text-2xl font-bold">{{ batchesStore.currentBatch.stats.byType.bookmarks }}</div>
-              <div class="text-sm text-gray-500">Bookmarks</div>
+              <div class="text-sm text-gray-500">{{ t('batch.stats_bookmarks') }}</div>
             </div>
           </div>
         </div>
@@ -250,7 +250,7 @@ const handleExportOnly = () => {
               </div>
             </div>
             <span class="text-sm text-gray-500 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
-              {{ book.clippingIds.length }} clippings
+              {{ t('batch.clippings_count', { count: book.clippingIds.length }) }}
             </span>
           </button>
 
@@ -275,10 +275,10 @@ const handleExportOnly = () => {
     <div v-else class="flex items-center justify-center min-h-[60vh]">
       <div class="text-center">
         <Download class="h-16 w-16 text-gray-300 mx-auto mb-4" />
-        <h2 class="text-xl font-semibold mb-2">No batch to review</h2>
-        <p class="text-gray-500 mb-4">Import a file first to review your clippings.</p>
+        <h2 class="text-xl font-semibold mb-2">{{ t('batch.no_batch_title') }}</h2>
+        <p class="text-gray-500 mb-4">{{ t('batch.no_batch_desc') }}</p>
         <router-link to="/import" class="btn-primary">
-          Go to Import
+          {{ t('batch.go_to_import') }}
         </router-link>
       </div>
     </div>

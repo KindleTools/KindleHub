@@ -211,7 +211,7 @@ async function handleDelete() {
                 <input
                   type="checkbox"
                   :checked="getClipping(virtualRow.index).isSelected"
-                  title="Select clipping"
+                  :title="$t('datatable.select_clipping')"
                   class="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-primary-600"
                   @change="toggleSelect(getClipping(virtualRow.index).id!)"
                 />
@@ -354,7 +354,7 @@ async function handleDelete() {
                 <input
                   type="checkbox"
                   :checked="getClipping(virtualRow.index).isSelected"
-                  title="Select clipping"
+                  :title="$t('datatable.select_clipping')"
                   class="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500"
                   @change="toggleSelect(getClipping(virtualRow.index).id!)"
                 />

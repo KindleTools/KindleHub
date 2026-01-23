@@ -19,7 +19,8 @@
     "back": "Indietro",
     "retry": "Riprova",
     "processing": "Elaborazione...",
-    "skip_to_content": "Vai al contenuto"
+    "skip_to_content": "Vai al contenuto",
+    "reset": "Ripristina"
   },
   "app": {
     "title": "KindleHub",
@@ -46,7 +47,9 @@
     "back_to_library": "Torna alla Libreria",
     "book_not_found": "Libro non trovato",
     "unknown_author": "Autore sconosciuto",
-    "last_read": "Ultima lettura: {date}"
+    "last_read": "Ultima lettura: {date}",
+    "no_books_title": "Nessun libro ancora",
+    "no_books_desc": "Importa i tuoi ritagli Kindle per vedere la tua libreria. I tuoi libri e ritagli appariranno qui."
   },
   "import": {
     "title": "Importa Ritagli Kindle",
@@ -100,7 +103,9 @@
     "save_tooltip": "Salva (Invio)",
     "cancel_tooltip": "Annulla (Esc)",
     "edit_tooltip": "Modifica",
-    "delete_confirm": "Eliminare {count} ritaglio(i)?"
+    "delete_confirm": "Eliminare {count} ritaglio(i)?",
+    "select_clipping": "Seleziona ritaglio",
+    "edit_clipping": "Modifica ritaglio"
   },
   "batch": {
     "selected": "selezionati",
@@ -121,7 +126,29 @@
     "leave_title": "Modifiche non salvate",
     "leave_message": "Hai modificato ritagli che non sono ancora stati importati. Sei sicuro di voler uscire?",
     "leave_confirm": "Esci",
-    "leave_cancel": "Resta"
+    "leave_cancel": "Resta",
+    "review_title": "Revisiona Importazione",
+    "export_only": "Solo Esporta",
+    "discard": "Scarta",
+    "import_library": "Importa in Libreria",
+    "checking_needed": "Controllo necessario",
+    "edited_badge": "Modificato",
+    "no_batch_title": "Nessun lotto da revisionare",
+    "no_batch_desc": "Importa prima un file per revisionare i tuoi ritagli.",
+    "go_to_import": "Vai a Importa",
+    "clippings_count": "{count} ritagli",
+    "added_date": "Aggiunto {date}",
+    "label_content": "Contenuto",
+    "label_private_note": "Nota Privata",
+    "placeholder_note": "Aggiungi nota personale...",
+    "save_changes": "Salva Modifiche",
+    "label_page": "Pagina",
+    "label_location": "Posizione",
+    "note_prefix": "Nota:",
+    "stats_books": "Libri",
+    "stats_highlights": "Evidenziazioni",
+    "stats_notes": "Note",
+    "stats_bookmarks": "Segnalibri"
   },
   "clipping": {
     "highlight": "Evidenziazione",
@@ -158,6 +185,16 @@
     "backup_export_error": "Errore durante l'esportazione del backup",
     "settings_reset": "Impostazioni ripristinate",
     "confirm_clear_title": "Eliminare tutti i dati?",
-    "confirm_clear_message": "Questa azione eliminerà tutti i libri e ritagli memorizzati. Non può essere annullata."
+    "confirm_clear_message": "Questa azione eliminerà tutti i libri e ritagli memorizzati. Non può essere annullata.",
+    "confirm_reset_title": "Ripristinare le impostazioni?",
+    "confirm_reset_message": "Questo riporterà le tue preferenze ai valori predefiniti. I tuoi dati (libri e evidenziazioni) NON verranno eliminati.",
+    "formats": {
+      "markdown": "Markdown",
+      "json": "JSON",
+      "csv": "CSV",
+      "obsidian": "Obsidian",
+      "joplin": "Joplin",
+      "html": "HTML"
+    }
   }
 }

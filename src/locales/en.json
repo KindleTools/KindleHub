@@ -19,7 +19,8 @@
     "back": "Back",
     "retry": "Retry",
     "processing": "Processing...",
-    "skip_to_content": "Skip to main content"
+    "skip_to_content": "Skip to main content",
+    "reset": "Reset"
   },
   "app": {
     "title": "KindleHub",
@@ -46,7 +47,9 @@
     "back_to_library": "Back to Library",
     "book_not_found": "Book not found",
     "unknown_author": "Unknown Author",
-    "last_read": "Last read: {date}"
+    "last_read": "Last read: {date}",
+    "no_books_title": "No books yet",
+    "no_books_desc": "Import your Kindle highlights to see your library. Your books and clippings will appear here."
   },
   "import": {
     "title": "Import Kindle Highlights",
@@ -100,7 +103,9 @@
     "save_tooltip": "Save (Enter)",
     "cancel_tooltip": "Cancel (Esc)",
     "edit_tooltip": "Edit",
-    "delete_confirm": "Delete {count} clipping(s)?"
+    "delete_confirm": "Delete {count} clipping(s)?",
+    "select_clipping": "Select clipping",
+    "edit_clipping": "Edit clipping"
   },
   "batch": {
     "selected": "selected",
@@ -121,7 +126,29 @@
     "leave_title": "Unsaved changes",
     "leave_message": "You have edited clippings that haven't been imported yet. Are you sure you want to leave?",
     "leave_confirm": "Leave",
-    "leave_cancel": "Stay"
+    "leave_cancel": "Stay",
+    "review_title": "Review Import",
+    "export_only": "Export Only",
+    "discard": "Discard",
+    "import_library": "Import to Library",
+    "checking_needed": "Checking needed",
+    "edited_badge": "Edited",
+    "no_batch_title": "No batch to review",
+    "no_batch_desc": "Import a file first to review your clippings.",
+    "go_to_import": "Go to Import",
+    "clippings_count": "{count} clippings",
+    "added_date": "Added {date}",
+    "label_content": "Content",
+    "label_private_note": "Private Note",
+    "placeholder_note": "Add a personal note...",
+    "save_changes": "Save Changes",
+    "label_page": "Page",
+    "label_location": "Location",
+    "note_prefix": "Note:",
+    "stats_books": "Books",
+    "stats_highlights": "Highlights",
+    "stats_notes": "Notes",
+    "stats_bookmarks": "Bookmarks"
   },
   "clipping": {
     "highlight": "Highlight",
@@ -158,6 +185,16 @@
     "backup_export_error": "Error exporting backup",
     "settings_reset": "Settings restored",
     "confirm_clear_title": "Delete all data?",
-    "confirm_clear_message": "This action will delete all stored books and clippings. This cannot be undone."
+    "confirm_clear_message": "This action will delete all stored books and clippings. This cannot be undone.",
+    "confirm_reset_title": "Reset settings?",
+    "confirm_reset_message": "This will revert your preferences to default values. Your data (books and highlights) will NOT be deleted.",
+    "formats": {
+      "markdown": "Markdown",
+      "json": "JSON",
+      "csv": "CSV",
+      "obsidian": "Obsidian",
+      "joplin": "Joplin",
+      "html": "HTML"
+    }
   }
 }

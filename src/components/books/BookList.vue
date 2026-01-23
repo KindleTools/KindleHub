@@ -75,8 +75,8 @@ const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
     <EmptyState
       v-else-if="books.length === 0"
       type="library"
-      title="No books yet"
-      description="Import your Kindle highlights to see your library. Your books and clippings will appear here."
+      :title="$t('library.no_books_title')"
+      :description="$t('library.no_books_desc')"
       class="mt-8"
     >
       <template #action>
@@ -85,7 +85,7 @@ const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
           class="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
         >
           <Upload class="h-5 w-5" />
-          Import Clippings
+          {{ $t('home.cta_import') }}
         </router-link>
       </template>
     </EmptyState>

@@ -2,7 +2,7 @@
 /**
  * Settings Page - User preferences and data management.
  */
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ArrowLeft, Download, Trash2, RotateCcw, Moon, Globe } from 'lucide-vue-next'
@@ -12,6 +12,15 @@ import { useSettingsStore } from '@/stores/settings'
 import { useToast } from '@/composables/useToast'
 import { clearAllData, getAllBooks, getAllClippings } from '@/services/db.service'
 import UiConfirmModal from '@/components/ui/ConfirmModal.vue'
+
+const SUPPORTED_LANGUAGES = [
+  { value: 'en', label: 'English' },
+  { value: 'es', label: 'Español' },
+  { value: 'it', label: 'Italiano' },
+  { value: 'de', label: 'Deutsch' },
+  { value: 'fr', label: 'Français' },
+  { value: 'pt', label: 'Português' }
+] as const
 
 const router = useRouter()
 const settingsStore = useSettingsStore()
@@ -24,15 +33,16 @@ const toggleDark = useToggle(isDark)
 const isClearing = ref(false)
 const isExporting = ref(false)
 const showConfirmClear = ref(false)
+const showConfirmReset = ref(false)
 
-const formatOptions = [
-  { value: 'markdown', label: 'Markdown' },
-  { value: 'json', label: 'JSON' },
-  { value: 'csv', label: 'CSV' },
-  { value: 'obsidian', label: 'Obsidian' },
-  { value: 'joplin', label: 'Joplin' },
-  { value: 'html', label: 'HTML' }
-] as const
+const formatOptions = computed(() => [
+  { value: 'markdown', label: t('settings.formats.markdown') },
+  { value: 'json', label: t('settings.formats.json') },
+  { value: 'csv', label: t('settings.formats.csv') },
+  { value: 'obsidian', label: t('settings.formats.obsidian') },
+  { value: 'joplin', label: t('settings.formats.joplin') },
+  { value: 'html', label: t('settings.formats.html') }
+])
 
 async function handleClearData() {
   isClearing.value = true
@@ -81,7 +91,12 @@ async function handleExportBackup() {
 }
 
 function handleResetSettings() {
+  showConfirmReset.value = true
+}
+
+function handleResetSettingsConfirm() {
   settingsStore.resetToDefaults()
+  showConfirmReset.value = false
   toast.info(t('settings.settings_reset'))
 }
 </script>
@@ -145,12 +160,9 @@ function handleResetSettings() {
               class="text-sm rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700"
               @change="settingsStore.setLanguage(($event.target as HTMLSelectElement).value as any)"
             >
-              <option value="en">English</option>
-              <option value="es">Español</option>
-              <option value="it">Italiano</option>
-              <option value="de">Deutsch</option>
-              <option value="fr">Français</option>
-              <option value="pt">Português</option>
+              <option v-for="lang in SUPPORTED_LANGUAGES" :key="lang.value" :value="lang.value">
+                {{ lang.label }}
+              </option>
             </select>
           </div>
         </div>
@@ -257,6 +269,17 @@ function handleResetSettings() {
         :loading="isClearing"
         @confirm="handleClearData"
         @cancel="showConfirmClear = false"
+      />
+
+      <!-- Confirm Reset Modal -->
+      <UiConfirmModal
+        :open="showConfirmReset"
+        :title="$t('settings.confirm_reset_title')"
+        :message="$t('settings.confirm_reset_message')"
+        :confirm-text="$t('common.reset')"
+        variant="warning"
+        @confirm="handleResetSettingsConfirm"
+        @cancel="showConfirmReset = false"
       />
     </main>
   </div>

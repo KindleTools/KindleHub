@@ -19,7 +19,8 @@
     "back": "Volver",
     "retry": "Reintentar",
     "processing": "Procesando...",
-    "skip_to_content": "Saltar al contenido"
+    "skip_to_content": "Saltar al contenido",
+    "reset": "Restaurar"
   },
   "app": {
     "title": "KindleHub",
@@ -46,7 +47,9 @@
     "back_to_library": "Volver a la Biblioteca",
     "book_not_found": "Libro no encontrado",
     "unknown_author": "Autor desconocido",
-    "last_read": "Leído por última vez: {date}"
+    "last_read": "Leído por última vez: {date}",
+    "no_books_title": "Sin libros aún",
+    "no_books_desc": "Importa tus subrayados de Kindle para ver tu biblioteca. Tus libros y recortes aparecerán aquí."
   },
   "import": {
     "title": "Importar Recortes de Kindle",
@@ -100,7 +103,9 @@
     "save_tooltip": "Guardar (Enter)",
     "cancel_tooltip": "Cancelar (Esc)",
     "edit_tooltip": "Editar",
-    "delete_confirm": "¿Eliminar {count} recorte(s)?"
+    "delete_confirm": "¿Eliminar {count} recorte(s)?",
+    "select_clipping": "Seleccionar recorte",
+    "edit_clipping": "Editar recorte"
   },
   "batch": {
     "selected": "seleccionado(s)",
@@ -121,7 +126,29 @@
     "leave_title": "Cambios sin guardar",
     "leave_message": "Has editado recortes que aún no se han importado. ¿Seguro que quieres salir?",
     "leave_confirm": "Salir",
-    "leave_cancel": "Quedarse"
+    "leave_cancel": "Quedarse",
+    "review_title": "Revisar Importación",
+    "export_only": "Solo Exportar",
+    "discard": "Descartar",
+    "import_library": "Importar a Biblioteca",
+    "checking_needed": "Revisión necesaria",
+    "edited_badge": "Editado",
+    "no_batch_title": "No hay lote para revisar",
+    "no_batch_desc": "Importa un archivo primero para revisar tus recortes.",
+    "go_to_import": "Ir a Importar",
+    "clippings_count": "{count} recortes",
+    "added_date": "Añadido {date}",
+    "label_content": "Contenido",
+    "label_private_note": "Nota Privada",
+    "placeholder_note": "Añadir nota personal...",
+    "save_changes": "Guardar Cambios",
+    "label_page": "Página",
+    "label_location": "Ubicación",
+    "note_prefix": "Nota:",
+    "stats_books": "Libros",
+    "stats_highlights": "Subrayados",
+    "stats_notes": "Notas",
+    "stats_bookmarks": "Marcadores"
   },
   "clipping": {
     "highlight": "Subrayado",
@@ -158,6 +185,16 @@
     "backup_export_error": "Error al exportar el backup",
     "settings_reset": "Configuración restaurada",
     "confirm_clear_title": "¿Eliminar todos los datos?",
-    "confirm_clear_message": "Esta acción eliminará todos los libros y clippings almacenados. No se puede deshacer."
+    "confirm_clear_message": "Esta acción eliminará todos los libros y clippings almacenados. No se puede deshacer.",
+    "confirm_reset_title": "¿Restaurar configuración?",
+    "confirm_reset_message": "Esto devolverá tus preferencias a los valores predeterminados. Tus datos (libros y subrayados) NO serán eliminados.",
+    "formats": {
+      "markdown": "Markdown",
+      "json": "JSON",
+      "csv": "CSV",
+      "obsidian": "Obsidian",
+      "joplin": "Joplin",
+      "html": "HTML"
+    }
   }
 }
