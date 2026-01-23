@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { Highlighter, StickyNote, Bookmark, Edit2, AlertTriangle, Check } from 'lucide-vue-next'
+import { useI18n } from 'vue-i18n'
 import type { BatchClipping } from '@/types/batch'
 import { useBatchesStore } from '@/stores/batches'
+import { useToast } from '@/composables/useToast'
 
 const props = defineProps<{
   clipping: BatchClipping
 }>()
+
+const { t } = useI18n()
+const toast = useToast()
 
 const batchesStore = useBatchesStore()
 const isEditing = ref(false)
@@ -42,6 +47,7 @@ const saveEdit = () => {
     location: (editForm.value.location || undefined) as any
   })
   isEditing.value = false
+  toast.success(t('batch.edit_saved'))
 }
 
 const cancelEdit = () => {
@@ -179,6 +185,7 @@ const formatDate = (date: Date | string | null | undefined) => {
             v-model="editForm.content"
             rows="4"
             class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 text-sm focus:border-primary-500 focus:ring-primary-500"
+            @keyup.escape="cancelEdit"
           ></textarea>
         </div>
 
@@ -189,6 +196,7 @@ const formatDate = (date: Date | string | null | undefined) => {
             rows="2"
             class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 text-sm focus:border-primary-500 focus:ring-primary-500"
             placeholder="Add a personal note..."
+            @keyup.escape="cancelEdit"
           ></textarea>
         </div>
 
@@ -199,6 +207,7 @@ const formatDate = (date: Date | string | null | undefined) => {
               v-model.number="editForm.page"
               type="number"
               class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 text-sm focus:border-primary-500 focus:ring-primary-500"
+              @keyup.escape="cancelEdit"
             />
           </div>
           <div>
@@ -207,6 +216,7 @@ const formatDate = (date: Date | string | null | undefined) => {
               v-model="editForm.location"
               type="text"
               class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 text-sm focus:border-primary-500 focus:ring-primary-500"
+              @keyup.escape="cancelEdit"
             />
           </div>
         </div>

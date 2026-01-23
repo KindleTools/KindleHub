@@ -3,9 +3,11 @@ import { computed, ref } from 'vue'
 import { Trash2, X, UserPen, BookOpen } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import { useBatchesStore } from '@/stores/batches'
+import { useToast } from '@/composables/useToast'
 
 const { t } = useI18n()
 const batchesStore = useBatchesStore()
+const toast = useToast()
 
 // Modal state
 const showEditModal = ref(false)
@@ -24,6 +26,7 @@ const openEditModal = (type: 'author' | 'title') => {
 
 const applyBulkEdit = () => {
   const ids = batchesStore.selectedClippings.map((c) => c.batchClippingId)
+  const count = ids.length
   const updates = editType.value === 'author'
     ? { author: editValue.value }
     : { title: editValue.value }
@@ -31,6 +34,7 @@ const applyBulkEdit = () => {
   showEditModal.value = false
   editValue.value = ''
   batchesStore.deselectAll()
+  toast.success(t('batch.bulk_updated', { count }))
 }
 
 const cancelEdit = () => {
@@ -62,8 +66,10 @@ const actions = computed(() => [
     variant: 'danger',
     action: () => {
       const ids = batchesStore.selectedClippings.map((c) => c.batchClippingId)
+      const count = ids.length
       batchesStore.deleteClippings(ids)
       batchesStore.deselectAll()
+      toast.success(t('batch.bulk_deleted', { count }))
     },
     disabled: computed(() => batchesStore.selectionCount === 0)
   }

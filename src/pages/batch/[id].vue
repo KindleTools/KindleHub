@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { onBeforeRouteLeave } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import {
   ArrowLeft,
   Book as BookIcon,
@@ -17,15 +20,79 @@ import { formatFileSize, formatBatchDate } from '@/services/batch.service'
 import BatchClippingCard from '@/components/batch/BatchClippingCard.vue'
 import BatchActions from '@/components/batch/BatchActions.vue'
 import BatchWarnings from '@/components/batch/BatchWarnings.vue'
+import ConfirmModal from '@/components/ui/ConfirmModal.vue'
 
 const router = useRouter()
 const batchesStore = useBatchesStore()
+const { t } = useI18n()
+
+// Leave confirmation state
+const showLeaveConfirm = ref(false)
+const pendingNavigation = ref<(() => void) | null>(null)
+
+// Check if batch has unsaved modifications
+const hasUnsavedChanges = computed(() => {
+  if (!batchesStore.currentBatch) return false
+  for (const clipping of batchesStore.currentBatch.clippings.values()) {
+    if (clipping.isModified) return true
+  }
+  return false
+})
+
+// Navigation guard - prevent accidental data loss
+onBeforeRouteLeave((_to, _from, next) => {
+  // Allow navigation if no batch or no changes
+  if (!batchesStore.hasBatch || !hasUnsavedChanges.value) {
+    next()
+    return
+  }
+
+  // Allow if user already confirmed
+  if (pendingNavigation.value) {
+    pendingNavigation.value = null
+    next()
+    return
+  }
+
+  // Show confirmation modal
+  showLeaveConfirm.value = true
+  pendingNavigation.value = () => next()
+  next(false)
+})
+
+const confirmLeave = () => {
+  showLeaveConfirm.value = false
+  if (pendingNavigation.value) {
+    const nav = pendingNavigation.value
+    pendingNavigation.value = null
+    nav()
+  }
+}
+
+const cancelLeave = () => {
+  showLeaveConfirm.value = false
+  pendingNavigation.value = null
+}
+
+// Browser beforeunload handler
+const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+  if (hasUnsavedChanges.value) {
+    e.preventDefault()
+    e.returnValue = ''
+  }
+}
 
 // Redirect if no batch
 onMounted(() => {
   if (!batchesStore.hasBatch) {
     router.push('/import')
+    return
   }
+  window.addEventListener('beforeunload', handleBeforeUnload)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('beforeunload', handleBeforeUnload)
 })
 
 // Actions
@@ -215,5 +282,17 @@ const handleExportOnly = () => {
         </router-link>
       </div>
     </div>
+
+    <!-- Leave Confirmation Modal -->
+    <ConfirmModal
+      :open="showLeaveConfirm"
+      :title="t('batch.leave_title')"
+      :message="t('batch.leave_message')"
+      :confirm-text="t('batch.leave_confirm')"
+      :cancel-text="t('batch.leave_cancel')"
+      variant="warning"
+      @confirm="confirmLeave"
+      @cancel="cancelLeave"
+    />
   </div>
 </template>

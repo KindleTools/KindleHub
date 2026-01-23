@@ -16,7 +16,7 @@ import type {
   BatchWarning,
   BatchHistoryEntry
 } from '@/types/batch'
-import { generateBatchId, generateClippingId, createBookKey } from '@/services/batch.service'
+import { generateBatchId, generateClippingId, createBookKey, arePotentialDuplicates } from '@/services/batch.service'
 import { saveClippings, saveBatchHistory, getBatchHistory } from '@/services/db.service'
 import { useBooksStore } from '@/stores/books'
 
@@ -144,6 +144,9 @@ export const useBatchesStore = defineStore('batches', () => {
       warnings
     }
 
+    // Detect potential duplicates within the batch
+    detectDuplicates()
+
     return batchId
   }
 
@@ -156,11 +159,19 @@ export const useBatchesStore = defineStore('batches', () => {
     const clipping = currentBatch.value.clippings.get(clippingId)
     if (!clipping) return
 
+    // Track if type is changing
+    const typeChanged = 'type' in updates && updates.type !== clipping.type
+
     Object.assign(clipping, updates, { isModified: true })
 
     // If title or author changed, update book groupings
     if ('title' in updates || 'author' in updates) {
       rebuildBookGroupings()
+    }
+
+    // If type changed, recalculate stats
+    if (typeChanged) {
+      recalculateStats()
     }
   }
 
@@ -205,6 +216,7 @@ export const useBatchesStore = defineStore('batches', () => {
     if (!currentBatch.value) return
 
     let needsRebuild = false
+    const needsRecalculate = 'type' in updates
 
     for (const id of clippingIds) {
       const clipping = currentBatch.value.clippings.get(id)
@@ -219,6 +231,10 @@ export const useBatchesStore = defineStore('batches', () => {
 
     if (needsRebuild) {
       rebuildBookGroupings()
+    }
+
+    if (needsRecalculate) {
+      recalculateStats()
     }
   }
 
@@ -256,6 +272,48 @@ export const useBatchesStore = defineStore('batches', () => {
 
     currentBatch.value.stats.totalClippings = currentBatch.value.clippings.size
     currentBatch.value.stats.byType = { highlights, notes, bookmarks }
+  }
+
+  /**
+   * Detect potential duplicates within the batch.
+   * Compares clippings within the same book using arePotentialDuplicates.
+   */
+  function detectDuplicates(): void {
+    if (!currentBatch.value) return
+
+    const clippings = Array.from(currentBatch.value.clippings.values())
+    const byBook = new Map<string, BatchClipping[]>()
+
+    // Group clippings by book for comparison
+    for (const clipping of clippings) {
+      const bookKey = createBookKey(clipping.title, clipping.author)
+      if (!byBook.has(bookKey)) {
+        byBook.set(bookKey, [])
+      }
+      byBook.get(bookKey)!.push(clipping)
+    }
+
+    // Compare within each book
+    for (const [, bookClippings] of byBook) {
+      for (let i = 0; i < bookClippings.length; i++) {
+        for (let j = i + 1; j < bookClippings.length; j++) {
+          const c1 = bookClippings[i]
+          const c2 = bookClippings[j]
+
+          if (arePotentialDuplicates(c1.content, c2.content)) {
+            const warningId = generateClippingId()
+            currentBatch.value!.warnings.push({
+              id: warningId,
+              severity: 'warning',
+              message: 'Potential duplicate content',
+              details: `Similar to another clipping in "${c1.title}"`,
+              clippingId: c1.batchClippingId
+            })
+            c1.warnings.push(warningId)
+          }
+        }
+      }
+    }
   }
 
   /**
@@ -432,6 +490,7 @@ export const useBatchesStore = defineStore('batches', () => {
     toggleBookExpanded,
     commitToDatabase,
     discardBatch,
-    clearBatch
+    clearBatch,
+    detectDuplicates
   }
 })
