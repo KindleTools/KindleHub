@@ -85,6 +85,15 @@ function formatDate(date: Date): string {
   }).format(date)
 }
 
+function formatLocation(location: string | object | undefined | null): string {
+  if (!location) return ''
+  if (typeof location === 'object') {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (location as any).raw || JSON.stringify(location)
+  }
+  return String(location)
+}
+
 function getTypeColor(type: string): string {
   switch (type) {
     case 'highlight':
@@ -293,7 +302,7 @@ async function handleDelete() {
                 />
               </template>
               <template v-else>
-                <span>{{ getClipping(virtualRow.index).location || (getClipping(virtualRow.index).page ? `${$t('datatable.page_prefix')} ${getClipping(virtualRow.index).page}` : '-') }}</span>
+                <span>{{ formatLocation(getClipping(virtualRow.index).location) || (getClipping(virtualRow.index).page ? `${$t('datatable.page_prefix')} ${getClipping(virtualRow.index).page}` : '-') }}</span>
               </template>
               <span>{{ formatDate(getClipping(virtualRow.index).date) }}</span>
             </div>
@@ -412,7 +421,7 @@ async function handleDelete() {
                 </template>
                 <template v-else>
                   <span class="text-sm text-gray-500 dark:text-gray-400">
-                    {{ getClipping(virtualRow.index).location || getClipping(virtualRow.index).page ? `${$t('datatable.page_prefix')} ${getClipping(virtualRow.index).page}` : '-' }}
+                    {{ formatLocation(getClipping(virtualRow.index).location) || (getClipping(virtualRow.index).page ? `${$t('datatable.page_prefix')} ${getClipping(virtualRow.index).page}` : '-') }}
                   </span>
                 </template>
               </td>

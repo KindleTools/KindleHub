@@ -47,14 +47,28 @@ export function useDataEditor(options: UseDataEditorOptions) {
     editableClippings.value.find((c) => c.isEditing)
   )
 
-  // Initialize editable clippings from source
+  // Initialize editable clippings from source, preserving local state if exists
   function initializeClippings(source: StoredClipping[]) {
-    editableClippings.value = source.map((c) => ({
-      ...c,
-      isSelected: false,
-      isEditing: false
-    }))
-    selectAll.value = false
+    // Create map of current state
+    const currentState = new Map(editableClippings.value.map((c) => [c.id, c]))
+
+    editableClippings.value = source.map((c) => {
+      const existing = currentState.get(c.id)
+      return {
+        ...c,
+        isSelected: existing?.isSelected ?? false,
+        isEditing: existing?.isEditing ?? false,
+        originalData: existing?.originalData || null
+      }
+    })
+
+    // If we just added a new item (which is in source but not in current map yet,
+    // BUT we manually added to editableClippings in addClipping),
+    // we need to be careful.
+    // Actually, addClipping adds to editableClippings FIRST.
+    // Then onUpdate triggers refresh -> initializeClippings.
+    // So currentState.get(newId) WILL find the manually added one!
+    // So preserving isEditing = true will work.
   }
 
   // Watch for changes in source clippings

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { Highlighter, StickyNote, Bookmark, Edit2, AlertTriangle, Check } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import type { BatchClipping } from '@/types/batch'
@@ -87,6 +87,18 @@ const formatDate = (date: Date | string | null | undefined) => {
     return ''
   }
 }
+
+const formattedLocation = computed(() => {
+  const loc = props.clipping.location
+  if (!loc) return ''
+  if (typeof loc === 'object') {
+    // Handle KindleTools Location object
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (loc as any).raw || (loc as any).toString()
+  }
+  return String(loc)
+})
+
 </script>
 
 <template>
@@ -129,7 +141,7 @@ const formatDate = (date: Date | string | null | undefined) => {
               Page {{ clipping.page }}
             </span>
             <span v-if="clipping.location" class="text-xs text-gray-400">
-              Loc {{ clipping.location }}
+              Loc {{ formattedLocation }}
             </span>
 
             <!-- Warning Badge -->

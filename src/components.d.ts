@@ -23,6 +23,7 @@ declare module 'vue' {
     ExportExportPanel: typeof import('./components/export/ExportPanel.vue')['default']
     ExportFormatPicker: typeof import('./components/export/FormatPicker.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
+    ImportImportOptions: typeof import('./components/import/ImportOptions.vue')['default']
     LayoutAppFooter: typeof import('./components/layout/AppFooter.vue')['default']
     LayoutAppHeader: typeof import('./components/layout/AppHeader.vue')['default']
     LayoutMobileMenu: typeof import('./components/layout/MobileMenu.vue')['default']

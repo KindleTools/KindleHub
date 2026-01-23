@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { reactive, onMounted } from 'vue'
 import { BookOpen, Download, Highlighter, Library, Sparkles, Upload, Users } from 'lucide-vue-next'
 
 import { useBooksStore } from '@/stores/books'
@@ -14,7 +15,7 @@ import {
 
 const booksStore = useBooksStore()
 const clippingsStore = useClippingsStore()
-const stats = useStatistics()
+const stats = reactive(useStatistics())
 
 onMounted(async () => {
   await Promise.all([
