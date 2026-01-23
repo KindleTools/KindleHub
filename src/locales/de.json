@@ -69,7 +69,11 @@
     "loading": "Lade Markierungen...",
     "no_content": "Keine Markierungen zum Exportieren",
     "no_content_desc": "Importieren Sie zuerst Ihre Kindle-Clippings, kommen Sie dann hierher zurück um sie zu exportieren.",
-    "cta_import": "Markierungen Importieren"
+    "cta_import": "Markierungen Importieren",
+    "preview_more_files": "...und {count} weitere Datei(en)",
+    "preview_truncated": "...[gekürzt]",
+    "preview_binary": "[Binärer Inhalt]",
+    "zip_failed": "ZIP-Archiv konnte nicht erstellt werden"
   },
   "editor": {
     "title": "Daten-Editor",
@@ -146,5 +150,14 @@
     "toggle": "Design wechseln",
     "light": "Heller Modus",
     "dark": "Dunkler Modus"
+  },
+  "settings": {
+    "data_cleared": "Alle Daten wurden gelöscht",
+    "data_clear_error": "Fehler beim Löschen der Daten",
+    "backup_exported": "Backup erfolgreich exportiert",
+    "backup_export_error": "Fehler beim Exportieren des Backups",
+    "settings_reset": "Einstellungen wiederhergestellt",
+    "confirm_clear_title": "Alle Daten löschen?",
+    "confirm_clear_message": "Diese Aktion löscht alle gespeicherten Bücher und Ausschnitte. Dies kann nicht rückgängig gemacht werden."
   }
 }

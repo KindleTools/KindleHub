@@ -4,6 +4,7 @@
  */
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { ArrowLeft, Download, Trash2, RotateCcw, Moon, Globe } from 'lucide-vue-next'
 import { useDark, useToggle } from '@vueuse/core'
 
@@ -15,6 +16,7 @@ import UiConfirmModal from '@/components/ui/ConfirmModal.vue'
 const router = useRouter()
 const settingsStore = useSettingsStore()
 const toast = useToast()
+const { t } = useI18n()
 
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
@@ -37,11 +39,11 @@ async function handleClearData() {
   try {
     await clearAllData()
     showConfirmClear.value = false
-    toast.success('Todos los datos han sido eliminados')
+    toast.success(t('settings.data_cleared'))
     router.push('/')
   } catch (err) {
     console.error('Failed to clear data:', err)
-    toast.error('Error al eliminar los datos')
+    toast.error(t('settings.data_clear_error'))
   } finally {
     isClearing.value = false
   }
@@ -69,10 +71,10 @@ async function handleExportBackup() {
     a.download = `kindlehub-backup-${new Date().toISOString().split('T')[0]}.json`
     a.click()
     URL.revokeObjectURL(url)
-    toast.success('Backup exportado correctamente')
+    toast.success(t('settings.backup_exported'))
   } catch (err) {
     console.error('Failed to export backup:', err)
-    toast.error('Error al exportar el backup')
+    toast.error(t('settings.backup_export_error'))
   } finally {
     isExporting.value = false
   }
@@ -80,7 +82,7 @@ async function handleExportBackup() {
 
 function handleResetSettings() {
   settingsStore.resetToDefaults()
-  toast.info('Configuracion restaurada')
+  toast.info(t('settings.settings_reset'))
 }
 </script>
 
@@ -248,9 +250,9 @@ function handleResetSettings() {
       <!-- Confirm Clear Modal -->
       <UiConfirmModal
         :open="showConfirmClear"
-        title="¿Eliminar todos los datos?"
-        message="Esta accion eliminara todos los libros y clippings almacenados. No se puede deshacer."
-        confirm-text="Eliminar"
+        :title="$t('settings.confirm_clear_title')"
+        :message="$t('settings.confirm_clear_message')"
+        :confirm-text="$t('common.delete')"
         variant="danger"
         :loading="isClearing"
         @confirm="handleClearData"

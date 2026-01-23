@@ -69,7 +69,11 @@
     "loading": "Chargement des surlignements...",
     "no_content": "Aucun surlignement à exporter",
     "no_content_desc": "Importez d'abord vos coupures Kindle, puis revenez ici pour les exporter dans votre format préféré.",
-    "cta_import": "Importer les Surlignements"
+    "cta_import": "Importer les Surlignements",
+    "preview_more_files": "...et {count} fichier(s) de plus",
+    "preview_truncated": "...[tronqué]",
+    "preview_binary": "[contenu binaire]",
+    "zip_failed": "Échec de la génération de l'archive ZIP"
   },
   "editor": {
     "title": "Éditeur de Données",
@@ -146,5 +150,14 @@
     "toggle": "Changer de thème",
     "light": "Mode clair",
     "dark": "Mode sombre"
+  },
+  "settings": {
+    "data_cleared": "Toutes les données ont été supprimées",
+    "data_clear_error": "Erreur lors de la suppression des données",
+    "backup_exported": "Sauvegarde exportée avec succès",
+    "backup_export_error": "Erreur lors de l'exportation de la sauvegarde",
+    "settings_reset": "Paramètres restaurés",
+    "confirm_clear_title": "Supprimer toutes les données ?",
+    "confirm_clear_message": "Cette action supprimera tous les livres et coupures enregistrés. Cette action est irréversible."
   }
 }

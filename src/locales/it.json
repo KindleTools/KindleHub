@@ -69,7 +69,11 @@
     "loading": "Caricamento evidenziazioni...",
     "no_content": "Nessuna evidenziazione da esportare",
     "no_content_desc": "Importa prima i tuoi ritagli Kindle, poi torna qui per esportarli nel formato preferito.",
-    "cta_import": "Importa Ritagli"
+    "cta_import": "Importa Ritagli",
+    "preview_more_files": "...e altri {count} file",
+    "preview_truncated": "...[troncato]",
+    "preview_binary": "[contenuto binario]",
+    "zip_failed": "Impossibile generare l'archivio ZIP"
   },
   "editor": {
     "title": "Editor Dati",
@@ -146,5 +150,14 @@
     "toggle": "Cambia tema",
     "light": "Modo chiaro",
     "dark": "Modo scuro"
+  },
+  "settings": {
+    "data_cleared": "Tutti i dati sono stati eliminati",
+    "data_clear_error": "Errore durante l'eliminazione dei dati",
+    "backup_exported": "Backup esportato correttamente",
+    "backup_export_error": "Errore durante l'esportazione del backup",
+    "settings_reset": "Impostazioni ripristinate",
+    "confirm_clear_title": "Eliminare tutti i dati?",
+    "confirm_clear_message": "Questa azione eliminerà tutti i libri e ritagli memorizzati. Non può essere annullata."
   }
 }

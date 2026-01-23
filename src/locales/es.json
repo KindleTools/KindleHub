@@ -69,7 +69,11 @@
     "loading": "Cargando subrayados...",
     "no_content": "No hay subrayados para exportar",
     "no_content_desc": "Importa primero tus recortes de Kindle, luego vuelve aquí para exportarlos en tu formato preferido.",
-    "cta_import": "Importar Recortes"
+    "cta_import": "Importar Recortes",
+    "preview_more_files": "...y {count} archivo(s) más",
+    "preview_truncated": "...[truncado]",
+    "preview_binary": "[contenido binario]",
+    "zip_failed": "Error al generar archivo ZIP"
   },
   "editor": {
     "title": "Editor de Datos",
@@ -146,5 +150,14 @@
     "toggle": "Cambiar tema",
     "light": "Modo claro",
     "dark": "Modo oscuro"
+  },
+  "settings": {
+    "data_cleared": "Todos los datos han sido eliminados",
+    "data_clear_error": "Error al eliminar los datos",
+    "backup_exported": "Backup exportado correctamente",
+    "backup_export_error": "Error al exportar el backup",
+    "settings_reset": "Configuración restaurada",
+    "confirm_clear_title": "¿Eliminar todos los datos?",
+    "confirm_clear_message": "Esta acción eliminará todos los libros y clippings almacenados. No se puede deshacer."
   }
 }

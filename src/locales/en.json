@@ -69,7 +69,11 @@
     "loading": "Loading your highlights...",
     "no_content": "No highlights to export",
     "no_content_desc": "Import your Kindle clippings first, then come back here to export them in your preferred format.",
-    "cta_import": "Import Clippings"
+    "cta_import": "Import Clippings",
+    "preview_more_files": "...and {count} more file(s)",
+    "preview_truncated": "...[truncated]",
+    "preview_binary": "[binary content]",
+    "zip_failed": "Failed to generate ZIP archive"
   },
   "editor": {
     "title": "Data Editor",
@@ -146,5 +150,14 @@
     "toggle": "Toggle theme",
     "light": "Light mode",
     "dark": "Dark mode"
+  },
+  "settings": {
+    "data_cleared": "All data has been deleted",
+    "data_clear_error": "Error deleting data",
+    "backup_exported": "Backup exported successfully",
+    "backup_export_error": "Error exporting backup",
+    "settings_reset": "Settings restored",
+    "confirm_clear_title": "Delete all data?",
+    "confirm_clear_message": "This action will delete all stored books and clippings. This cannot be undone."
   }
 }

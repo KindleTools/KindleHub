@@ -69,7 +69,11 @@
     "loading": "Carregando destaques...",
     "no_content": "Nenhum destaque para exportar",
     "no_content_desc": "Importe seus recortes do Kindle primeiro, depois volte aqui para exportá-los no formato preferido.",
-    "cta_import": "Importar Destaques"
+    "cta_import": "Importar Destaques",
+    "preview_more_files": "...e mais {count} arquivo(s)",
+    "preview_truncated": "...[truncado]",
+    "preview_binary": "[conteúdo binário]",
+    "zip_failed": "Falha ao gerar arquivo ZIP"
   },
   "editor": {
     "title": "Editor de Dados",
@@ -146,5 +150,14 @@
     "toggle": "Alternar tema",
     "light": "Modo claro",
     "dark": "Modo escuro"
+  },
+  "settings": {
+    "data_cleared": "Todos os dados foram excluídos",
+    "data_clear_error": "Erro ao excluir dados",
+    "backup_exported": "Backup exportado com sucesso",
+    "backup_export_error": "Erro ao exportar backup",
+    "settings_reset": "Configurações restauradas",
+    "confirm_clear_title": "Excluir todos os dados?",
+    "confirm_clear_message": "Esta ação excluirá todos os livros e recortes armazenados. Isso não pode ser desfeito."
   }
 }
