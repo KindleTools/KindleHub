@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useDark } from '@vueuse/core'
 import { use } from 'echarts/core'
 import { PieChart } from 'echarts/charts'
 import { TooltipComponent, LegendComponent } from 'echarts/components'
@@ -16,17 +17,40 @@ const props = defineProps<{
 }>()
 
 const { t } = useI18n()
+const isDark = useDark()
+
+// Theme-aware colors
+const colors = computed(() => ({
+  legendText: isDark.value ? '#9ca3af' : '#6b7280',
+  borderColor: isDark.value ? '#1f2937' : '#fff',
+  tooltipBg: isDark.value ? '#1f2937' : '#fff',
+  tooltipBorder: isDark.value ? '#374151' : '#e5e7eb',
+  tooltipText: isDark.value ? '#f3f4f6' : '#111827'
+}))
+
+// Accessibility: generate summary text
+const accessibilitySummary = computed(() => {
+  const total = props.data.highlights + props.data.notes + props.data.bookmarks
+  if (total === 0) return t('stats.no_data')
+  const hPct = Math.round((props.data.highlights / total) * 100)
+  const nPct = Math.round((props.data.notes / total) * 100)
+  const bPct = Math.round((props.data.bookmarks / total) * 100)
+  return `${t('stats.type_distribution')}: ${t('clipping.highlight')} ${hPct}%, ${t('clipping.note')} ${nPct}%, ${t('clipping.bookmark')} ${bPct}%`
+})
 
 const chartOption = computed(() => ({
   tooltip: {
     trigger: 'item',
+    backgroundColor: colors.value.tooltipBg,
+    borderColor: colors.value.tooltipBorder,
+    textStyle: { color: colors.value.tooltipText },
     formatter: '{b}: {c} ({d}%)'
   },
   legend: {
     orient: 'horizontal',
     bottom: 0,
     textStyle: {
-      color: '#6b7280'
+      color: colors.value.legendText
     }
   },
   series: [
@@ -37,7 +61,7 @@ const chartOption = computed(() => ({
       avoidLabelOverlap: true,
       itemStyle: {
         borderRadius: 6,
-        borderColor: '#fff',
+        borderColor: colors.value.borderColor,
         borderWidth: 2
       },
       label: {
@@ -73,14 +97,14 @@ const chartOption = computed(() => ({
 </script>
 
 <template>
-  <div class="card">
+  <div class="card" role="figure" :aria-label="accessibilitySummary">
     <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
       {{ $t('stats.type_distribution') }}
     </h3>
     <VChart
       :option="chartOption"
       autoresize
-      class="h-64"
+      class="h-48 sm:h-64"
     />
   </div>
 </template>

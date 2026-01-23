@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useDark } from '@vueuse/core'
 import { use } from 'echarts/core'
 import { LineChart } from 'echarts/charts'
 import { TooltipComponent, GridComponent } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
 import VChart from 'vue-echarts'
-
-import type { TimelinePoint } from '@/composables/useStatistics'
 import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
+import type { TimelinePoint } from '@/composables/useStatistics'
 
 use([LineChart, TooltipComponent, GridComponent, CanvasRenderer])
 
@@ -17,9 +16,33 @@ const props = defineProps<{
   data: TimelinePoint[]
 }>()
 
+const { t } = useI18n()
+const isDark = useDark()
+
+// Theme-aware colors
+const colors = computed(() => ({
+  axisLine: isDark.value ? '#374151' : '#e5e7eb',
+  axisLabel: isDark.value ? '#9ca3af' : '#6b7280',
+  splitLine: isDark.value ? '#1f2937' : '#f3f4f6',
+  tooltipBg: isDark.value ? '#1f2937' : '#fff',
+  tooltipBorder: isDark.value ? '#374151' : '#e5e7eb',
+  tooltipText: isDark.value ? '#f3f4f6' : '#111827'
+}))
+
+// Accessibility: generate summary text
+const accessibilitySummary = computed(() => {
+  if (props.data.length === 0) return t('stats.no_data')
+  const total = props.data.reduce((sum, p) => sum + p.count, 0)
+  const peak = props.data.reduce((max, p) => p.count > max.count ? p : max, props.data[0])
+  return `${t('stats.activity')}: ${total} ${t('stats.total_highlights')} total. Peak: ${peak.label} (${peak.count})`
+})
+
 const chartOption = computed(() => ({
   tooltip: {
     trigger: 'axis',
+    backgroundColor: colors.value.tooltipBg,
+    borderColor: colors.value.tooltipBorder,
+    textStyle: { color: colors.value.tooltipText },
     formatter: (params: { name: string, value: number }[]) => {
       const item = params[0]
       if (!item) return ''
@@ -37,21 +60,21 @@ const chartOption = computed(() => ({
     type: 'category',
     data: props.data.map((p) => p.label),
     boundaryGap: false,
-    axisLine: { lineStyle: { color: '#e5e7eb' } },
+    axisLine: { lineStyle: { color: colors.value.axisLine } },
     axisTick: { show: false },
     axisLabel: {
-      color: '#6b7280',
+      color: colors.value.axisLabel,
       fontSize: 10,
       interval: Math.max(0, Math.floor(props.data.length / 6) - 1)
     }
   },
   yAxis: {
     type: 'value',
-    splitLine: { lineStyle: { color: '#f3f4f6' } },
+    splitLine: { lineStyle: { color: colors.value.splitLine } },
     axisLine: { show: false },
     axisTick: { show: false },
     axisLabel: {
-      color: '#9ca3af',
+      color: colors.value.axisLabel,
       fontSize: 10
     }
   },
@@ -88,7 +111,7 @@ const chartOption = computed(() => ({
 </script>
 
 <template>
-  <div class="card">
+  <div class="card" role="figure" :aria-label="accessibilitySummary">
     <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
       {{ $t('stats.activity') }}
     </h3>
@@ -96,11 +119,11 @@ const chartOption = computed(() => ({
       v-if="data.length > 0"
       :option="chartOption"
       autoresize
-      class="h-64"
+      class="h-48 sm:h-64"
     />
     <div
       v-else
-      class="h-64 flex items-center justify-center text-gray-400 text-sm"
+      class="h-48 sm:h-64 flex items-center justify-center text-gray-400 text-sm"
     >
       {{ $t('stats.no_data') }}
     </div>

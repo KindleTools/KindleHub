@@ -1,21 +1,39 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useDark } from '@vueuse/core'
 import { use } from 'echarts/core'
 import { BarChart } from 'echarts/charts'
 import { TooltipComponent, GridComponent } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
 import VChart from 'vue-echarts'
-
-import type { TopBook } from '@/composables/useStatistics'
 import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
+import type { TopBook } from '@/composables/useStatistics'
 
 use([BarChart, TooltipComponent, GridComponent, CanvasRenderer])
 
 const props = defineProps<{
   data: TopBook[]
 }>()
+
+const { t } = useI18n()
+const isDark = useDark()
+
+// Theme-aware colors
+const colors = computed(() => ({
+  axisLabel: isDark.value ? '#9ca3af' : '#6b7280',
+  tooltipBg: isDark.value ? '#1f2937' : '#fff',
+  tooltipBorder: isDark.value ? '#374151' : '#e5e7eb',
+  tooltipText: isDark.value ? '#f3f4f6' : '#111827'
+}))
+
+// Accessibility: generate summary text
+const accessibilitySummary = computed(() => {
+  if (props.data.length === 0) return t('stats.no_data')
+  const books = props.data.slice(0, 8)
+  const topBook = books[0]
+  return `${t('stats.top_books')}: ${books.length} books. Top: "${topBook.title}" by ${topBook.author} (${topBook.count} ${t('stats.total_highlights')})`
+})
 
 const chartOption = computed(() => {
   const books = props.data.slice(0, 8)
@@ -25,6 +43,9 @@ const chartOption = computed(() => {
     tooltip: {
       trigger: 'axis',
       axisPointer: { type: 'shadow' },
+      backgroundColor: colors.value.tooltipBg,
+      borderColor: colors.value.tooltipBorder,
+      textStyle: { color: colors.value.tooltipText },
       formatter: (params: { name: string, value: number }[]) => {
         const item = params[0]
         if (!item) return ''
@@ -54,7 +75,7 @@ const chartOption = computed(() => {
       axisLine: { show: false },
       axisTick: { show: false },
       axisLabel: {
-        color: '#6b7280',
+        color: colors.value.axisLabel,
         width: 120,
         overflow: 'truncate',
         fontSize: 11
@@ -72,7 +93,7 @@ const chartOption = computed(() => {
         label: {
           show: true,
           position: 'right',
-          color: '#6b7280',
+          color: colors.value.axisLabel,
           fontSize: 11
         }
       }
@@ -82,7 +103,7 @@ const chartOption = computed(() => {
 </script>
 
 <template>
-  <div class="card">
+  <div class="card" role="figure" :aria-label="accessibilitySummary">
     <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
       {{ $t('stats.top_books') }}
     </h3>
@@ -90,11 +111,11 @@ const chartOption = computed(() => {
       v-if="data.length > 0"
       :option="chartOption"
       autoresize
-      class="h-64"
+      class="h-48 sm:h-64"
     />
     <div
       v-else
-      class="h-64 flex items-center justify-center text-gray-400 text-sm"
+      class="h-48 sm:h-64 flex items-center justify-center text-gray-400 text-sm"
     >
       {{ $t('stats.no_data') }}
     </div>
