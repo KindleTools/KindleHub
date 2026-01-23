@@ -2,6 +2,7 @@
  * Export Service - Wrapper for kindle-tools-ts exporting functionality.
  *
  * Provides a unified API for exporting clippings to various formats.
+ * Uses Registry/Factory pattern for clean, extensible code.
  */
 import {
   type Clipping,
@@ -29,10 +30,44 @@ export interface ExportResultData {
   isMultiFile: boolean
 }
 
+interface FormatMetadata {
+  filename: string
+  mimeType: string
+  isMultiFile: boolean
+}
+
+// Type for exporter instances from kindle-tools-ts
+type BaseExporter = InstanceType<typeof MarkdownExporter>
+
 const defaultOptions: Partial<ExporterOptions> = {
   includeEmptyContent: false,
   groupByBook: true,
   sortBy: 'date'
+}
+
+/**
+ * Registry of exporter factory functions.
+ * Each entry creates a new exporter instance for the given format.
+ */
+const exporterRegistry: Record<ExportFormat, () => BaseExporter> = {
+  markdown: () => new MarkdownExporter(),
+  json: () => new JsonExporter(),
+  csv: () => new CsvExporter(),
+  html: () => new HtmlExporter(),
+  obsidian: () => new ObsidianExporter(),
+  joplin: () => new JoplinExporter()
+}
+
+/**
+ * Metadata configuration for each export format.
+ */
+const formatMetadata: Record<ExportFormat, FormatMetadata> = {
+  markdown: { filename: 'kindle-highlights.md', mimeType: 'text/markdown', isMultiFile: false },
+  json: { filename: 'kindle-highlights.json', mimeType: 'application/json', isMultiFile: false },
+  csv: { filename: 'kindle-highlights.csv', mimeType: 'text/csv', isMultiFile: false },
+  html: { filename: 'kindle-highlights.html', mimeType: 'text/html', isMultiFile: false },
+  obsidian: { filename: 'kindle-obsidian.zip', mimeType: 'application/zip', isMultiFile: true },
+  joplin: { filename: 'kindle-highlights.jex', mimeType: 'application/octet-stream', isMultiFile: false }
 }
 
 /**
@@ -43,101 +78,28 @@ export async function exportClippings(
   format: ExportFormat,
   options?: Partial<ExporterOptions>
 ): Promise<ExportResultData> {
+  const exporterFactory = exporterRegistry[format]
+  if (!exporterFactory) {
+    throw new Error(`Unsupported export format: ${format}`)
+  }
+
+  const exporter = exporterFactory()
+  const metadata = formatMetadata[format]
   const mergedOptions = { ...defaultOptions, ...options }
 
-  switch (format) {
-    case 'markdown': {
-      const exporter = new MarkdownExporter()
-      const result = await exporter.export(clippings, mergedOptions)
-      if (result.isErr()) throw new Error(result.error.message)
-      const output = result.value.output
-      return {
-        format,
-        content: typeof output === 'string' ? output : '',
-        files: result.value.files ?? [],
-        filename: 'kindle-highlights.md',
-        mimeType: 'text/markdown',
-        isMultiFile: Boolean(result.value.files?.length)
-      }
-    }
+  const result = await exporter.export(clippings, mergedOptions)
+  if (result.isErr()) throw new Error(result.error.message)
 
-    case 'json': {
-      const exporter = new JsonExporter()
-      const result = await exporter.export(clippings, mergedOptions)
-      if (result.isErr()) throw new Error(result.error.message)
-      const output = result.value.output
-      return {
-        format,
-        content: typeof output === 'string' ? output : '',
-        files: [],
-        filename: 'kindle-highlights.json',
-        mimeType: 'application/json',
-        isMultiFile: false
-      }
-    }
+  const output = result.value.output
+  const files = result.value.files ?? []
 
-    case 'csv': {
-      const exporter = new CsvExporter()
-      const result = await exporter.export(clippings, mergedOptions)
-      if (result.isErr()) throw new Error(result.error.message)
-      const output = result.value.output
-      return {
-        format,
-        content: typeof output === 'string' ? output : '',
-        files: [],
-        filename: 'kindle-highlights.csv',
-        mimeType: 'text/csv',
-        isMultiFile: false
-      }
-    }
-
-    case 'html': {
-      const exporter = new HtmlExporter()
-      const result = await exporter.export(clippings, mergedOptions)
-      if (result.isErr()) throw new Error(result.error.message)
-      const output = result.value.output
-      return {
-        format,
-        content: typeof output === 'string' ? output : '',
-        files: [],
-        filename: 'kindle-highlights.html',
-        mimeType: 'text/html',
-        isMultiFile: false
-      }
-    }
-
-    case 'obsidian': {
-      const exporter = new ObsidianExporter()
-      const result = await exporter.export(clippings, mergedOptions)
-      if (result.isErr()) throw new Error(result.error.message)
-      const output = result.value.output
-      return {
-        format,
-        content: typeof output === 'string' ? output : '',
-        files: result.value.files ?? [],
-        filename: 'kindle-obsidian.zip',
-        mimeType: 'application/zip',
-        isMultiFile: true
-      }
-    }
-
-    case 'joplin': {
-      const exporter = new JoplinExporter()
-      const result = await exporter.export(clippings, mergedOptions)
-      if (result.isErr()) throw new Error(result.error.message)
-      const output = result.value.output
-      return {
-        format,
-        content: typeof output === 'string' ? output : '',
-        files: [],
-        filename: 'kindle-highlights.jex',
-        mimeType: 'application/octet-stream',
-        isMultiFile: false
-      }
-    }
-
-    default:
-      throw new Error(`Unsupported export format: ${format}`)
+  return {
+    format,
+    content: typeof output === 'string' ? output : '',
+    files,
+    ...metadata,
+    // Override isMultiFile if we actually have files (for markdown edge case)
+    isMultiFile: metadata.isMultiFile || files.length > 0
   }
 }
 

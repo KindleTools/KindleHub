@@ -63,6 +63,36 @@
 | 4 | **Virtual Scrolling** | Performance | Implementar `@tanstack/vue-virtual` en `BookList.vue` y `DataTable.vue` para >500 items | 3-4h |
 | 5 | **Lighthouse Audit** | Performance | Alcanzar score >90 en móvil/desktop. Optimizar LCP, CLS, FID | 2-3h |
 | 6 | **PWA Basics** | Acceso | Ver sección PWA Support abajo | 2-3h |
+| 7 | **Patrón Factory para Exportadores** | Código | Refactorizar switch de 6 casos en `export.service.ts` con Registry/Factory | 1h |
+
+---
+
+### 🟠 Mejoras del Sistema de Batches (Siguientes Iteraciones)
+
+#### Alta Prioridad
+
+| # | Tarea | Impacto | Detalles |
+|---|-------|---------|----------|
+| B1 | **Undo/Redo para ediciones** | UX | Historial de cambios en batch, Ctrl+Z para deshacer |
+| B2 | **Filtros en vista de batch** | UX | Filtrar por tipo, libro, solo items con warnings |
+| B3 | **Selección inteligente** | UX | Shift+click para rango, Ctrl+A seleccionar todo |
+
+#### Media Prioridad
+
+| # | Tarea | Impacto | Detalles |
+|---|-------|---------|----------|
+| B4 | **Merge de duplicados** | Feature | Fusionar dos clippings combinando notas |
+| B5 | **Preview de cambios** | UX | Mostrar diff antes de importar |
+| B6 | **Marcar ambos duplicados** | UX | Actualmente solo c1 se marca, c2 también debería |
+| B7 | **Re-detectar duplicados tras edición** | Calidad | Llamar `detectDuplicates()` cuando cambia `content` |
+
+#### Baja Prioridad
+
+| # | Tarea | Impacto | Detalles |
+|---|-------|---------|----------|
+| B8 | **Batch history con detalle** | Feature | Ver qué clippings se importaron, re-importar batch descartado |
+| B9 | **Virtual scrolling para batches** | Performance | Usar `vue-virtual-scroller` para 5000+ clippings |
+| B10 | **Persistir batch en localStorage** | UX | Guardar estado periódicamente, restaurar al montar |
 
 ---
 
