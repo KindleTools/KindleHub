@@ -66,7 +66,14 @@ export const useBatchesStore = defineStore('batches', () => {
     clippings: Clipping[],
     fileName: string,
     fileSize: number,
-    stats: { duplicatesRemoved: number, linkedNotes: number }
+    stats: {
+      duplicatesRemoved: number
+      linkedNotes: number
+      mergedHighlights?: number
+      suspiciousFlagged?: number
+      tagsExtracted?: number
+    },
+    suspiciousIds: string[] = []
   ): string {
     const batchId = generateBatchId()
     const batchClippings = new Map<string, BatchClipping>()
@@ -78,9 +85,15 @@ export const useBatchesStore = defineStore('batches', () => {
     let notes = 0
     let bookmarks = 0
 
+    // Create a set of suspicious IDs for quick lookup
+    const suspiciousSet = new Set(suspiciousIds)
+
     for (const clipping of clippings) {
       const batchClippingId = generateClippingId()
       const bookKey = createBookKey(clipping.title, clipping.author)
+
+      // Check if this clipping is suspicious
+      const isSuspicious = suspiciousSet.has(clipping.id)
 
       // Create batch clipping
       const batchClipping: BatchClipping = {
@@ -88,7 +101,8 @@ export const useBatchesStore = defineStore('batches', () => {
         batchClippingId,
         isSelected: false,
         isModified: false,
-        warnings: []
+        warnings: [],
+        isSuspicious
       }
       batchClippings.set(batchClippingId, batchClipping)
 
@@ -129,6 +143,9 @@ export const useBatchesStore = defineStore('batches', () => {
       totalBooks: batchBooks.size,
       duplicatesRemoved: stats.duplicatesRemoved,
       linkedNotes: stats.linkedNotes,
+      mergedHighlights: stats.mergedHighlights ?? 0,
+      suspiciousFlagged: stats.suspiciousFlagged ?? suspiciousIds.length,
+      tagsExtracted: stats.tagsExtracted ?? 0,
       byType: { highlights, notes, bookmarks }
     }
 

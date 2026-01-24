@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { FileJson, FileText, Table, Upload, XCircle } from 'lucide-vue-next'
+import { useI18n } from 'vue-i18n'
 
 import ImportOptions from '@/components/import/ImportOptions.vue'
 import { parseContent, type ImportFormat } from '@/services/parser.service'
 import { useBatchesStore } from '@/stores/batches'
 import { useSettingsStore } from '@/stores/settings'
 
+const { t } = useI18n()
 const router = useRouter()
 const batchesStore = useBatchesStore()
 const settingsStore = useSettingsStore()
@@ -18,11 +20,11 @@ const error = ref<string | null>(null)
 
 const fileInputRef = ref<HTMLInputElement>()
 
-const formats = [
-  { id: 'txt' as const, label: 'Kindle TXT', icon: FileText, accept: '.txt' },
-  { id: 'csv' as const, label: 'CSV Export', icon: Table, accept: '.csv' },
-  { id: 'json' as const, label: 'JSON Data', icon: FileJson, accept: '.json' }
-]
+const formats = computed(() => [
+  { id: 'txt' as const, label: t('import.format_txt'), desc: t('import.format_txt_desc'), icon: FileText, accept: '.txt' },
+  { id: 'csv' as const, label: t('import.format_csv'), desc: t('import.format_csv_desc'), icon: Table, accept: '.csv' },
+  { id: 'json' as const, label: t('import.format_json'), desc: t('import.format_json_desc'), icon: FileJson, accept: '.json' }
+])
 
 const handleDrop = async (e: DragEvent) => {
   e.preventDefault()
@@ -72,8 +74,12 @@ const processFile = async (file: File) => {
       file.size,
       {
         duplicatesRemoved: parsed.stats.duplicatesRemoved,
-        linkedNotes: parsed.stats.linkedNotes
-      }
+        linkedNotes: parsed.stats.linkedNotes,
+        mergedHighlights: parsed.stats.mergedHighlights,
+        suspiciousFlagged: parsed.stats.suspiciousFlagged,
+        tagsExtracted: parsed.stats.tagsExtracted
+      },
+      parsed.suspiciousIds
     )
     console.log('Created batch:', batchId)
 
@@ -125,6 +131,7 @@ const reset = () => {
         >
           <component :is="format.icon" class="h-8 w-8" aria-hidden="true" />
           <span class="font-medium">{{ format.label }}</span>
+          <span class="text-xs text-gray-500 dark:text-gray-400 text-center">{{ format.desc }}</span>
         </button>
       </div>
 

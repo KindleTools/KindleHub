@@ -228,3 +228,21 @@ export async function saveBatchHistory(entry: BatchHistoryEntry): Promise<void> 
 export async function getBatchHistory(): Promise<BatchHistoryEntry[]> {
   return db.batchHistory.orderBy('createdAt').reverse().toArray()
 }
+
+/**
+ * Get all unique tags from clippings.
+ */
+export async function getAllTags(): Promise<string[]> {
+  const clippings = await db.clippings.toArray()
+  const tagSet = new Set<string>()
+
+  for (const clipping of clippings) {
+    if (clipping.tags && Array.isArray(clipping.tags)) {
+      for (const tag of clipping.tags) {
+        tagSet.add(tag)
+      }
+    }
+  }
+
+  return Array.from(tagSet).sort()
+}

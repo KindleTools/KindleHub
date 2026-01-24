@@ -8,15 +8,17 @@ import { useRouter } from 'vue-router'
 import { Search, Filter, X, Book, Calendar, Tag, ArrowLeft } from 'lucide-vue-next'
 
 import type { StoredClipping, Book as BookType } from '@/db/schema'
-import { getAllClippings, getAllBooks } from '@/services/db.service'
+import { getAllClippings, getAllBooks, getAllTags } from '@/services/db.service'
 import { useSearch } from '@/composables/useSearch'
 import EmptyState from '@/components/ui/EmptyState.vue'
+import { Hash } from 'lucide-vue-next'
 
 const router = useRouter()
 const searchInputRef = ref<HTMLInputElement | null>(null)
 
 const clippings = ref<StoredClipping[]>([])
 const books = ref<BookType[]>([])
+const availableTags = ref<string[]>([])
 const isLoading = ref(true)
 const showFilters = ref(false)
 
@@ -30,6 +32,7 @@ const {
   resultCount,
   toggleTypeFilter,
   toggleBookFilter,
+  toggleTagFilter,
   clearFilters,
   highlightMatches
 } = useSearch({
@@ -46,12 +49,14 @@ const typeOptions = [
 async function loadData() {
   isLoading.value = true
   try {
-    const [allClippings, allBooks] = await Promise.all([
+    const [allClippings, allBooks, allTags] = await Promise.all([
       getAllClippings(),
-      getAllBooks()
+      getAllBooks(),
+      getAllTags()
     ])
     clippings.value = allClippings
     books.value = allBooks
+    availableTags.value = allTags
   } catch (err) {
     console.error('Failed to load data:', err)
   } finally {
@@ -201,6 +206,29 @@ onUnmounted(() => {
                 @click="toggleBookFilter(book.id!)"
               >
                 {{ book.title }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Tag filters -->
+          <div v-if="availableTags.length > 0">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <Hash class="inline w-4 h-4 mr-1" />
+              {{ $t('tags.filter_label') }}
+            </label>
+            <div class="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
+              <button
+                v-for="tag in availableTags"
+                :key="tag"
+                :class="[
+                  'px-3 py-1.5 text-sm rounded-full transition-colors',
+                  filters.tags.includes(tag)
+                    ? 'bg-primary-600 text-white'
+                    : 'bg-white dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-500'
+                ]"
+                @click="toggleTagFilter(tag)"
+              >
+                #{{ tag }}
               </button>
             </div>
           </div>

@@ -20,6 +20,7 @@ import { formatFileSize, formatBatchDate } from '@/services/batch.service'
 import BatchClippingCard from '@/components/batch/BatchClippingCard.vue'
 import BatchActions from '@/components/batch/BatchActions.vue'
 import BatchWarnings from '@/components/batch/BatchWarnings.vue'
+import BatchStatsPanel from '@/components/batch/BatchStatsPanel.vue'
 import ConfirmModal from '@/components/ui/ConfirmModal.vue'
 
 const router = useRouter()
@@ -220,6 +221,9 @@ const handleExportOnly = () => {
           </div>
         </div>
       </div>
+
+      <!-- Processing Stats Panel -->
+      <BatchStatsPanel :stats="batchesStore.currentBatch.stats" />
 
       <!-- Warnings Panel -->
       <BatchWarnings class="mb-6" />

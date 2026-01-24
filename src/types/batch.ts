@@ -31,12 +31,18 @@ export interface BatchStats {
   totalBooks: number
   duplicatesRemoved: number
   linkedNotes: number
+  mergedHighlights: number
+  suspiciousFlagged: number
+  tagsExtracted: number
   byType: {
     highlights: number
     notes: number
     bookmarks: number
   }
 }
+
+/** Reasons why a clipping might be flagged as suspicious */
+export type SuspiciousReason = 'too_short' | 'fragment' | 'incomplete'
 
 /**
  * A clipping within a batch with additional metadata
@@ -50,6 +56,10 @@ export interface BatchClipping extends Clipping {
   isModified: boolean
   /** Associated warnings for this clipping */
   warnings: string[]
+  /** Whether this clipping is flagged as suspicious */
+  isSuspicious?: boolean
+  /** Reasons for being suspicious */
+  suspiciousReasons?: SuspiciousReason[]
 }
 
 /**

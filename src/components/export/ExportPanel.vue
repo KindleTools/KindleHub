@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { Download, Eye, EyeOff, Loader2, AlertCircle } from 'lucide-vue-next'
-import type { Clipping } from 'kindle-tools-ts'
+import type { Clipping, ExporterOptions } from 'kindle-tools-ts'
 
 import {
   type ExportFormat,
@@ -9,19 +9,37 @@ import {
   previewExport,
   downloadExport
 } from '@/services/export.service'
+import { useSettingsStore } from '@/stores/settings'
+import ExportOptions from './ExportOptions.vue'
 
 interface Props {
   clippings: Clipping[]
 }
 
 const props = defineProps<Props>()
+const settingsStore = useSettingsStore()
+const { exportPreferences } = storeToRefs(settingsStore)
 
-const selectedFormat = ref<ExportFormat>('markdown')
+const selectedFormat = ref<ExportFormat>(exportPreferences.value.defaultFormat)
 const isExporting = ref(false)
 const isPreviewLoading = ref(false)
 const showPreview = ref(true)
 const preview = ref<string>('')
 const error = ref<string | null>(null)
+
+// Build export options from settings
+const getExportOptions = (): Partial<ExporterOptions> => {
+  const prefs = exportPreferences.value
+  return {
+    groupByBook: prefs.groupByBook,
+    includeMetadata: prefs.includeMetadata,
+    templatePreset: prefs.markdownPreset,
+    folderStructure: prefs.folderStructure,
+    includeStats: prefs.includeStats,
+    includeClippingTags: prefs.includeTags,
+    noteGranularity: prefs.noteGranularity
+  }
+}
 
 // Generate preview when format changes
 const generatePreview = async () => {
@@ -34,7 +52,7 @@ const generatePreview = async () => {
   error.value = null
 
   try {
-    preview.value = await previewExport(props.clippings, selectedFormat.value)
+    preview.value = await previewExport(props.clippings, selectedFormat.value, getExportOptions())
   } catch (err) {
     error.value = err instanceof Error ? err.message : 'Failed to generate preview'
     preview.value = ''
@@ -49,6 +67,9 @@ watch(selectedFormat, generatePreview, { immediate: true })
 // Also regenerate when clippings change
 watch(() => props.clippings.length, generatePreview)
 
+// Regenerate when export options change
+watch(exportPreferences, generatePreview, { deep: true })
+
 // Export handler
 const handleExport = async () => {
   if (!props.clippings.length) return
@@ -57,7 +78,7 @@ const handleExport = async () => {
   error.value = null
 
   try {
-    const result = await exportClippings(props.clippings, selectedFormat.value)
+    const result = await exportClippings(props.clippings, selectedFormat.value, getExportOptions())
     downloadExport(result)
   } catch (err) {
     error.value = err instanceof Error ? err.message : 'Export failed'
@@ -86,6 +107,9 @@ const clippingCount = computed(() => props.clippings.length)
       <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Choose Format</h3>
       <ExportFormatPicker v-model="selectedFormat" />
     </div>
+
+    <!-- Export Options -->
+    <ExportOptions :format="selectedFormat" />
 
     <!-- Preview Section -->
     <div class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">

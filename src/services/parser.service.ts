@@ -24,7 +24,12 @@ export interface ParsedResult {
     totalBooks: number
     duplicatesRemoved: number
     linkedNotes: number
+    mergedHighlights: number
+    suspiciousFlagged: number
+    tagsExtracted: number
   }
+  /** IDs of clippings flagged as suspicious */
+  suspiciousIds: string[]
 }
 
 /**
@@ -75,14 +80,24 @@ export async function parseContent(
   // Count unique books
   const uniqueBooks = new Set(processed.clippings.map((c) => c.title))
 
+  // Extract suspicious clipping IDs
+  const suspiciousIds = processed.suspicious?.map((c) => c.id) ?? []
+
+  // Count tags extracted
+  const tagsExtracted = processed.clippings.reduce((acc, c) => acc + (c.tags?.length ?? 0), 0)
+
   return {
     clippings: processed.clippings,
     stats: {
       totalClippings: processed.clippings.length,
       totalBooks: uniqueBooks.size,
       duplicatesRemoved: processed.duplicatesRemoved,
-      linkedNotes: processed.linkedNotes
-    }
+      linkedNotes: processed.linkedNotes,
+      mergedHighlights: processed.mergedHighlights ?? 0,
+      suspiciousFlagged: suspiciousIds.length,
+      tagsExtracted
+    },
+    suspiciousIds
   }
 }
 

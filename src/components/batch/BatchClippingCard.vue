@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import type { BatchClipping } from '@/types/batch'
 import { useBatchesStore } from '@/stores/batches'
 import { useToast } from '@/composables/useToast'
+import TagInput from '@/components/ui/TagInput.vue'
 
 const props = defineProps<{
   clipping: BatchClipping
@@ -19,7 +20,8 @@ const editForm = ref({
   content: '',
   note: '',
   page: 0,
-  location: ''
+  location: '',
+  tags: [] as string[]
 })
 
 const initEdit = () => {
@@ -28,11 +30,11 @@ const initEdit = () => {
     note: props.clipping.note || '',
     page: props.clipping.page || 0,
     // ensure location is string, even if source type is loose
-
     location: (typeof props.clipping.location === 'object'
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ? (props.clipping.location as any)?.raw
-      : props.clipping.location) || ''
+      : props.clipping.location) || '',
+    tags: props.clipping.tags ? [...props.clipping.tags] : []
   }
   isEditing.value = true
 }
@@ -44,7 +46,8 @@ const saveEdit = () => {
     page: editForm.value.page || null,
     // Cast to any to satisfy strict type check against library type
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    location: (editForm.value.location || undefined) as any
+    location: (editForm.value.location || undefined) as any,
+    tags: editForm.value.tags.length > 0 ? editForm.value.tags : undefined
   })
   isEditing.value = false
   toast.success(t('batch.edit_saved'))
@@ -144,6 +147,16 @@ const formattedLocation = computed(() => {
               Loc {{ formattedLocation }}
             </span>
 
+            <!-- Suspicious Badge -->
+            <div
+              v-if="clipping.isSuspicious"
+              class="flex items-center gap-1 text-amber-600 text-xs bg-amber-50 dark:bg-amber-900/20 px-1.5 py-0.5 rounded"
+              :title="t('batch.suspicious_tooltip')"
+            >
+              <AlertTriangle class="h-3 w-3" />
+              <span>{{ t('batch.suspicious_badge') }}</span>
+            </div>
+
             <!-- Warning Badge -->
             <div v-if="clipping.warnings.length > 0" class="flex items-center gap-1 text-orange-500 text-xs bg-orange-50 dark:bg-orange-900/20 px-1.5 py-0.5 rounded">
               <AlertTriangle class="h-3 w-3" />
@@ -179,6 +192,17 @@ const formattedLocation = computed(() => {
               <span class="font-medium not-italic mb-1 block text-xs text-gray-500">{{ t('batch.note_prefix') }}</span>
               {{ clipping.note }}
             </p>
+          </div>
+
+          <!-- Tags Display -->
+          <div v-if="clipping.tags && clipping.tags.length > 0" class="mt-3 flex flex-wrap gap-1">
+            <span
+              v-for="tag in clipping.tags"
+              :key="tag"
+              class="px-2 py-0.5 text-xs bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full"
+            >
+              #{{ tag }}
+            </span>
           </div>
 
           <div class="mt-3 flex items-center gap-2 text-xs text-gray-400">
@@ -231,6 +255,15 @@ const formattedLocation = computed(() => {
               @keyup.escape="cancelEdit"
             />
           </div>
+        </div>
+
+        <!-- Tags Editor -->
+        <div>
+          <label class="block text-xs font-medium text-gray-500 uppercase mb-1">{{ t('batch.label_tags') }}</label>
+          <TagInput
+            v-model="editForm.tags"
+            :placeholder="t('tags.placeholder')"
+          />
         </div>
 
         <div class="flex justify-end gap-2 pt-2 border-t border-gray-100 dark:border-gray-700">

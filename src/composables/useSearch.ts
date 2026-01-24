@@ -22,6 +22,7 @@ export interface SearchResult {
 export interface SearchFilters {
   bookIds: number[]
   types: Array<'highlight' | 'note' | 'bookmark'>
+  tags: string[]
   dateRange: {
     start: Date | null
     end: Date | null
@@ -36,6 +37,7 @@ export interface UseSearchOptions {
 const getDefaultFilters = (): SearchFilters => ({
   bookIds: [],
   types: [],
+  tags: [],
   dateRange: {
     start: null,
     end: null
@@ -73,6 +75,7 @@ export function useSearch(options: UseSearchOptions) {
   const hasFilters = computed(() =>
     filters.value.bookIds.length > 0 ||
     filters.value.types.length > 0 ||
+    filters.value.tags.length > 0 ||
     filters.value.dateRange.start !== null ||
     filters.value.dateRange.end !== null
   )
@@ -103,6 +106,13 @@ export function useSearch(options: UseSearchOptions) {
     // Filter by type
     if (filters.value.types.length > 0) {
       filtered = filtered.filter((c) => filters.value.types.includes(c.type))
+    }
+
+    // Filter by tags
+    if (filters.value.tags.length > 0) {
+      filtered = filtered.filter((c) =>
+        c.tags && filters.value.tags.some((tag) => c.tags!.includes(tag))
+      )
     }
 
     // Filter by date range
@@ -200,6 +210,18 @@ export function useSearch(options: UseSearchOptions) {
     search()
   }
 
+  // Toggle tag filter
+  function toggleTagFilter(tag: string) {
+    const tags = filters.value.tags
+    const index = tags.indexOf(tag)
+    if (index === -1) {
+      tags.push(tag)
+    } else {
+      tags.splice(index, 1)
+    }
+    search()
+  }
+
   // Clear all filters
   function clearFilters() {
     filters.value = getDefaultFilters()
@@ -281,6 +303,7 @@ export function useSearch(options: UseSearchOptions) {
     setFilter,
     toggleTypeFilter,
     toggleBookFilter,
+    toggleTagFilter,
     clearFilters,
     clearAll,
     highlightMatches
