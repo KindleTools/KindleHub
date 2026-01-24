@@ -449,5 +449,103 @@ isFuzzyDuplicate?: boolean
 
 ---
 
+## 11. Implementación Completada (2026-01-24)
+
+### Fase 1: Opciones de Parsing ✅
+- **ImportOptions.vue**: Panel colapsable con opciones de parsing
+- **settings.ts**: `ImportPreferences` con language, mergeOverlapping, extractTags, highlightsOnly, removeUnlinkedNotes
+- **parser.service.ts**: Paso de `ParseOptions` a kindle-tools-ts
+- **Traducciones**: EN/ES para todas las opciones
+
+### Fase 2: Estadísticas de Procesamiento y Calidad ✅
+- **BatchStatsPanel.vue**: Panel con estadísticas de procesamiento (duplicados, merges, links, sospechosos, tags)
+- **types/batch.ts**: Extended `BatchStats` con mergedHighlights, suspiciousFlagged, tagsExtracted
+- **BatchClippingCard.vue**: Badge de "Sospechoso" con tooltip
+- **parser.service.ts**: Extracción de `suspiciousIds` del ProcessResult
+- **batches.ts**: Almacenamiento de estadísticas extendidas
+
+### Fase 3: Opciones de Exportación Avanzadas ✅
+- **ExportOptions.vue**: Panel con opciones contextuales por formato
+- **settings.ts**: Extended `ExportPreferences` con markdownPreset, folderStructure, noteGranularity, includeStats, includeTags
+- **ExportPanel.vue**: Integración de opciones con kindle-tools-ts ExporterOptions
+- **Traducciones**: 7 presets de Markdown, 4 estructuras de carpetas, granularidad
+
+### Fase 4: Gestión de Tags ✅
+- **TagInput.vue**: Componente reutilizable con chips coloreados, sugerencias, teclado
+- **ClippingCard.vue**: Display de tags como chips
+- **BatchClippingCard.vue**: Edición de tags en modo edición
+- **useSearch.ts**: Filtrado por tags con `toggleTagFilter()`
+- **search.vue**: UI de filtro por tags
+- **db.service.ts**: Función `getAllTags()` para obtener tags únicos
+
+### Fase 5: Re-importación JSON/CSV ✅
+- **import.vue**: Labels descriptivos para formatos de re-importación
+- **Traducciones**: format_txt, format_csv, format_json con descripciones
+
+### Archivos Creados
+| Archivo | Descripción |
+|---------|-------------|
+| `src/components/import/ImportOptions.vue` | Panel de opciones de parsing |
+| `src/components/batch/BatchStatsPanel.vue` | Estadísticas de procesamiento |
+| `src/components/export/ExportOptions.vue` | Opciones de exportación avanzadas |
+| `src/components/ui/TagInput.vue` | Input de tags con chips |
+
+### Archivos Modificados
+- `src/stores/settings.ts` - ImportPreferences, ExportPreferences extendidos
+- `src/services/parser.service.ts` - ParseOptions, suspiciousIds
+- `src/services/export.service.ts` - ExporterOptions completas
+- `src/services/db.service.ts` - getAllTags()
+- `src/stores/batches.ts` - BatchStats extendido
+- `src/types/batch.ts` - SuspiciousReason, campos nuevos
+- `src/composables/useSearch.ts` - Filtrado por tags
+- `src/pages/import.vue` - Integración ImportOptions
+- `src/pages/batch/[id].vue` - Integración BatchStatsPanel
+- `src/pages/search.vue` - Filtro por tags
+- `src/components/batch/BatchClippingCard.vue` - Tags y badge sospechoso
+- `src/components/clippings/ClippingCard.vue` - Display de tags
+- `src/components/export/ExportPanel.vue` - ExportOptions
+- `src/locales/en.json`, `es.json` - Traducciones
+
+---
+
+## 12. Roadmap Futuro
+
+### Mejoras de UX (Prioridad Alta)
+
+| Idea | Descripción | Complejidad |
+|------|-------------|-------------|
+| **Filtro por rango de fechas** | Exponer `dateRange` en UI de búsqueda con date picker | Baja |
+| **Portadas de libros** | Integrar Open Library API para obtener covers automáticamente | Media |
+| **Merge de libros duplicados** | Fusionar libros importados con títulos ligeramente diferentes | Media |
+| **Daily Review** | Estilo Readwise: X highlights aleatorios al día para repaso espaciado | Media |
+
+### Mejoras Técnicas (Prioridad Media)
+
+| Idea | Descripción | Complejidad |
+|------|-------------|-------------|
+| **PWA completa** | Service worker para uso offline real | Media |
+| **Keyboard shortcuts globales** | Ctrl+K búsqueda rápida, atajos de navegación | Baja |
+| **Exportación selectiva** | Exportar solo libros/highlights seleccionados | Media |
+| **Undo/Redo** | Historial de cambios para ediciones | Alta |
+
+### Integraciones Externas (Prioridad Baja)
+
+| Idea | Descripción | Complejidad |
+|------|-------------|-------------|
+| **Goodreads** | Fetch de metadatos y portadas | Alta |
+| **Notion API** | Exportación directa a Notion | Alta |
+| **Obsidian Sync** | Detección de carpeta de Obsidian | Media |
+
+### Visualización Avanzada
+
+| Idea | Descripción | Complejidad |
+|------|-------------|-------------|
+| **Timeline por autor** | Gráfico de actividad por autor en el tiempo | Media |
+| **Comparación de períodos** | Estadísticas año vs año | Media |
+| **Goals/Streaks** | Objetivos de lectura con tracking de rachas | Media |
+
+---
+
 *Documento generado el 2026-01-23*
+*Actualizado el 2026-01-24 con implementación completada*
 *Basado en análisis de kindle-tools-ts v0.5.0 y KindleHub MVP*
