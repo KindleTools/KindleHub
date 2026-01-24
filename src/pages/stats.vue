@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import StatsLayout from '@/components/stats/StatsLayout.vue'
+import { useBooksStore } from '@/stores/books'
+import { useClippingsStore } from '@/stores/clippings'
 
 // We will implement charts and import them here
 /*
@@ -19,6 +21,16 @@ import BooksScatterChart from '@/components/stats/BooksScatterChart.vue'
 */
 
 const { t } = useI18n()
+const booksStore = useBooksStore()
+const clippingsStore = useClippingsStore()
+
+onMounted(async () => {
+  await Promise.all([
+    booksStore.loadBooks(),
+    clippingsStore.loadStats(),
+    clippingsStore.loadAllClippings()
+  ])
+})
 
 </script>
 

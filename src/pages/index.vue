@@ -11,7 +11,7 @@ import {
   TopBooksChart,
   ActivityChart,
   InsightsPanel,
-  /* HeatmapChart, */ // Kept commented out if we want to switch back later or use it elsewhere
+  HeatmapChart,
   StreakChart
 } from '@/components/stats'
 
@@ -136,9 +136,10 @@ onMounted(async () => {
         />
       </div>
 
-      <!-- Heatmap -->
-      <div class="mb-6">
-        <StreakChart :data="stats.calendarData" :year="new Date().getFullYear()" />
+      <!-- Heatmap & Streak -->
+      <div class="grid lg:grid-cols-2 gap-6 mb-6">
+        <StreakChart :data="stats.calendarData" />
+        <HeatmapChart :data="stats.clippingsStore.clippings" />
       </div>
 
       <!-- Charts Row 1 -->

@@ -13,6 +13,9 @@ import MonthlyActivityChart from './MonthlyActivityChart.vue'
 import LengthDistributionChart from './LengthDistributionChart.vue'
 import BooksScatterChart from './BooksScatterChart.vue'
 // import InsightsPanel from './InsightsPanel.vue'
+import TopicCloud from './TopicCloud.vue'
+import ReadingRadarChart from './ReadingRadarChart.vue'
+import BadgesPanel from './BadgesPanel.vue'
 
 const { t } = useI18n()
 const stats = useStatistics()
@@ -75,10 +78,10 @@ const overviewCards = computed(() => [
 
       <!-- Heatmaps -->
       <div>
-        <HeatmapChart :data="stats.heatmapData.value" />
+        <HeatmapChart :data="stats.clippingsStore.clippings" />
       </div>
       <div>
-        <StreakChart :data="stats.calendarData.value" :year="new Date().getFullYear()" />
+        <StreakChart :data="stats.calendarData.value" />
       </div>
 
       <!-- Advanced Stats (Full Width) -->
@@ -102,6 +105,19 @@ const overviewCards = computed(() => [
       </div>
       <div>
         <BooksScatterChart :data="stats.bookStats.value" />
+      </div>
+
+      <!-- Profiling & Topics -->
+      <div>
+        <ReadingRadarChart :data="stats.radarMetrics.value" />
+      </div>
+      <div>
+        <TopicCloud :data="stats.wordFrequency.value" />
+      </div>
+
+      <!-- Gamification -->
+      <div class="lg:col-span-2">
+        <BadgesPanel :badges="stats.badges.value" />
       </div>
 
       <!-- Insights -->

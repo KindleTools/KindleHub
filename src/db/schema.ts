@@ -66,6 +66,10 @@ export class KindleHubDB extends Dexie {
     this.version(2).stores({
       batchHistory: 'id, createdAt, status, fileName'
     })
+
+    this.version(3).stores({
+      clippings: '++id, bookId, originalId, type, date, [bookId+type], [bookId+originalId]'
+    })
   }
 }
 

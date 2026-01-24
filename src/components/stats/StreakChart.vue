@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useDark } from '@vueuse/core'
 import { use } from 'echarts/core'
 import { HeatmapChart } from 'echarts/charts'
@@ -7,21 +7,38 @@ import { TooltipComponent, CalendarComponent, VisualMapComponent } from 'echarts
 import { CanvasRenderer } from 'echarts/renderers'
 import VChart from 'vue-echarts'
 import { useI18n } from 'vue-i18n'
-import { differenceInDays, parseISO } from 'date-fns'
 
 import type { HeatmapPoint } from '@/composables/useStatistics'
 
 use([HeatmapChart, TooltipComponent, CalendarComponent, VisualMapComponent, CanvasRenderer])
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   data: HeatmapPoint[]
-  year: number
-}>()
+  total?: boolean
+}>(), {
+  total: false
+})
 
 const { t } = useI18n()
 const isDark = useDark()
 
-// Theme-aware colors
+const currentYear = new Date().getFullYear()
+const selectedYear = ref(currentYear)
+
+const availableYears = computed(() => {
+  if (props.data.length === 0) return [currentYear]
+  const years = new Set(props.data.map((d) => new Date(d.date).getFullYear()))
+  return Array.from(years).sort((a, b) => b - a) // Descending
+})
+
+// Ensure selected year is valid when data changes
+watch(availableYears, (years) => {
+  if (!years.includes(selectedYear.value)) {
+    selectedYear.value = years[0] ?? currentYear
+  }
+}, { immediate: true })
+
+// Colors
 const colors = computed(() => ({
   border: isDark.value ? '#374151' : '#fff',
   text: isDark.value ? '#9ca3af' : '#4b5563',
@@ -30,8 +47,35 @@ const colors = computed(() => ({
   dayLabel: isDark.value ? '#6b7280' : '#9ca3af',
   tooltipBg: isDark.value ? '#1f2937' : '#fff',
   tooltipBorder: isDark.value ? '#374151' : '#e5e7eb',
-  tooltipText: isDark.value ? '#f3f4f6' : '#111827'
+  tooltipText: isDark.value ? '#f3f4f6' : '#111827',
+  buttonText: isDark.value ? '#e5e7eb' : '#374151',
+  buttonHover: isDark.value ? '#374151' : '#f3f4f6'
 }))
+
+// Chart Range
+const range = computed(() => {
+  if (props.total) return 2000 // Dummy year for aggregation
+  return selectedYear.value
+})
+
+// Chart Data
+const chartData = computed(() => {
+  if (props.total) {
+    // Aggregate all years to 2000
+    const map = new Map<string, number>()
+    props.data.forEach((p) => {
+      const d = new Date(p.date)
+      const key = `2000-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+      map.set(key, (map.get(key) || 0) + p.count)
+    })
+    return Array.from(map.entries()).map(([date, count]) => [date, count])
+  } else {
+    // Filter by selected year
+    return props.data
+      .filter((p) => new Date(p.date).getFullYear() === selectedYear.value)
+      .map((p) => [p.date, p.count])
+  }
+})
 
 // Accessibility
 const accessibilitySummary = computed(() => {
@@ -45,9 +89,11 @@ const chartOption = computed(() => ({
     borderColor: colors.value.tooltipBorder,
     textStyle: { color: colors.value.tooltipText },
     formatter: (params: any) => {
-      const date = params.value[0]
+      const date = new Date(params.value[0])
+      const month = date.toLocaleString('default', { month: 'short' })
+      const day = date.getDate()
       const count = params.value[1]
-      return `${date}: <strong>${count}</strong> highlights`
+      return `${month} ${day}: <strong>${count}</strong> highlights`
     }
   },
   visualMap: {
@@ -79,15 +125,13 @@ const chartOption = computed(() => ({
     left: 30,
     right: 30,
     cellSize: ['auto', 16],
-    range: props.year,
+    range: range.value,
     itemStyle: {
       borderWidth: 2,
       borderColor: colors.value.itemBorder,
       color: 'transparent'
     },
-    splitLine: {
-      show: false
-    },
+    splitLine: { show: false },
     dayLabel: {
       color: colors.value.dayLabel,
       nameMap: 'en'
@@ -100,7 +144,7 @@ const chartOption = computed(() => ({
   series: {
     type: 'heatmap',
     coordinateSystem: 'calendar',
-    data: props.data.map((p) => [p.date, p.count])
+    data: chartData.value
   }
 }))
 </script>
@@ -109,9 +153,24 @@ const chartOption = computed(() => ({
   <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700 h-full" role="figure" :aria-label="accessibilitySummary">
     <div class="flex justify-between items-center mb-4">
       <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300">
-        {{ $t('stats.consistency') }} ({{ year }})
+        {{ $t('stats.consistency') }}
+        <span class="text-gray-500 font-normal ml-1">
+          ({{ total ? $t('stats.all_time') : selectedYear }})
+        </span>
       </h3>
-      <!-- Potential year selector here -->
+
+      <!-- Year Selector -->
+      <div v-if="!total && availableYears.length > 1" class="flex items-center gap-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+        <button
+          v-for="year in availableYears"
+          :key="year"
+          class="px-3 py-1 text-xs rounded-md transition-colors"
+          :class="selectedYear === year ? 'bg-white dark:bg-gray-600 shadow-sm text-primary-600 dark:text-primary-400 font-medium' : 'text-gray-500 hover:text-gray-900 dark:hover:text-gray-200'"
+          @click="selectedYear = year"
+        >
+          {{ year }}
+        </button>
+      </div>
     </div>
 
     <VChart

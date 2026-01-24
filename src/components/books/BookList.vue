@@ -58,12 +58,15 @@ const rows = computed(() => {
 const itemHeight = computed(() => props.view === 'list' ? 96 : 320)
 
 // Initialize virtualizer
-const rowVirtualizer = useVirtualizer({
-  count: computed(() => rows.value.length) as any,
-  getScrollElement: () => parentRef.value,
-  estimateSize: () => itemHeight.value,
-  overscan: 5
-})
+// Initialize virtualizer
+const rowVirtualizer = useVirtualizer(
+  computed(() => ({
+    count: rows.value.length,
+    getScrollElement: () => parentRef.value,
+    estimateSize: () => itemHeight.value,
+    overscan: 5
+  }))
+)
 
 // Force update virtualizer when view changes to re-measure
 watch(() => props.view, () => {

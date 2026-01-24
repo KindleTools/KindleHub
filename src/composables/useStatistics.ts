@@ -320,6 +320,115 @@ export function useStatistics() {
     return result
   })
 
+  // Seasonality Data (Aggregated by Month across all years)
+  const seasonalityData = computed(() => {
+    const months = new Array(12).fill(0).map((_, i) => ({
+      index: i,
+      count: 0,
+      label: format(new Date(2000, i, 1), 'MMM')
+    }))
+
+    clippingsStore.clippings.forEach((c) => {
+      const m = c.date.getMonth()
+      if (months[m]) months[m].count++
+    })
+
+    return months
+  })
+
+  // Word Frequency (Simple implementation)
+  const wordFrequency = computed(() => {
+    const text = clippingsStore.clippings
+      .filter((c) => c.content)
+      .map((c) => c.content.toLowerCase())
+      .join(' ')
+
+    const words = text.match(/\b\w+\b/g) || []
+    const stopwords = new Set(['the', 'and', 'to', 'of', 'a', 'in', 'that', 'is', 'was', 'for', 'on', 'it', 'with', 'as', 'his', 'he', 'be', 'at', 'by', 'i', 'this', 'had', 'not', 'are', 'but', 'from', 'or', 'have', 'an', 'they', 'which', 'one', 'you', 'were', 'her', 'all', 'she', 'there', 'would', 'their', 'we', 'him', 'been', 'has', 'when', 'who', 'will', 'more', 'no', 'if', 'out', 'so', 'said', 'what', 'u', 'up', 'its', 'about', 'into', 'than', 'them', 'can', 'only', 'other', 'new', 'some', 'could', 'time', 'these', 'two', 'may', 'then', 'do', 'first', 'any', 'my', 'now', 'such', 'like', 'our', 'over', 'man', 'me', 'even', 'most', 'made', 'after', 'also', 'did', 'many', 'before', 'must', 'through', 'back', 'years', 'where', 'much', 'your', 'way', 'well', 'down', 'should', 'because', 'each', 'just', 'those', 'people', 'mr', 'how', 'too', 'little', 'state', 'good', 'very', 'make', 'world', 'still', 'own', 'see', 'men', 'work', 'long', 'get', 'here', 'between', 'both', 'life', 'being', 'under', 'never', 'day', 'same', 'another', 'know', 'while', 'last', 'might', 'us', 'great', 'since', 'against', 'go', 'came', 'right', 'used', 'take', 'three'])
+
+    const freq: Record<string, number> = {}
+    words.forEach((w) => {
+      if (w.length > 3 && !stopwords.has(w)) {
+        freq[w] = (freq[w] || 0) + 1
+      }
+    })
+
+    return Object.entries(freq)
+      .map(([text, value]) => ({ text, value }))
+      .sort((a, b) => b.value - a.value)
+      .slice(0, 50)
+  })
+
+  // Radar Metrics
+  const radarMetrics = computed(() => {
+    // Check if we have data
+    if (!totalClippings.value) return []
+
+    const total = totalClippings.value || 1
+    // typeDistribution is an object { highlights: number, notes: number ... }
+    const notes = typeDistribution.value.notes || 0
+    const books = totalBooks.value || 1
+    const authors = totalAuthors.value || 1
+
+    // 1. Volume (scaled to 1000 highlights)
+    const volume = Math.min(total / 1000, 1) * 100
+
+    // 2. Engagement (Notes / Highlights ratio-ish) - Target 20%
+    const engagement = Math.min((notes / total) * 5, 1) * 100
+
+    // 3. Variety (Authors / Books) - Target 0.8
+    const variety = Math.min((authors / books), 1) * 100
+
+    // 4. Complexity (Avg Length) - Target 200 chars
+    let avgLen = 0
+    // Recalculate average as highlightLengths gives median/quartiles
+    const highlights = clippingsStore.clippings.filter((c) => c.type === 'highlight' && c.content)
+    if (highlights.length > 0) {
+      const totalLen = highlights.reduce((acc, c) => acc + c.content.length, 0)
+      avgLen = totalLen / highlights.length
+    }
+    const complexity = Math.min(avgLen / 300, 1) * 100
+
+    // 5. Consistency (Active Days / Total Days spanned)
+    // Use last 365 days
+    const oneYearAgo = new Date()
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1)
+
+    const activePastYear = clippingsStore.clippings.filter((c) => c.date >= oneYearAgo).length > 0
+      ? new Set(clippingsStore.clippings.filter((c) => c.date >= oneYearAgo).map((c) => c.date.toDateString())).size
+      : 0
+
+    const consistency = Math.min(activePastYear / 52, 1) * 100 // Target 1 day a week avg
+
+    return [
+      { name: 'Volume', value: Math.round(volume), max: 100 },
+      { name: 'Engagement', value: Math.round(engagement), max: 100 },
+      { name: 'Variety', value: Math.round(variety), max: 100 },
+      { name: 'Complexity', value: Math.round(complexity), max: 100 },
+      { name: 'Consistency', value: Math.round(consistency), max: 100 }
+    ]
+  })
+
+  // Badges
+  const badges = computed(() => {
+    const b = []
+    const total = totalClippings.value
+
+    if (total >= 100) b.push({ id: 'century', icon: '💯', title: 'Centurion', desc: '100 Highlights' })
+    if (total >= 500) b.push({ id: 'scholar', icon: '🎓', title: 'Scholar', desc: '500 Highlights' })
+    if (total >= 1000) b.push({ id: 'library', icon: '🏛️', title: 'Library', desc: '1000 Highlights' })
+
+    if (yearsReading.value >= 1) b.push({ id: 'year1', icon: '🥇', title: 'Year 1', desc: 'Reading for 1 year' })
+    if (yearsReading.value >= 3) b.push({ id: 'year3', icon: '🏆', title: 'Veteran', desc: 'Reading for 3 years' })
+
+    if (totalBooks.value >= 10) b.push({ id: 'reader', icon: '📚', title: 'Bookworm', desc: '10 Books' })
+    if (totalBooks.value >= 50) b.push({ id: 'bibliophile', icon: '🦉', title: 'Bibliophile', desc: '50 Books' })
+
+    const streak = 0 // Needs streak calculation if we want accurate streak badge
+
+    return b
+  })
+
   return {
     clippingsStore,
     booksStore,
@@ -338,6 +447,10 @@ export function useStatistics() {
     timelineData,
     monthlyBreakdown,
     heatmapData,
-    calendarData
+    calendarData,
+    seasonalityData,
+    wordFrequency,
+    radarMetrics,
+    badges
   }
 }
