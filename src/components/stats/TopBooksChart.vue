@@ -34,7 +34,7 @@ const accessibilitySummary = computed(() => {
   // const books = props.data.slice(0, 8)
   const topBook = props.data[0]
   if (!topBook) return t('stats.no_data')
-  return `${t('stats.top_books')}: ${props.data.length} books. Top: "${topBook.book}" by ${topBook.author} (${topBook.count} ${t('stats.total_highlights')})`
+  return `${t('stats.top_books')}: ${props.data.length} ${t('stats_books')}. Top: "${topBook.book}" ${t('stats.by_author', { author: topBook.author })} (${topBook.count} ${t('stats.total_highlights')})`
 })
 
 const chartOption = computed(() => {
@@ -60,7 +60,7 @@ const chartOption = computed(() => {
           book.author,
           `${t('clipping.highlight', 2)}: ${book.highlights}`,
           `${t('clipping.note', 2)}: ${book.notes}`,
-          `Total: ${book.count}`
+          t('stats.total_count', { count: book.count })
         ].join('<br/>')
       }
     },

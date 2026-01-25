@@ -47,7 +47,8 @@ export type SuspiciousReason = 'too_short' | 'fragment' | 'incomplete'
 /**
  * A clipping within a batch with additional metadata
  */
-export interface BatchClipping extends Clipping {
+export interface BatchClipping extends Omit<Clipping, 'location'> {
+  location?: string | { raw: string, [key: string]: unknown }
   /** Unique ID for this clipping within the batch */
   batchClippingId: string
   /** Whether this clipping is selected for bulk actions */

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
+import { Award } from 'lucide-vue-next'
+import EmptyState from '@/components/ui/EmptyState.vue'
 
 defineProps<{
   badges: { id: string, icon: string, title: string, desc: string }[]
 }>()
 
-const { t } = useI18n()
 </script>
 
 <template>
@@ -25,9 +25,11 @@ const { t } = useI18n()
         <span class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ badge.desc }}</span>
       </div>
     </div>
-    <div v-else class="h-32 flex flex-col items-center justify-center text-gray-400 text-sm">
-      <span class="text-2xl mb-2">🔒</span>
-      {{ $t('stats.no_badges', 'Keep reading to unlock badges!') }}
+    <div v-else>
+      <EmptyState
+        :title="$t('stats.no_badges')"
+        :icon="Award"
+      />
     </div>
   </div>
 </template>

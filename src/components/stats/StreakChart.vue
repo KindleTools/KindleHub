@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<{
   total: false
 })
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const isDark = useDark()
 
 const currentYear = new Date().getFullYear()
@@ -90,10 +90,10 @@ const chartOption = computed(() => ({
     textStyle: { color: colors.value.tooltipText },
     formatter: (params: any) => {
       const date = new Date(params.value[0])
-      const month = date.toLocaleString('default', { month: 'short' })
+      const month = date.toLocaleString(locale.value, { month: 'short' })
       const day = date.getDate()
       const count = params.value[1]
-      return `${month} ${day}: <strong>${count}</strong> highlights`
+      return `${month} ${day}: <strong>${t('stats.daily_highlights', { count })}</strong>`
     }
   },
   visualMap: {
@@ -134,7 +134,7 @@ const chartOption = computed(() => ({
     splitLine: { show: false },
     dayLabel: {
       color: colors.value.dayLabel,
-      nameMap: 'en'
+      nameMap: locale.value
     },
     monthLabel: {
       color: colors.value.monthLabel

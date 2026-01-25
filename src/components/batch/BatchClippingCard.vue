@@ -90,14 +90,11 @@ const formatDate = (date: Date | string | null | undefined) => {
     return ''
   }
 }
-
 const formattedLocation = computed(() => {
   const loc = props.clipping.location
   if (!loc) return ''
-  if (typeof loc === 'object') {
-    // Handle KindleTools Location object
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return (loc as any).raw || (loc as any).toString()
+  if (typeof loc === 'object' && 'raw' in loc) {
+    return loc.raw
   }
   return String(loc)
 })
@@ -141,10 +138,10 @@ const formattedLocation = computed(() => {
 
             <!-- Metadata badges -->
             <span v-if="clipping.page" class="text-xs text-gray-400">
-              Page {{ clipping.page }}
+              {{ $t('clipping.page', { page: clipping.page }) }}
             </span>
             <span v-if="clipping.location" class="text-xs text-gray-400">
-              Loc {{ formattedLocation }}
+              {{ $t('clipping.location_short', { loc: formattedLocation }) }}
             </span>
 
             <!-- Suspicious Badge -->

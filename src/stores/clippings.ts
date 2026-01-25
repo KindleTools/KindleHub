@@ -32,6 +32,14 @@ export const useClippingsStore = defineStore('clippings', () => {
     clippings.value.filter((c) => c.type === 'bookmark')
   )
 
+  const tags = computed(() => {
+    const allTags = new Set<string>()
+    clippings.value.forEach((c) => {
+      c.tags?.forEach((t) => allTags.add(t))
+    })
+    return Array.from(allTags).sort()
+  })
+
   /**
    * Load all clippings from the database.
    */
@@ -99,6 +107,7 @@ export const useClippingsStore = defineStore('clippings', () => {
     highlights,
     notes,
     bookmarks,
+    tags,
     loadAllClippings,
     loadClippingsForBook,
     loadStats,

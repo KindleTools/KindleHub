@@ -80,7 +80,7 @@ export async function parseContent(
   const processed = processClippings(successData.clippings, {
     ...safeOptions,
     extractTags: true,
-    tagCase: (options?.tagCase ?? 'original') as any,
+    tagCase: (options?.tagCase ?? 'original') as any, // eslint-disable-line @typescript-eslint/no-explicit-any
     detectedLanguage: detectedLanguage ?? 'en'
   })
 
@@ -103,6 +103,7 @@ export async function parseContent(
   processed.clippings.forEach((c) => {
     if (c.tags && c.tags.length > 0 && c.location) {
       // Use raw location string for matching keys
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const locStr = typeof c.location === 'object' ? (c.location as any).raw : c.location
       const key = `${c.title}-${locStr}`
       clippingsWithTags.set(key, c.tags)
@@ -112,6 +113,7 @@ export async function parseContent(
   processed.clippings = processed.clippings.map((c) => {
     // If highlight has no tags but a matching note does, copy them
     if (c.type === 'highlight' && (!c.tags || c.tags.length === 0) && c.location) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const locStr = typeof c.location === 'object' ? (c.location as any).raw : c.location
       const key = `${c.title}-${locStr}`
       if (clippingsWithTags.has(key)) {

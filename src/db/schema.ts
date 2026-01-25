@@ -59,7 +59,7 @@ export class KindleHubDB extends Dexie {
     super('KindleHubDB')
 
     this.version(1).stores({
-      books: '++id, title, author, lastReadDate',
+      books: '++id, title, author, lastReadDate, [title+author]',
       clippings: '++id, bookId, originalId, type, date, [bookId+type]'
     })
 
@@ -69,6 +69,10 @@ export class KindleHubDB extends Dexie {
 
     this.version(3).stores({
       clippings: '++id, bookId, originalId, type, date, [bookId+type], [bookId+originalId]'
+    })
+
+    this.version(4).stores({
+      clippings: '++id, bookId, originalId, type, date, *tags, [bookId+type], [bookId+originalId]'
     })
   }
 }

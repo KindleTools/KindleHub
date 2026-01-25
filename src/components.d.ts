@@ -42,6 +42,7 @@ declare module 'vue' {
     StatsStatCard: typeof import('./components/stats/StatCard.vue')['default']
     StatsStatsLayout: typeof import('./components/stats/StatsLayout.vue')['default']
     StatsStreakChart: typeof import('./components/stats/StreakChart.vue')['default']
+    StatsTagCloud: typeof import('./components/stats/TagCloud.vue')['default']
     StatsTopBooksChart: typeof import('./components/stats/TopBooksChart.vue')['default']
     StatsTopicCloud: typeof import('./components/stats/TopicCloud.vue')['default']
     StatsTreemapChart: typeof import('./components/stats/TreemapChart.vue')['default']

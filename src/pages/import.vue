@@ -57,13 +57,20 @@ const processFile = async (file: File) => {
     // Parse with kindle-tools-ts using import preferences
     progress.value = 30
     const { importPreferences } = settingsStore
-    const parsed = await parseContent(content, selectedFormat.value, {
-      language: importPreferences.language === 'auto' ? undefined : importPreferences.language,
+
+    // Construct options object carefully to avoid strict type issues with undefined
+    const parseOptions: any = {
       mergeOverlapping: importPreferences.mergeOverlapping,
       extractTags: importPreferences.extractTags,
       highlightsOnly: importPreferences.highlightsOnly,
       removeUnlinkedNotes: importPreferences.removeUnlinkedNotes
-    })
+    }
+
+    if (importPreferences.language && importPreferences.language !== 'auto') {
+      parseOptions.language = importPreferences.language
+    }
+
+    const parsed = await parseContent(content, selectedFormat.value, parseOptions)
     console.log('Parsed:', parsed.stats)
 
     // Create batch (in-memory, not saved yet)
@@ -91,6 +98,27 @@ const processFile = async (file: File) => {
     console.error('Import error:', err)
     error.value = err instanceof Error ? err.message : 'Unknown error'
   } finally {
+    isImporting.value = false
+  }
+}
+
+const loadDemoData = async () => {
+  try {
+    isImporting.value = true
+    progress.value = 0
+    error.value = null
+
+    progress.value = 10
+    const response = await fetch('/demo.txt')
+    if (!response.ok) throw new Error('Failed to load demo file')
+    const content = await response.text()
+
+    // Create a mock File object
+    const file = new File([content], 'My Clippings.txt', { type: 'text/plain' })
+    await processFile(file)
+  } catch (err) {
+    console.error('Demo load error:', err)
+    error.value = err instanceof Error ? err.message : 'Unknown error'
     isImporting.value = false
   }
 }
@@ -171,12 +199,18 @@ const reset = () => {
           <FileText class="h-5 w-5" aria-hidden="true" />
           {{ $t('import.help_title') }}
         </h3>
-        <ol class="list-decimal list-inside space-y-1 text-sm text-gray-700 dark:text-gray-300">
+        <ol class="list-decimal list-inside space-y-1 text-sm text-gray-700 dark:text-gray-300 mb-4">
           <li>{{ $t('import.help_step1') }}</li>
           <li>{{ $t('import.help_step2') }}</li>
           <li><i18n-t keypath="import.help_step3" tag="span"><template #folder><code class="bg-white dark:bg-gray-800 px-1 rounded">documents</code></template></i18n-t></li>
           <li><i18n-t keypath="import.help_step4" tag="span"><template #file><code class="bg-white dark:bg-gray-800 px-1 rounded">My Clippings.txt</code></template></i18n-t></li>
         </ol>
+
+        <div class="pt-2 border-t border-blue-100 dark:border-blue-800">
+          <button class="text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 font-medium pb-2" @click="loadDemoData">
+            {{ $t('import.load_demo') }}
+          </button>
+        </div>
       </div>
     </div>
 
