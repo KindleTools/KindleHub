@@ -108,9 +108,25 @@ function handleKeydown(event: KeyboardEvent) {
 }
 
 onMounted(() => {
-  loadData()
-  // Auto-focus search input on page load
-  setTimeout(focusSearch, 100)
+  loadData().then(() => {
+    // Handle URL query parameters
+    const { q, type } = router.currentRoute.value.query
+
+    if (q) {
+      if (type === 'tag') {
+        toggleTagFilter(q as string)
+        showFilters.value = true
+      } else {
+        query.value = q as string
+      }
+    }
+  })
+
+  // Auto-focus search input on page load if no query
+  if (!router.currentRoute.value.query.q) {
+    setTimeout(focusSearch, 100)
+  }
+
   window.addEventListener('keydown', handleKeydown)
 })
 
@@ -228,7 +244,7 @@ onUnmounted(() => {
                 ]"
                 @click="toggleTagFilter(tag)"
               >
-                #{{ tag }}
+                #{{ tag.replace(/^#/, '') }}
               </button>
             </div>
           </div>

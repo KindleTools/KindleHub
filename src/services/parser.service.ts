@@ -32,13 +32,18 @@ export interface ParsedResult {
   suspiciousIds: string[]
 }
 
+export interface ParserServiceOptions extends Omit<Partial<ParseOptions>, 'tagCase'> {
+  tagCase?: 'original' | 'uppercase' | 'lowercase' | 'title'
+  discardExtractedNotes?: boolean
+}
+
 /**
  * Parse file content based on format type.
  */
 export async function parseContent(
   content: string,
   format: ImportFormat,
-  options?: Partial<ParseOptions>
+  options?: ParserServiceOptions
 ): Promise<ParsedResult> {
   let importResult: ImportResult
 
@@ -74,17 +79,62 @@ export async function parseContent(
   // Process clippings (deduplication, linking, etc.)
   const processed = processClippings(successData.clippings, {
     ...safeOptions,
+    extractTags: true,
+    tagCase: (options?.tagCase ?? 'original') as any,
     detectedLanguage: detectedLanguage ?? 'en'
+  })
+
+  // Filter out Notes that were consumed/converted to tags if requested
+  if (options?.discardExtractedNotes) {
+    processed.clippings = processed.clippings.filter((c) => {
+      if (c.type === 'note' && c.tags && c.tags.length > 0) {
+        // This note has tags. We assume if tags were extracted, we check strict content match or just presence?
+        // "Pure" tag notes usually have their content equal to the tags text, but let's be safe.
+        // For now, consistent with previous logic: if it has tags, it was likely a tag-only note.
+        return false
+      }
+      return true
+    })
+  }
+
+  // Link tags to parent highlights if applicable (Library might strictly link ID, we backup with location match)
+  const clippingsWithTags = new Map<string, string[]>()
+
+  processed.clippings.forEach((c) => {
+    if (c.tags && c.tags.length > 0 && c.location) {
+      // Use raw location string for matching keys
+      const locStr = typeof c.location === 'object' ? (c.location as any).raw : c.location
+      const key = `${c.title}-${locStr}`
+      clippingsWithTags.set(key, c.tags)
+    }
+  })
+
+  processed.clippings = processed.clippings.map((c) => {
+    // If highlight has no tags but a matching note does, copy them
+    if (c.type === 'highlight' && (!c.tags || c.tags.length === 0) && c.location) {
+      const locStr = typeof c.location === 'object' ? (c.location as any).raw : c.location
+      const key = `${c.title}-${locStr}`
+      if (clippingsWithTags.has(key)) {
+        return { ...c, tags: clippingsWithTags.get(key) }
+      }
+    }
+    return c
   })
 
   // Count unique books
   const uniqueBooks = new Set(processed.clippings.map((c) => c.title))
 
   // Extract suspicious clipping IDs
-  const suspiciousIds = processed.suspicious?.map((c) => c.id) ?? []
+  // We check if the property exists on the processed result (it usually does in newer versions)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const suspiciousIds = (processed as any).suspicious?.map((c: any) => c.id) ?? []
 
-  // Count tags extracted
-  const tagsExtracted = processed.clippings.reduce((acc, c) => acc + (c.tags?.length ?? 0), 0)
+  // Count unique tags
+  const uniqueTags = new Set<string>()
+  processed.clippings.forEach((c) => {
+    c.tags?.forEach((t) => uniqueTags.add(t))
+  })
+  const tagsExtracted = uniqueTags.size
 
   return {
     clippings: processed.clippings,

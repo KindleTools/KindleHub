@@ -25,6 +25,8 @@ export interface ImportPreferences {
   extractTags: boolean
   highlightsOnly: boolean
   removeUnlinkedNotes: boolean
+  tagCase: 'original' | 'uppercase' | 'lowercase' | 'title'
+  discardExtractedNotes: boolean
 }
 
 export interface AppSettings {
@@ -51,7 +53,9 @@ const defaultSettings: AppSettings = {
     mergeOverlapping: true,
     extractTags: false,
     highlightsOnly: false,
-    removeUnlinkedNotes: false
+    removeUnlinkedNotes: false,
+    tagCase: 'original',
+    discardExtractedNotes: false
   },
   // Default fallback if logic fails or first run (though i18n logic handles first run)
   language: 'en'

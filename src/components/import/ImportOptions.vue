@@ -107,34 +107,96 @@ const updatePreference = <K extends keyof typeof importPreferences.value>(
         </button>
       </div>
 
-      <!-- Extract Tags -->
-      <div class="flex items-center justify-between">
-        <div>
-          <label for="extract-tags" class="font-medium text-sm">
-            {{ $t('import.options.extract_tags') }}
-          </label>
-          <p class="text-xs text-gray-500 dark:text-gray-400">
-            {{ $t('import.options.extract_tags_desc') }}
-          </p>
-        </div>
-        <button
-          id="extract-tags"
-          type="button"
-          role="switch"
-          :aria-checked="importPreferences.extractTags"
-          :class="[
-            'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
-            importPreferences.extractTags ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-700'
-          ]"
-          @click="updatePreference('extractTags', !importPreferences.extractTags)"
-        >
-          <span
+      <!-- Tag Settings -->
+      <div class="space-y-4 pt-2 border-t border-gray-100 dark:border-gray-700">
+        <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          {{ $t('import.options.tag_settings') }}
+        </h4>
+
+        <!-- Extract Tags -->
+        <div class="flex items-center justify-between">
+          <div>
+            <label for="extract-tags" class="font-medium text-sm">
+              {{ $t('import.options.extract_tags') }}
+            </label>
+            <p class="text-xs text-gray-500 dark:text-gray-400">
+              {{ $t('import.options.extract_tags_desc') }}
+            </p>
+          </div>
+          <button
+            id="extract-tags"
+            type="button"
+            role="switch"
+            :aria-checked="importPreferences.extractTags"
             :class="[
-              'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
-              importPreferences.extractTags ? 'translate-x-5' : 'translate-x-0'
+              'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
+              importPreferences.extractTags ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-700'
             ]"
-          ></span>
-        </button>
+            @click="updatePreference('extractTags', !importPreferences.extractTags)"
+          >
+            <span
+              :class="[
+                'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
+                importPreferences.extractTags ? 'translate-x-5' : 'translate-x-0'
+              ]"
+            ></span>
+          </button>
+        </div>
+
+        <div v-if="importPreferences.extractTags" class="space-y-4 pl-4 border-l-2 border-gray-100 dark:border-gray-700 ml-1">
+          <!-- Tag Case -->
+          <div class="flex items-center justify-between">
+            <div>
+              <label for="tag-case" class="font-medium text-sm">
+                {{ $t('import.options.tag_case') }}
+              </label>
+              <p class="text-xs text-gray-500 dark:text-gray-400">
+                {{ $t('import.options.tag_case_desc') }}
+              </p>
+            </div>
+            <select
+              id="tag-case"
+              :value="importPreferences.tagCase"
+              class="px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-sm"
+              @change="updatePreference('tagCase', ($event.target as HTMLSelectElement).value as any)"
+            >
+              <option value="original">{{ $t('import.options.case_original') }}</option>
+              <option value="uppercase">{{ $t('import.options.case_uppercase') }}</option>
+              <option value="lowercase">{{ $t('import.options.case_lowercase') }}</option>
+              <option value="title">{{ $t('import.options.case_title') }}</option>
+            </select>
+          </div>
+
+          <!-- Discard Extracted Notes -->
+          <div class="flex items-center justify-between">
+            <div>
+              <label for="discard-extracted" class="font-medium text-sm">
+                {{ $t('import.options.discard_extracted') }}
+              </label>
+              <p class="text-xs text-gray-500 dark:text-gray-400">
+                {{ $t('import.options.discard_extracted_desc') }}
+              </p>
+            </div>
+            <button
+              id="discard-extracted"
+              type="button"
+              role="switch"
+              :aria-checked="importPreferences.discardExtractedNotes"
+              :class="[
+                'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
+                importPreferences.discardExtractedNotes ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-700'
+              ]"
+              @click="updatePreference('discardExtractedNotes', !importPreferences.discardExtractedNotes)"
+            >
+              <span
+                :class="[
+                  'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
+                  importPreferences.discardExtractedNotes ? 'translate-x-5' : 'translate-x-0'
+                ]"
+              ></span>
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- Highlights Only -->

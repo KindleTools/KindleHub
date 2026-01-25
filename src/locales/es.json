@@ -74,6 +74,7 @@
     "processing_desc": "Esto puede tardar un momento en archivos grandes",
     "success": "¡Importación exitosa!",
     "failed": "Importación fallida",
+    "load_demo": "Cargar Datos de Demo (para pruebas)",
     "options": {
       "title": "Opciones de Importación",
       "language": "Idioma",
@@ -87,7 +88,16 @@
       "show_advanced": "Mostrar opciones avanzadas",
       "hide_advanced": "Ocultar opciones avanzadas",
       "remove_unlinked": "Eliminar notas sin vincular",
-      "remove_unlinked_desc": "Borrar notas que no pudieron vincularse a un subrayado"
+      "remove_unlinked_desc": "Borrar notas que no pudieron vincularse a un subrayado",
+      "tag_settings": "Configuración de Etiquetas",
+      "tag_case": "Formato de Etiquetas",
+      "tag_case_desc": "Normalizar mayúsculas/minúsculas de las etiquetas",
+      "case_original": "Original",
+      "case_uppercase": "MAYÚSCULAS",
+      "case_lowercase": "minúsculas",
+      "case_title": "Título",
+      "discard_extracted": "Descartar notas convertidas",
+      "discard_extracted_desc": "No guardar notas que solo contienen etiquetas"
     }
   },
   "export": {
@@ -219,6 +229,7 @@
     "default": "Recorte",
     "page": "Página {page}",
     "location": "Ubicación {loc}",
+    "location_short": "Loc {loc}",
     "no_content": "Sin contenido",
     "your_note": "Tu nota"
   },
@@ -264,6 +275,8 @@
     "insight_top_author": "Tu autor más subrayado es {author} con {count} subrayados",
     "insight_avg_per_book": "Promedias {avg} subrayados por libro",
     "insight_years_reading": "Llevas leyendo {years} años",
+    "total_count": "Total: {count}",
+    "by_author": "por {author}",
     "title": "Estadísticas",
     "subtitle": "Profundiza en tus hábitos de lectura",
     "days_active": "Días Activos",
@@ -272,6 +285,7 @@
     "heatmap_desc": "Representación visual de tu actividad por día de la semana y hora.",
     "consistency": "Consistencia de Lectura",
     "streak_desc": "Vista de calendario mostrando tus días de lectura.",
+    "daily_highlights": "{count} subrayados",
     "authors_books": "Autores y Libros",
     "treemap_desc": "Proporción de subrayados por autor y libro.",
     "monthly_breakdown": "Desglose Mensual",

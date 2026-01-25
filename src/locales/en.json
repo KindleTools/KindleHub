@@ -26,6 +26,7 @@
     "heatmap_desc": "Visual representation of your reading activity by day of week and hour of day.",
     "consistency": "Reading Consistency",
     "streak_desc": "Calendar view showing your reading days.",
+    "daily_highlights": "{count} highlights",
     "authors_books": "Authors & Books",
     "treemap_desc": "Proportion of highlights by author and book.",
     "monthly_breakdown": "Monthly Breakdown",
@@ -47,7 +48,9 @@
     "insight_peak_month": "Your peak month was {month} with {count} highlights",
     "insight_highlight_preference": "{percentage}% of your clippings are highlights",
     "insight_top_author": "Your most highlighted author is {author} with {count} highlights",
-    "insight_avg_per_book": "You average {avg} highlights per book"
+    "insight_avg_per_book": "You average {avg} highlights per book",
+    "total_count": "Total: {count}",
+    "by_author": "by {author}"
   },
   "common": {
     "loading": "Loading...",
@@ -113,6 +116,7 @@
     "processing_desc": "This may take a moment for large files",
     "success": "Import successful!",
     "failed": "Import Failed",
+    "load_demo": "Load Demo Data (for testing)",
     "options": {
       "title": "Import Options",
       "language": "Language",
@@ -126,7 +130,16 @@
       "show_advanced": "Show advanced options",
       "hide_advanced": "Hide advanced options",
       "remove_unlinked": "Remove unlinked notes",
-      "remove_unlinked_desc": "Delete notes that couldn't be linked to a highlight"
+      "remove_unlinked_desc": "Delete notes that couldn't be linked to a highlight",
+      "tag_settings": "Tag Settings",
+      "tag_case": "Tag Format",
+      "tag_case_desc": "Normalize tag capitalization",
+      "case_original": "Original",
+      "case_uppercase": "UPPERCASE",
+      "case_lowercase": "lowercase",
+      "case_title": "Title Case",
+      "discard_extracted": "Discard converted notes",
+      "discard_extracted_desc": "Do not save notes that only contain tags"
     }
   },
   "export": {
@@ -258,6 +271,7 @@
     "default": "Clipping",
     "page": "Page {page}",
     "location": "Location {loc}",
+    "location_short": "Loc {loc}",
     "no_content": "No content",
     "your_note": "Your note"
   },

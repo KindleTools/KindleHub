@@ -13,7 +13,8 @@ import MonthlyActivityChart from './MonthlyActivityChart.vue'
 import LengthDistributionChart from './LengthDistributionChart.vue'
 import BooksScatterChart from './BooksScatterChart.vue'
 // import InsightsPanel from './InsightsPanel.vue'
-import TopicCloud from './TopicCloud.vue'
+// import TopicCloud from './TopicCloud.vue'
+import TagCloud from './TagCloud.vue'
 import ReadingRadarChart from './ReadingRadarChart.vue'
 import BadgesPanel from './BadgesPanel.vue'
 
@@ -37,6 +38,11 @@ const overviewCards = computed(() => [
     icon: '✍️'
   },
   {
+    label: t('stats.total_tags', 'Tags'),
+    value: stats.totalTags.value,
+    icon: '🏷️'
+  },
+  {
     label: t('stats.days_active', 'Active Days'),
     value: stats.daysActive.value,
     icon: '📅'
@@ -47,7 +53,7 @@ const overviewCards = computed(() => [
 <template>
   <div class="space-y-6">
     <!-- Overview Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
       <div
         v-for="card in overviewCards"
         :key="card.label"
@@ -107,12 +113,12 @@ const overviewCards = computed(() => [
         <BooksScatterChart :data="stats.bookStats.value" />
       </div>
 
-      <!-- Profiling & Topics -->
+      <!-- Profiling & Tags -->
       <div>
         <ReadingRadarChart :data="stats.radarMetrics.value" />
       </div>
       <div>
-        <TopicCloud :data="stats.wordFrequency.value" />
+        <TagCloud :data="stats.tagStats.value" />
       </div>
 
       <!-- Gamification -->

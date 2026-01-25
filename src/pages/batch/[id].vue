@@ -11,6 +11,7 @@ import {
   Download,
   Highlighter,
   StickyNote,
+  Tag,
   Upload,
   X
 } from 'lucide-vue-next'
@@ -183,7 +184,7 @@ const handleExportOnly = () => {
     <!-- Main Content -->
     <main v-if="batchesStore.currentBatch" class="max-w-7xl mx-auto px-4 py-6">
       <!-- Stats Bar -->
-      <div class="grid grid-cols-4 gap-4 mb-6">
+      <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
         <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
           <div class="flex items-center gap-3">
             <BookIcon class="h-8 w-8 text-primary-500" />
@@ -217,6 +218,15 @@ const handleExportOnly = () => {
             <div>
               <div class="text-2xl font-bold">{{ batchesStore.currentBatch.stats.byType.bookmarks }}</div>
               <div class="text-sm text-gray-500">{{ t('batch.stats_bookmarks') }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+          <div class="flex items-center gap-3">
+            <Tag class="h-8 w-8 text-green-500" />
+            <div>
+              <div class="text-2xl font-bold">{{ batchesStore.currentBatch.stats.tagsExtracted }}</div>
+              <div class="text-sm text-gray-500">{{ t('batch.label_tags') }}</div>
             </div>
           </div>
         </div>

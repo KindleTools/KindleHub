@@ -317,7 +317,7 @@ export const useBatchesStore = defineStore('batches', () => {
           const c1 = bookClippings[i]
           const c2 = bookClippings[j]
 
-          if (arePotentialDuplicates(c1.content, c2.content)) {
+          if (c1 && c2 && arePotentialDuplicates(c1.content, c2.content)) {
             const warningId = generateClippingId()
             currentBatch.value!.warnings.push({
               id: warningId,
@@ -407,8 +407,20 @@ export const useBatchesStore = defineStore('batches', () => {
 
     try {
       // Convert Map to array of Clipping objects
-      const clippings: Clipping[] = Array.from(currentBatch.value.clippings.values())
-        .map(({ batchClippingId: _b, isSelected: _s, isModified: _m, warnings: _w, ...clipping }) => clipping)
+      // Aggressively remove proxies using JSON parse/stringify
+      // This is necessary because shallow toRaw() might miss nested reactive objects in arrays/maps
+      const rawClippings = Array.from(currentBatch.value.clippings.values())
+
+      const clippings: Clipping[] = rawClippings.map((c) => {
+        const { batchClippingId: _id, isSelected: _sel, isModified: _mod, warnings: _warn, isSuspicious: _susp, ...rest } = c
+        // Deep clone to kill all proxies
+        const clean = JSON.parse(JSON.stringify(rest))
+        // Restore Date objects (JSON stringify converts them to strings)
+        if (clean.date) clean.date = new Date(clean.date)
+        if (clean.createdAt) clean.createdAt = new Date(clean.createdAt)
+        if (clean.updatedAt) clean.updatedAt = new Date(clean.updatedAt)
+        return clean
+      })
 
       processingProgress.value = 30
 

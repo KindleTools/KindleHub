@@ -45,6 +45,11 @@ export interface TypeDistribution {
   bookmarks: number
 }
 
+export interface TagStats {
+  tag: string
+  count: number
+}
+
 export interface Insight {
   key: string
   params?: Record<string, any>
@@ -84,6 +89,15 @@ export function useStatistics() {
   const daysActive = computed(() => {
     const dates = new Set(clippingsStore.clippings.map((c) => format(c.date, 'yyyy-MM-dd')))
     return dates.size
+  })
+
+  // Total Unique Tags
+  const totalTags = computed(() => {
+    const tags = new Set<string>()
+    clippingsStore.clippings.forEach((c) => {
+      c.tags?.forEach((t) => tags.add(t))
+    })
+    return tags.size
   })
 
   // Highligth Length Stats (Box Plot data)
@@ -359,6 +373,20 @@ export function useStatistics() {
       .slice(0, 50)
   })
 
+  // Tag Stats
+  const tagStats = computed<TagStats[]>(() => {
+    const counts: Record<string, number> = {}
+    clippingsStore.clippings.forEach((c) => {
+      c.tags?.forEach((t) => {
+        counts[t] = (counts[t] || 0) + 1
+      })
+    })
+
+    return Object.entries(counts)
+      .map(([tag, count]) => ({ tag, count }))
+      .sort((a, b) => b.count - a.count)
+  })
+
   // Radar Metrics
   const radarMetrics = computed(() => {
     // Check if we have data
@@ -424,8 +452,6 @@ export function useStatistics() {
     if (totalBooks.value >= 10) b.push({ id: 'reader', icon: '📚', title: 'Bookworm', desc: '10 Books' })
     if (totalBooks.value >= 50) b.push({ id: 'bibliophile', icon: '🦉', title: 'Bibliophile', desc: '50 Books' })
 
-    const streak = 0 // Needs streak calculation if we want accurate streak badge
-
     return b
   })
 
@@ -438,6 +464,7 @@ export function useStatistics() {
     totalClippings,
     totalBooks,
     totalAuthors,
+    totalTags,
     daysActive,
     highlightLengths,
     typeDistribution,
@@ -451,6 +478,7 @@ export function useStatistics() {
     seasonalityData,
     wordFrequency,
     radarMetrics,
-    badges
+    badges,
+    tagStats
   }
 }
